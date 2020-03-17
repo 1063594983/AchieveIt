@@ -5,6 +5,7 @@
     "strict": true,
     "importHelpers": true,
     "esModuleInterop": true,
+    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "moduleResolution": "node",
