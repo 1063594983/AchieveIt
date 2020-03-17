@@ -1,7 +1,7 @@
 {
   "name": "achieve-it-client",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "src/main.ts",
   "private": true,
   "license": "MIT",
   "devDependencies": {
@@ -11,6 +11,8 @@
     "css-loader": "^3.4.2",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^1.1.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
     "vue-loader": "^15.9.0",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.42.0",
@@ -18,10 +20,14 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.0",
+    "vue-router": "^3.1.6",
+    "vuex": "^3.1.3"
   },
   "scripts": {
     "build": "webpack --mode=production",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open --history-api-fallback"
   }
 }

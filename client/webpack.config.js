@@ -4,9 +4,13 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './index.js',
+  entry: './src/main.ts',
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
   devServer: {
     contentBase: './public',
+    hot: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
@@ -31,6 +35,13 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       }
     ]
   },
