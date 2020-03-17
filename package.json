@@ -1,0 +1,22 @@
+{
+  "name": "achieve-it",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/1063594983/AchieveIt",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.20.2",
+    "concurrently": "^5.1.0",
+    "prettier": "^1.19.1"
+  },
+  "scripts": {
+    "dev:client": "cd client && yarn start",
+    "dev:server": "cd server && yarn start",
+    "start": "concurrently \"yarn dev:server\" \"yarn dev:client"
+  }
+}
