@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import './water.css';
 import Vue from 'vue';
 export default class App extends Vue {}
 </script>
