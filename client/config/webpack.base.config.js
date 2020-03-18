@@ -2,13 +2,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const tsImportPluginFactory = require('ts-import-plugin');
-const { join, basename } = require('path');
+const path = require('path');
 const camel2Dash = require('camel-2-dash');
 
 module.exports = {
   entry: './src/main.ts',
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      '@': path.join(__dirname, '../src')
+    }
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -40,7 +43,8 @@ module.exports = {
                 libraryName: 'element-ui',
                 libraryDirectory: 'lib',
                 camel2DashComponentName: true,
-                style: path => join('element-ui', 'lib', 'theme-chalk', `${camel2Dash(basename(path, '.js'))}.css`)
+                style: filePath =>
+                  path.join('element-ui', 'lib', 'theme-chalk', `${camel2Dash(path.basename(filePath, '.js'))}.css`)
               })
             ]
           })
