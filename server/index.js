@@ -8,6 +8,7 @@ import userApi from './api/userApi'
 import demoApi from './api/demoApi'
 import memberApi from './api/memberApi'
 import projectApi from './api/projectApi'
+import deviceApi from './api/deviceApi'
 
 const app = express()
 const port = 3000
@@ -30,6 +31,7 @@ app.use("/demo", demoApi);
 app.use("/user", userApi);
 app.use("/member", memberApi);
 app.use("/project", projectApi);
+app.use("/device", deviceApi);
 
 // 身份验证错误处理
 app.use((err, req, res, next) => {
