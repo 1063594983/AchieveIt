@@ -5,6 +5,7 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "achieve-it-contract": "0.0.1",
     "camel-2-dash": "^0.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.2",
