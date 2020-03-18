@@ -1,10 +1,12 @@
 import express from 'express'
-import userApi from './api/userApi'
-import demoApi from './api/demoApi'
 import bodyParser from 'body-parser'
 import expressJwt from 'express-jwt'
 import config from './config'
 import cors from 'cors'
+
+import userApi from './api/userApi'
+import demoApi from './api/demoApi'
+import memberApi from './api/memberApi'
 
 const app = express()
 const port = 3000
@@ -25,6 +27,7 @@ app.use(cors());
 
 app.use("/demo", demoApi);
 app.use("/user", userApi);
+app.use("/member", memberApi);
 
 // 身份验证错误处理
 app.use((err, req, res, next) => {
