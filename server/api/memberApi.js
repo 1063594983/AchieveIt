@@ -16,36 +16,37 @@ router.get("/:member_id", (req, res) => {
     conn.query($sql.member.getMemberById, [member_id], (err, result) => {
         if (err) {
             res.json({
-                status: "error",
+                status: config.status.ERROR,
                 msg: "error"
             })
         } else if (result.length == 1) {
-            res.json({...result[0], status:'ok'});
+            res.json({
+                member: result[0],
+                status: config.status.SUCCESS
+            });
         } else {
             res.json({
-                status: "not found",
+                status: config.status.NOT_FOUND,
                 msg: `未找到member_id为${member_id}的member`
             })
         }
     })
 })
 
-// post /member/:member_id
+// put /member/:member_id
 // updateMember
-router.post("/:member_id", (req, res) => {
+router.put("/:member_id", (req, res) => {
     const member_details = req.body;
     const member_id = req.params.member_id;
 
     conn.query($sql.member.getMemberById, [member_id], (err, result) => {
         if (err) {
             res.json({
-                status: "error",
+                status: config.status.ERROR,
                 msg: "error"
             })
         } else if (result.length == 1) {
             const old_member = result[0];
-            // console.log(member_details.phone || old_member.phone)
-            // res.end();
             conn.query($sql.member.updateMemberById, 
                 [member_details.member_name || old_member.member_name, 
                 member_details.email || old_member.email, 
@@ -55,7 +56,7 @@ router.post("/:member_id", (req, res) => {
                 member_details.job || old_member.job, member_id], (err2, result2) => {
                     if (err2) {
                         res.json({
-                            status: "error",
+                            status: config.status.ERROR,
                             msg: `更新member_id为${member_id}的member失败`
                         })
                     } else {
@@ -63,8 +64,6 @@ router.post("/:member_id", (req, res) => {
                             status: "ok"
                         })
                     }
-
-
                 })
         } else {
             res.json({
@@ -76,9 +75,9 @@ router.post("/:member_id", (req, res) => {
 })
 
 
-// put /memner
+// post /memner
 // insertMember
-router.put("/", (req, res) => {
+router.post("/", (req, res) => {
     const member_details = req.body;
     conn.query($sql.member.insertMember, [member_details.member_name || "", member_details.email || "", member_details.department || "", 
         member_details.leader_email || "", member_details.phone || "", member_details.job || ""],
