@@ -1,4 +1,4 @@
-import { ResultCommon, Authorization } from "./common";
+import { ResultCommon, Authorization } from "../common";
 
 interface Activity {
     activity_id: number,
@@ -24,6 +24,6 @@ interface ActivityDeleteBody extends Authorization {
 }
 
 // responseResult
-export interface ActivityGetResult extends ResultCommon {
+export interface GetActivityResult extends ResultCommon {
     activity?: Activity
 }
