@@ -1,12 +1,12 @@
 import { ResultCommon } from "./common";
 
 interface Function {
-    function_id: Int16Array,
-    function_name: string,
-    project_id: string,
-    layer: Int16Array
+  function_id: number;
+  function_name: string;
+  project_id: string;
+  layer: number;
 }
 
-export interface FunctionResult extends ResultCommon{
-    function: Function
+export interface FunctionResult extends ResultCommon {
+  function: Function;
 }
