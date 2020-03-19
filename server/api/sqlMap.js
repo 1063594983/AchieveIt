@@ -13,7 +13,9 @@ export default {
     project: {
         getProjectById: "select * from project where project_id = ?",
         deleteProjectById: 'delete from project where project_id = ?',
-        insertProject: 'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        insertProject: 'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
+            business = ?, status = ? where project_id = ?`
     },
     device: {
         getDeviceById: "select * from device where device_id = ?",

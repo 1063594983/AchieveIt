@@ -15,7 +15,8 @@ export default {
         ERROR: 'error'
     },
     msg: {
-        
+        GET_MEMBER: "success",
+        UPDATE_MEMBER: "success"
     }
 }
 
