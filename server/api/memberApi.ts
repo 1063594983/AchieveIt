@@ -1,8 +1,10 @@
-import config from '../config'
-import express , { Response } from 'express'
-import mysql from 'mysql'
-import $sql from './sqlMap'
-import { MemberGetResult, ResultCommon } from "achieve-it-contract";
+
+import config from "../config";
+import express, { Response } from "express";
+import mysql from "mysql";
+import $sql from "./sqlMap";
+import { GetMemberResult, ResultCommon } from "achieve-it-contract";
+
 const router = express.Router();
 
 // 连接数据库
@@ -11,121 +13,145 @@ conn.connect();
 
 // get /member/:member_id
 // getMember
-router.get("/:member_id", (req, res: Response<MemberGetResult>) => {
-    const member_id = req.params.member_id;
-    conn.query($sql.member.getMemberById, [member_id], (err, result) => {
-        if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "error"
-            })
-        } else if (result.length == 1) {
-            res.json({
-                member: result[0],
-                status: config.status.SUCCESS,
-                msg: config.msg.GET_MEMBER
-            });
-        } else {
-            res.json({
-                status: config.status.NOT_FOUND,
-                msg: `未找到member_id为${member_id}的member`
-            })
-        }
-    })
-})
+
+router.get("/:member_id", (req, res: Response<GetMemberResult>) => {
+  const member_id = req.params.member_id;
+  conn.query($sql.member.getMemberById, [member_id], (err, result) => {
+    if (err) {
+      res.json({
+        member: null,
+        status: config.status.ERROR,
+        msg: "error"
+      });
+    } else if (result.length == 1) {
+      res.json({
+        member: result[0],
+        status: config.status.SUCCESS,
+        msg: config.msg.GET_MEMBER
+      });
+    } else {
+      res.json({
+        member: null,
+        status: config.status.NOT_FOUND,
+        msg: `未找到member_id为${member_id}的member`
+      });
+    }
+  });
+});
+
 
 // put /member/:member_id
 // updateMember
 router.put("/:member_id", (req, res: Response<ResultCommon>) => {
-    const member_details = req.body;
-    const member_id = req.params.member_id;
+  const member_details = req.body;
+  const member_id = req.params.member_id;
 
-    conn.query($sql.member.getMemberById, [member_id], (err, result) => {
-        if (err) {
+  conn.query($sql.member.getMemberById, [member_id], (err, result) => {
+    if (err) {
+      res.json({
+        status: config.status.ERROR,
+        msg: "error"
+      });
+    } else if (result.length == 1) {
+      const old_member = result[0];
+      conn.query(
+        $sql.member.updateMemberById,
+        [
+          member_details.member_name || old_member.member_name,
+          member_details.email || old_member.email,
+          member_details.department || old_member.department,
+          member_details.leader_email || old_member.leader_email,
+          member_details.phone || old_member.phone,
+          member_details.job || old_member.job,
+          member_id
+        ],
+        (err2, result2) => {
+          if (err2) {
             res.json({
-                status: config.status.ERROR,
-                msg: "error"
-            })
-        } else if (result.length == 1) {
-            const old_member = result[0];
-            conn.query($sql.member.updateMemberById, 
-                [member_details.member_name || old_member.member_name, 
-                member_details.email || old_member.email, 
-                member_details.department || old_member.department,
-                member_details.leader_email || old_member.leader_email,
-                member_details.phone || old_member.phone,
-                member_details.job || old_member.job, member_id], (err2, result2) => {
-                    if (err2) {
-                        res.json({
-                            status: config.status.ERROR,
-                            msg: `更新member_id为${member_id}的member失败`
-                        })
-                    } else {
-                        res.json({
-                            status: "ok",
-                            msg: config.msg.UPDATE_MEMBER
-                        })
-                    }
-                })
-        } else {
+              status: config.status.ERROR,
+              msg: `更新member_id为${member_id}的member失败`
+            });
+          } else {
             res.json({
-                status: config.status.NOT_FOUND,
-                msg: `未找到member_id为${member_id}的member`
-            })
+              status: "ok",
+              msg: config.msg.UPDATE_MEMBER
+            });
+          }
         }
-    })
-})
-
+      );
+    } else {
+      res.json({
+        status: config.status.NOT_FOUND,
+        msg: `未找到member_id为${member_id}的member`
+      });
+    }
+  });
+});
 
 // post /memner
 // insertMember
 router.post("/", (req, res: Response<ResultCommon>) => {
-    const member_details = req.body;
-    conn.query($sql.member.insertMember, [member_details.member_name || "", member_details.email || "", member_details.department || "", 
-        member_details.leader_email || "", member_details.phone || "", member_details.job || ""],
-        (err, result) => {
-            if (err) {
-                res.json({
-                    status: config.status.ERROR,
-                    msg: '添加员工失败'
-                })
+  const member_details = req.body;
+  conn.query(
+    $sql.member.insertMember,
+    [
+      member_details.member_name || "",
+      member_details.email || "",
+      member_details.department || "",
+      member_details.leader_email || "",
+      member_details.phone || "",
+      member_details.job || ""
+    ],
+    (err, result) => {
+      if (err) {
+        res.json({
+          status: config.status.ERROR,
+          msg: "添加员工失败"
+        });
+      } else {
+        conn.query(
+          $sql.user.insertUser,
+          [
+            member_details.username || result.insertId,
+            member_details.password || result.insertId,
+            result.insertId
+          ],
+          (err2, result2) => {
+            if (err2) {
+              res.json({
+                status: config.status.ERROR,
+                msg: "error"
+              });
             } else {
-                conn.query($sql.user.insertUser, [member_details.username || result.insertId, member_details.password || result.insertId, result.insertId], (err2, result2) => {
-                    if (err2) {
-                        res.json({
-                            status: config.status.ERROR,
-                            msg: 'error'
-                        })
-                    } else {
-                        res.json({
-                            status: config.status.SUCCESS,
-                            msg: 'success'
-                        })
-                    }
-                })
+              res.json({
+                status: config.status.SUCCESS,
+                msg: "success"
+              });
             }
-        })
-})
+          }
+        );
+      }
+    }
+  );
+});
 
 // delete /member/:member_id
 // unfinished: 未实现级联删除
 router.delete("/:member_id", (req, res: Response<ResultCommon>) => {
-    const member_id = req.params.member_id;
-    conn.query($sql.member.deleteMemberById, [member_id], (err, result) => {
-        if (err) {
-            res.json({
-                status: 'error',
-                msg: 'error'
-            })
-        } else {
-
-            res.json({
-                status: 'ok',
-                msg: 'member删除成功'
-            })
-        }
-    })
-})
-
+  const member_id = req.params.member_id;
+  conn.query($sql.member.deleteMemberById, [member_id], (err, result) => {
+    if (err) {
+      res.json({
+        status: "error",
+        msg: "error"
+      });
+    } else {
+      res.json({
+        status: "ok",
+        msg: "member删除成功"
+      });
+    }
+  });
+});
 
 export default router;

@@ -1,6 +1,8 @@
-export * from "./demo";
-export * from "./member";
 export * from "./common";
-export * from "./device"
-export * from "./project"
-export * from "./user"
+
+export * from "./namespaces/demo";
+export * from "./namespaces/member";
+export * from "./namespaces/device";
+export * from "./namespaces/project";
+export * from "./namespaces/feature";
+export * from "./namespaces/user";
