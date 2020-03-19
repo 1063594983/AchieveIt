@@ -2,7 +2,7 @@ import config from '../config';
 import express, { Response, response } from 'express';
 import mysql from 'mysql';
 import $sql from './sqlMap';
-import { ResultCommon, ProjectResult } from 'achieve-it-contract';
+import { ResultCommon, ProjectGetResult } from 'achieve-it-contract';
 const router = express.Router();
 
 // 连接数据库
@@ -12,7 +12,7 @@ conn.connect();
 // get /project/:project_id
 // getProject
 
-router.get("/:project_id", (req, res: Response<ProjectResult | ResultCommon>) => {
+router.get("/:project_id", (req, res: Response<ProjectGetResult>) => {
     const project_id = req.params.project_id;
 
     conn.query($sql.project.getProjectById, [project_id], (err, result) => {

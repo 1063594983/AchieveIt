@@ -1,8 +1,9 @@
 import config from '../config'
-import express from 'express'
+import express, {Response} from 'express'
 import mysql from 'mysql'
 import jwt from 'jsonwebtoken'
 import $sql from './sqlMap'
+import { ResultCommon, UserResult} from 'achieve-it-contract'
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ conn.connect();
 
 // /user/login
 // 用户登录
-router.post("/login", (req, res) => {
+router.post("/login", (req, res: Response<UserResult>) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -20,7 +21,7 @@ router.post("/login", (req, res) => {
         if (err) {
             console.log(err);
             res.json({
-                status: "error",
+                status: config.status.ERROR,
                 msg: "error"
             })
         }
@@ -36,11 +37,12 @@ router.post("/login", (req, res) => {
                 status: "ok",
                 msg: "登陆成功",
                 token,
-                member_id: user.member_id
+                member_id: user.member_id,
+                username: username
             })
         } else {
             res.json({
-                status: "refuse",
+                status: config.status.NOT_FOUND,
                 msg: "用户名或密码错误"
             })
         }

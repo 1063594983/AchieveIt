@@ -2,7 +2,7 @@ import config from '../config'
 import express , { Response } from 'express'
 import mysql from 'mysql'
 import $sql from './sqlMap'
-import { MemberResult, ResultCommon } from "achieve-it-contract";
+import { MemberGetResult, ResultCommon } from "achieve-it-contract";
 const router = express.Router();
 
 // 连接数据库
@@ -11,7 +11,7 @@ conn.connect();
 
 // get /member/:member_id
 // getMember
-router.get("/:member_id", (req, res: Response<MemberResult | ResultCommon>) => {
+router.get("/:member_id", (req, res: Response<MemberGetResult>) => {
     const member_id = req.params.member_id;
     conn.query($sql.member.getMemberById, [member_id], (err, result) => {
         if (err) {

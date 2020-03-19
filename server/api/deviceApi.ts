@@ -2,7 +2,7 @@ import config from '../config'
 import express, { Response } from 'express'
 import mysql from 'mysql'
 import $sql from './sqlMap'
-import { ResultCommon, DeviceResult } from 'achieve-it-contract'
+import { ResultCommon, DeviceGetResult } from 'achieve-it-contract'
 const router = express.Router();
 
 // 连接数据库
@@ -11,7 +11,7 @@ conn.connect();
 
 // get /device/:device_id
 // getDevice
-router.get("/:device_id", (req, res: Response<DeviceResult | ResultCommon>) => {
+router.get("/:device_id", (req, res: Response<DeviceGetResult>) => {
     const device_id = req.params.device_id;
     conn.query($sql.device.getDeviceById, [device_id], (err, result) => {
         if (err) {

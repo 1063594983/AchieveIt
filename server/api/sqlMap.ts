@@ -23,5 +23,8 @@ export default {
         insertDevice: "insert into device (device_name, device_status) values (?, ?)",
         deleteDeviceById: "delete from device where device_id = ?"
 
+    },
+    activity: {
+        getActivityById: "select * from activity where activity_id = ?"
     }
 }
