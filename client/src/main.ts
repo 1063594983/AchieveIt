@@ -1,12 +1,11 @@
 import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import 'normalize.css';
+import App from '@/App.vue';
+import router from '@/router';
+import store from '@/store';
+import setupTheme from '@/theme';
 import 'vue-class-component/hooks'; // import hooks type to enable auto-complete
-import { Row, Col, Button, Input, Menu, MenuItem, Container, Form, FormItem, Card } from 'element-ui';
-[Row, Col, Button, Input, Menu, MenuItem, Container, Form, FormItem, Card].forEach(i => Vue.use(i));
 
+setupTheme();
 new Vue({
   router,
   store,
