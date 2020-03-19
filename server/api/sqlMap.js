@@ -16,4 +16,18 @@ export default {
         setFunctionRelation: "insert into function_function (first_function_id, second_function_id) values (?, ?)"
     },
 
+    project: {
+        getProjectById: "select * from project where project_id = ?",
+        deleteProjectById: 'delete from project where project_id = ?',
+        insertProject: 'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
+            business = ?, status = ? where project_id = ?`
+    },
+    device: {
+        getDeviceById: "select * from device where device_id = ?",
+        updateDeviceById: "update device set device_name = ?, device_status = ? where device_id = ?",
+        insertDevice: "insert into device (device_name, device_status) values (?, ?)",
+        deleteDeviceById: "delete from device where device_id = ?"
+
+    }
 }

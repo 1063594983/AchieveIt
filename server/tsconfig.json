@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "allowJs": true
+  },
+  "include": ["*.d.ts", "*.ts", "*.js"],
+  "exclude": ["node_modules"]
+}

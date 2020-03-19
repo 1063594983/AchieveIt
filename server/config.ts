@@ -8,6 +8,15 @@ export default {
     },
     jwt: {
         signKey: "achieveit_project_sign_key"
+    },
+    status: {
+        NOT_FOUND: 'not found',
+        SUCCESS: 'ok',
+        ERROR: 'error'
+    },
+    msg: {
+        GET_MEMBER: "success",
+        UPDATE_MEMBER: "success"
     }
 }
 

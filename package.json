@@ -5,7 +5,8 @@
   "repository": "https://github.com/1063594983/AchieveIt",
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "contract"
   ],
   "private": true,
   "license": "MIT",

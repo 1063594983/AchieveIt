@@ -7,7 +7,12 @@ import cors from 'cors'
 import userApi from './api/userApi'
 import demoApi from './api/demoApi'
 import memberApi from './api/memberApi'
+<<<<<<< HEAD
 import functionApi from './api/functionApi'
+=======
+import projectApi from './api/projectApi'
+import deviceApi from './api/deviceApi'
+>>>>>>> f664265694d04fd7100f6be54dff77fe136229b1
 
 const app = express()
 const port = 3000
@@ -29,7 +34,12 @@ app.use(cors());
 app.use("/demo", demoApi);
 app.use("/user", userApi);
 app.use("/member", memberApi);
+<<<<<<< HEAD
 app.use("/function", functionApi);
+=======
+app.use("/project", projectApi);
+app.use("/device", deviceApi);
+>>>>>>> f664265694d04fd7100f6be54dff77fe136229b1
 
 // 身份验证错误处理
 app.use((err, req, res, next) => {
