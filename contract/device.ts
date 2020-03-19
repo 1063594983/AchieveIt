@@ -1,7 +1,7 @@
 import { ResultCommon } from "./common";
 
 interface Device {
-    device_id: Int16Array,
+    device_id: number,
     device_name: string,
     device_status: string
 }

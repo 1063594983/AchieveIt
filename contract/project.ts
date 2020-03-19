@@ -1,7 +1,7 @@
 import { ResultCommon } from "./common";
 
 interface Project {
-    project_id: Int16Array,
+    project_id: string,
     project_name: string,
     client_info: string,
     start_time: string,

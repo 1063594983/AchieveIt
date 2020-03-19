@@ -1,7 +1,7 @@
 import { ResultCommon } from './common'
 
 interface Member {
-    member_id: Int16Array,
+    member_id: number,
     member_name: string,
     email: string,
     department: string,
