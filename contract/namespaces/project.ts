@@ -1,4 +1,4 @@
-import { ResultCommon } from "./common";
+import { ResultCommon } from "../common";
 
 interface Project {
   project_id: number;
@@ -7,12 +7,12 @@ interface Project {
   start_time: string;
   end_time: string;
   manager: string;
-  important_events: Array<string>;
-  technology: Array<string>;
+  important_events: string[];
+  technology: string[];
   business: string;
   status: string;
 }
 
-export interface ProjectResult extends ResultCommon {
+export interface GetProjectResult extends ResultCommon {
   project: Project;
 }

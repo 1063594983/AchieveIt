@@ -1,4 +1,4 @@
-import { ResultCommon } from "./common";
+import { ResultCommon } from "../common";
 
 interface Member {
   member_id: number;
@@ -10,6 +10,6 @@ interface Member {
   job: string;
 }
 
-export interface MemberResult extends ResultCommon {
+export interface GetMemberResult extends ResultCommon {
   member: Member;
 }

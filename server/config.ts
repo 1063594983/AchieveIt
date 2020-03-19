@@ -12,7 +12,6 @@ const config: { [key: string]: any; status: { [key: string]: StatusType } } = {
     signKey: "achieveit_project_sign_key"
   },
   status: {
-    NOT_FOUND: "not found",
     SUCCESS: "ok",
     ERROR: "error"
   },
