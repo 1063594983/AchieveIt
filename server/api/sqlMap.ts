@@ -1,3 +1,10 @@
+
+
+
+/**
+ * @author: zou
+ * @description: sql语句字符串模板
+ */
 interface SelectOption {
     select_col?: string,
     table_name: string,
@@ -9,6 +16,17 @@ interface InsertOption {
     select_col: string
 }
 
+interface DeleteOption {
+    table_name: string,
+    key_name: string
+}
+
+interface UpdateOption {
+    table_name: string,
+    key_name: string,
+    select_col: string
+}
+
 const pattern = {
     selectPattern: (option: SelectOption) => {
         return `select ${option.select_col || "*"} from ${option.table_name} where ${option.key_name} = ?`
@@ -16,6 +34,12 @@ const pattern = {
     insertPattern: (option: InsertOption) => {
         const col_count = option.select_col.split(",").length;
         return `insert into ${option.table_name} (${option.select_col}) values (${Array.from({length: col_count}, () => "?").join()})`
+    },
+    deletePattern: (option: DeleteOption) => {
+        return `delete from ${option.table_name} where ${option.key_name} = ?`
+    },
+    updatePattern: (option: UpdateOption) => {
+        return `update ${option.table_name} set ${option.select_col.split(",").map(x=>x+="=?").join()} where ${option.key_name} = ?`
     }
 }
 
@@ -26,16 +50,30 @@ export default {
         deleteUser: 'delete from user where member_id = ?'
     },
     member: {
-        // getMemberById: "select * from member where member_id = ?",
-        getMemberById: pattern.selectPattern({table_name: "member", key_name: "member_id"}),
-        updateMemberById: "update member set member_name = ?, email = ?, department = ?, leader_email = ?, phone = ?, job = ? where member_id = ?",
-        // insertMember: "insert into member (member_name, email, department, leader_email, phone, job) values (?, ?, ?, ?, ?, ?)",
-        insertMember: pattern.insertPattern({table_name: "member", select_col: "member_name, email, department, leader_email, phone, job"}),
-        deleteMemberById: "delete from member where member_id = ?"
+        getMemberById: pattern.selectPattern({
+            table_name: "member", 
+            key_name: "member_id"
+        }),
+        // updateMemberById: "update member set member_name = ?, email = ?, department = ?, leader_email = ?, phone = ?, job = ? where member_id = ?",
+        updateMemberById: pattern.updatePattern({
+            table_name: "member",
+            select_col: "member_name, email, department, leader_email, phone, job",
+            key_name: "member_id"
+        }),
+        insertMember: pattern.insertPattern({
+            table_name: "member", 
+            select_col: "member_name, email, department, leader_email, phone, job"
+        }),
+        deleteMemberById: pattern.deletePattern({
+            table_name: "member",
+            key_name: "member_id"
+        })
     },
     function: {
-        getFunctionByProjectId: "select * from function where project_id = ?",
-        insertFunction: "insert into function (function_name, project_id, layer) values (?, ?, ?)",
+        // getFunctionByProjectId: "select * from function where project_id = ?",
+        getFunctionByProjectId: pattern.selectPattern({table_name: "function", key_name: "function_id"}),
+        // insertFunction: "insert into function (function_name, project_id, layer) values (?, ?, ?)",
+        insertFunction: pattern.insertPattern({table_name: "function", select_col: "function_name, project_id, layer"}),
         setFunctionRelation: "insert into function_function (first_function_id, second_function_id) values (?, ?)"
     },
 

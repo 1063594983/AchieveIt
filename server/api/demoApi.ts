@@ -1,8 +1,6 @@
-import config from "../config";
+
 import express, { Response } from "express";
-import mysql from "mysql";
 import { DemoResult } from "achieve-it-contract";
-import { conn } from '../mysqlPool';
 
 const router = express.Router();
 

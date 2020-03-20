@@ -1,9 +1,8 @@
 import config from '../config'
 import express, {Response} from 'express'
-import mysql from 'mysql'
 import jwt from 'jsonwebtoken'
 import $sql from './sqlMap'
-import { ResultCommon, UserLoginResult, } from 'achieve-it-contract'
+import { UserLoginResult, } from 'achieve-it-contract'
 import { mysqlErrorHandler } from '../util'
 import { conn } from '../mysqlPool';
 

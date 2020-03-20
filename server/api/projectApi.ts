@@ -1,7 +1,6 @@
 
 import config from "../config";
 import express, { Response, response } from "express";
-import mysql from "mysql";
 import $sql from "./sqlMap";
 import { ResultCommon, GetProjectResult } from "achieve-it-contract";
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from "../util";

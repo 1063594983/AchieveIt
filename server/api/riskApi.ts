@@ -5,9 +5,8 @@
 
 import config from "../config";
 import express, { Response } from "express";
-import mysql from "mysql";
 import $sql from './sqlMap'
-import { GetActivityResult, ResultCommon } from "achieve-it-contract";
+import { ResultCommon } from "achieve-it-contract";
 import { GetRiskResult, GetProjectRiskListResult } from "achieve-it-contract/namespaces/risk";
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomInsertHandler, commomUpdateHandler } from "../util";
 import { conn } from '../mysqlPool';
