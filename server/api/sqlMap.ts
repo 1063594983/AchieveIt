@@ -32,5 +32,14 @@ export default {
     },
     activity: {
         getActivityById: "select * from activity where activity_id = ?"
+    },
+    /**
+     * @author: zou
+     */
+    risk: {
+        getRiskById: "select * from risk where risk_id = ?",
+        insertRisk: "insert into risk (detail) values (?)",
+        updateRiskById: "update risk set detail = ? where risk_id = ?",
+        deleteRiskById: "delete from risk where risk_id = ?"
     }
 }

@@ -27,7 +27,7 @@ router.post("/login", (req, res: Response<UserLoginResult>) => {
         }
         else if (result.length == 1) {
             // 生成token
-            const token = "Bearer " + jwt.sign({
+            const token = jwt.sign({
                 username
             }, config.jwt.signKey, {
                 expiresIn: 600
@@ -41,7 +41,7 @@ router.post("/login", (req, res: Response<UserLoginResult>) => {
             })
         } else {
             res.json({
-                status: config.status.NOT_FOUND,
+                status: config.status.ERROR,
                 msg: "用户名或密码错误"
             })
         }
