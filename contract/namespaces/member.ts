@@ -7,7 +7,7 @@ interface Member {
   department: string,
   leader_email: string,
   phone: string,
-  job: string // ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager'， '普通员工']
+  job: string // ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager', '普通员工']
 }
 
 // requestBody
@@ -21,7 +21,7 @@ interface MemberPostBody extends Authorization {
   department?: string,
   leader_email?: string,
   phone?: string,
-  job?: string    
+  job?: 0 | 1 | 2 | 3 | 4 | 5
 }
 
 interface MemberPutBody extends Authorization {
@@ -30,7 +30,7 @@ interface MemberPutBody extends Authorization {
   department?: string,
   leader_email?: string,
   phone?: string,
-  job?: string    
+  job?: 0 | 1 | 2 | 3 | 4 | 5    
 }
 
 interface MemberDeleteBody extends Authorization {

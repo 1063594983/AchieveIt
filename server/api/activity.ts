@@ -2,7 +2,6 @@ import config from "../config";
 import express, { Response } from "express";
 import mysql from "mysql";
 import $sql from './sqlMap'
-import { DemoResult } from "achieve-it-contract";
 import { GetActivityResult } from "achieve-it-contract";
 
 const router = express.Router();

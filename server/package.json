@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "nodemon --watch index.js --watch api --exec \"ts-node ./index.js\""
+    "start": "nodemon -e ts --watch index.ts --watch api --exec \"ts-node ./index.ts\""
   },
   "husky": {
     "hooks": {

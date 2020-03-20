@@ -4,7 +4,7 @@ interface Feature {
   function_id: number;
   function_name: string;
   project_id: string;
-  layer: number;
+  layer: 1 | 2; // 2是子功能
 }
 
 export interface GetFeatureResult extends ResultCommon {

@@ -6,11 +6,11 @@ interface Project {
   client_info: string;
   start_time: string;
   end_time: string;
-  manager: string;
+  manager: number;
   important_events: string[];
   technology: string[];
   business: string;
-  status: string;
+  status: string; //  ['申请立项', '已立项', '立刻驳回', '进行中', '已交付', '结束', '已归档']
 }
 
 // requestBody
@@ -23,11 +23,11 @@ interface ProjectPutBBody extends Authorization {
     client_info?: string,
     start_time?: string,
     end_time?: string,
-    manager?: string,
+    manager?: number,
     important_events?: Array<string>,
     technology?: Array<string>,
     business?: string,
-    status?: string
+    status?: 0 | 1 | 2 | 3 | 4 | 5 | 6 
 }
 
 interface ProjectPostBBody extends Authorization {
@@ -36,11 +36,11 @@ interface ProjectPostBBody extends Authorization {
     client_info?: string,
     start_time?: string,
     end_time?: string,
-    manager?: string,
+    manager?: number,
     important_events?: Array<string>,
     technology?: Array<string>,
     business?: string,
-    status?: string
+    status: 0 | 1 | 2 | 3 | 4 | 5 | 6 
 }
 
 interface ProjectDeleteBody extends Authorization {

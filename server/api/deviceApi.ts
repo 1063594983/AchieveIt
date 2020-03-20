@@ -22,6 +22,7 @@ router.get("/:device_id", (req, res: Response<GetDeviceResult>) => {
         msg: "error"
       });
     } else if (result.length == 1) {
+        result[0].device_status = config.numberMap.deviceStatus[result[0].device_status];
       res.json({
         device: result[0],
         status: config.status.SUCCESS,

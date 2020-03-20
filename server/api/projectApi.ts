@@ -25,6 +25,7 @@ router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
         msg: "error"
       });
     } else if (result.length == 1) {
+        result[0].status = config.numberMap.projectStatus[result[0].status];
       res.json({
         project: result[0],
         status: config.status.SUCCESS,
@@ -58,7 +59,7 @@ router.delete("/:project_id", (req, res: Response<ResultCommon>) => {
       });
     } else {
       res.json({
-        status: config.status.NOT_FOUND,
+        status: config.status.ERROR,
         msg: `未找到project_id为${project_id}的project`
       });
     }
@@ -149,7 +150,7 @@ router.put("/:project_id", (req, res: Response<ResultCommon>) => {
       );
     } else {
       res.json({
-        status: config.status.NOT_FOUND,
+        status: config.status.ERROR,
         msg: `未找到project_id为${project_id}的project`
       });
     }

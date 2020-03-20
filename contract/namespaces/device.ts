@@ -13,12 +13,12 @@ interface DeviceGetBody extends Authorization {
 
 interface DevicePostBody extends Authorization {
     device_name: string,
-    device_status: string
+    device_status: 0 | 1
 }
 
 interface DevicePutBody extends Authorization {
     device_name: string,
-    device_status: string
+    device_status: 0 | 1
 }
 
 interface DeviceDeleteBody extends Authorization {

@@ -9,7 +9,8 @@ const router = express.Router();
 const conn = mysql.createConnection(config.mysql);
 conn.connect();
 
-// /function
+// /function/:project_id
+
 // 获取项目功能
 router.get("/:project_id", (req, res: Response<GetFeatureListResult>) => {
   const project_id = req.params.project_id;
