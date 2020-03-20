@@ -2,12 +2,9 @@ import config from "../config";
 import express, { Response } from "express";
 import mysql from "mysql";
 import { DemoResult } from "achieve-it-contract";
+import { conn } from '../mysqlPool';
 
 const router = express.Router();
-
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // /demo/hello
 router.get("/hello", (req, res: Response<DemoResult>) => {

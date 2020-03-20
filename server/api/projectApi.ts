@@ -5,12 +5,9 @@ import mysql from "mysql";
 import $sql from "./sqlMap";
 import { ResultCommon, GetProjectResult } from "achieve-it-contract";
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from "../util";
+import { conn } from '../mysqlPool';
 
 const router = express.Router();
-
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // get /project/:project_id
 // getProject

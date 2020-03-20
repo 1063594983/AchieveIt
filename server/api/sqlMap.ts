@@ -1,3 +1,24 @@
+interface SelectOption {
+    select_col?: string,
+    table_name: string,
+    key_name: string
+}
+
+interface InsertOption {
+    table_name: string,
+    select_col: string
+}
+
+const pattern = {
+    selectPattern: (option: SelectOption) => {
+        return `select ${option.select_col || "*"} from ${option.table_name} where ${option.key_name} = ?`
+    },
+    insertPattern: (option: InsertOption) => {
+        const col_count = option.select_col.split(",").length;
+        return `insert into ${option.table_name} (${option.select_col}) values (${Array.from({length: col_count}, () => "?").join()})`
+    }
+}
+
 export default {
     user: {
         checkUser: "select username, member_id from user where username = ? and password = ?",
@@ -5,9 +26,11 @@ export default {
         deleteUser: 'delete from user where member_id = ?'
     },
     member: {
-        getMemberById: "select * from member where member_id = ?",
+        // getMemberById: "select * from member where member_id = ?",
+        getMemberById: pattern.selectPattern({table_name: "member", key_name: "member_id"}),
         updateMemberById: "update member set member_name = ?, email = ?, department = ?, leader_email = ?, phone = ?, job = ? where member_id = ?",
-        insertMember: "insert into member (member_name, email, department, leader_email, phone, job) values (?, ?, ?, ?, ?, ?)",
+        // insertMember: "insert into member (member_name, email, department, leader_email, phone, job) values (?, ?, ?, ?, ?, ?)",
+        insertMember: pattern.insertPattern({table_name: "member", select_col: "member_name, email, department, leader_email, phone, job"}),
         deleteMemberById: "delete from member where member_id = ?"
     },
     function: {
@@ -51,5 +74,11 @@ export default {
         updateRiskById: "update risk set detail = ?, solve_status = ? where risk_id = ?",
         deleteRiskById: "delete from risk where risk_id = ?",
         getProjectRiskList: "select * from risk where project_id = ?"
+    },
+    /**
+     * @author: zou
+     */
+    config: {
+        getConfigById: "select * from config"
     }
 }

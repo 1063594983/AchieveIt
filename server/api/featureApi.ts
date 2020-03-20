@@ -3,11 +3,9 @@ import express, { Response } from "express";
 import mysql from "mysql";
 import $sql from "./sqlMap";
 import { GetFeatureListResult, ResultCommon } from "achieve-it-contract";
-const router = express.Router();
+import { conn } from '../mysqlPool';
 
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
+const router = express.Router();
 
 // /function/:project_id
 

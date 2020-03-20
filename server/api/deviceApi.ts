@@ -5,11 +5,9 @@ import mysql from "mysql";
 import $sql from "./sqlMap";
 import { ResultCommon, GetDeviceResult } from "achieve-it-contract";
 import { mysqlErrorHandler, notFoundErrorHandler, commomUpdateHandler, commomInsertHandler, commonDeleteHandler } from "../util";
+import { conn } from '../mysqlPool';
 const router = express.Router();
 
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // get /device/:device_id
 // getDevice

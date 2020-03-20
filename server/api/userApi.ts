@@ -5,12 +5,9 @@ import jwt from 'jsonwebtoken'
 import $sql from './sqlMap'
 import { ResultCommon, UserLoginResult, } from 'achieve-it-contract'
 import { mysqlErrorHandler } from '../util'
+import { conn } from '../mysqlPool';
 
 const router = express.Router();
-
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // /user/login
 // 用户登录

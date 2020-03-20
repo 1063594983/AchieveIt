@@ -8,13 +8,9 @@ import express, { Response, response } from "express";
 import mysql from "mysql";
 import $sql from './sqlMap'
 import { GetActivityResult, ResultCommon } from "achieve-it-contract";
-import { mysqlErrorHandler, notFoundErrorHandler, successHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
-
+import { mysqlErrorHandler, notFoundErrorHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
+import { conn } from '../mysqlPool';
 const router = express.Router();
-
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // get /activity/:activity_id
 router.get("/:activity_id", (req, res:Response<GetActivityResult>) => {
@@ -23,7 +19,6 @@ router.get("/:activity_id", (req, res:Response<GetActivityResult>) => {
         if (err) {
              mysqlErrorHandler(res, err);
         } else if (result.length == 1) {
-
             // 0-0 --> 工程活动-需求开发
             const activity_name = result[0].activity_name;
             result[0].activity_name = config.numberMap.activityName[Number(activity_name.split("-")[0])].prefix 
@@ -43,10 +38,9 @@ router.get("/:activity_id", (req, res:Response<GetActivityResult>) => {
 // post /activity
 router.post("/", (req, res: Response<ResultCommon>) => {
     const activity_details = req.body;
-    conn.query($sql.activity.insertActivity, [activity_details.activity_name, activity_details.activity_content || ""], (err, result) => {
+    conn.query($sql.activity.insertActivity, [activity_details.activity_name, activity_details.activity_content || ""], (err) => {
         commomInsertHandler(res, err);
     })
-
 })
 
 // put /activity/:activity_id

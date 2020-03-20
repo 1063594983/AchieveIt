@@ -10,12 +10,9 @@ import $sql from './sqlMap'
 import { GetActivityResult, ResultCommon } from "achieve-it-contract";
 import { GetRiskResult, GetProjectRiskListResult } from "achieve-it-contract/namespaces/risk";
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomInsertHandler, commomUpdateHandler } from "../util";
+import { conn } from '../mysqlPool';
 
 const router = express.Router();
-
-// 连接数据库
-const conn = mysql.createConnection(config.mysql);
-conn.connect();
 
 // get /risk/:risk_id
 router.get("/:risk_id", (req, res: Response<GetRiskResult>) => {
