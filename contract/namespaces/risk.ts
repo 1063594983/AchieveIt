@@ -20,27 +20,47 @@ interface RiskDetail {
 
 interface Risk {
     risk_id: number,
-    detail: RiskDetail
+    project_id: string,
+    detail: RiskDetail,
+    solve_status: string    // ['未处理', '正在跟进', '已解决']
 }
 
 // requestBody
+
+// get /risk/:risk_id
 interface RiskGetBody extends Authorization {
 
 }
 
+// post /risk
 interface RiskPostBody extends Authorization {
-    detail: RiskDetail
+    detail: RiskDetail,
+    project_id: string,
+    solve_status?: 0 | 1 | 2
 }
 
+// put /risk/:risk_id
 interface RiskPutBody extends Authorization {
-    detail: RiskDetail
+    detail: RiskDetail,
+    solve_status?: 0 | 1 | 2
 }
 
+// delete /risk/:risk_id
 interface RiskDeleteBody extends Authorization {
 
+}
+
+// get /risk/getProjectRiskList/:project_id
+interface ProjectRiskListGetBody extends Authorization {
+    
 }
 
 // responseResult
 export interface GetRiskResult extends ResultCommon {
     risk: Risk
+}
+
+export interface GetProjectRiskListResult extends ResultCommon {
+    risk_list?: Risk[],
+    project_id?: string
 }

@@ -1,3 +1,8 @@
+/**
+ * @author: zou
+ * @description: 和Activity相关的RequestBody和ResponseResult格式
+ */
+
 import { ResultCommon, Authorization } from "../common";
 
 interface Activity {
@@ -29,25 +34,30 @@ interface Activity {
  */
 
 // requestBody
+
+// get /activity/:activiy_id
 interface ActivityGetBody extends Authorization {
 
 }
 
+// post /activity
 interface ActivityPostBody extends Authorization {
     activity_name: string,  // 0-0 --> 工程活动-需求开发
     activity_content?: string  
 }
 
+// put /activity/:activity_id
 interface ActivityPutBody extends Authorization {
     activity_name?: string,
     activity_content?: string
 }
 
+// delete /activity/:activity_id
 interface ActivityDeleteBody extends Authorization {
 
 }
 
 // responseResult
 export interface GetActivityResult extends ResultCommon {
-    activity?: Activity
+    activity: Activity
 }

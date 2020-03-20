@@ -23,6 +23,9 @@ export default {
         updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
             business = ?, status = ? where project_id = ?`
     },
+    /**
+     * @author: zou
+     */
     device: {
         getDeviceById: "select * from device where device_id = ?",
         updateDeviceById: "update device set device_name = ?, device_status = ? where device_id = ?",
@@ -30,16 +33,23 @@ export default {
         deleteDeviceById: "delete from device where device_id = ?"
 
     },
+    /**
+     * @author: zou
+     */
     activity: {
-        getActivityById: "select * from activity where activity_id = ?"
+        getActivityById: "select * from activity where activity_id = ?",
+        deleteActivityById: "delete from activity where activity_id = ?",
+        updateActivityById: "update activity set activity_name = ?, activity_content = ? where activity_id = ?",
+        insertActivity: "insert into activity (activity_name, activity_content) values (?, ?)"
     },
     /**
      * @author: zou
      */
     risk: {
         getRiskById: "select * from risk where risk_id = ?",
-        insertRisk: "insert into risk (detail) values (?)",
-        updateRiskById: "update risk set detail = ? where risk_id = ?",
-        deleteRiskById: "delete from risk where risk_id = ?"
+        insertRisk: "insert into risk (detail, project_id, solve_status) values (?, ?, ?)",
+        updateRiskById: "update risk set detail = ?, solve_status = ? where risk_id = ?",
+        deleteRiskById: "delete from risk where risk_id = ?",
+        getProjectRiskList: "select * from risk where project_id = ?"
     }
 }

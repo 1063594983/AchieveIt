@@ -40,7 +40,8 @@ const config: { [key: string]: any; status: { [key: string]: StatusType } } = {
         prefix: "支持活动",
         activityList: ["配置管理", "QA 审计", "会议报告总结", "培训", "其他"]
       }
-    ]
+    ],
+    riskStatus: ['未处理', '正在跟进', '已解决']
   }
 };
 

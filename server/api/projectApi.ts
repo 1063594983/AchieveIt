@@ -4,6 +4,7 @@ import express, { Response, response } from "express";
 import mysql from "mysql";
 import $sql from "./sqlMap";
 import { ResultCommon, GetProjectResult } from "achieve-it-contract";
+import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from "../util";
 
 const router = express.Router();
 
@@ -19,11 +20,7 @@ router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
 
   conn.query($sql.project.getProjectById, [project_id], (err, result) => {
     if (err) {
-      res.json({
-        project: null,
-        status: config.status.ERROR,
-        msg: "error"
-      });
+      mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
         result[0].status = config.numberMap.projectStatus[result[0].status];
       res.json({
@@ -32,11 +29,7 @@ router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
         msg: "success"
       });
     } else {
-      res.json({
-        project: null,
-        status: config.status.NOT_FOUND,
-        msg: `未找到project_id为${project_id}的project`
-      });
+      notFoundErrorHandler(res);
     }
   });
 });
@@ -46,23 +39,8 @@ router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
 
 router.delete("/:project_id", (req, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
-  conn.query($sql.project.deleteProjectById, [project_id], (err, result) => {
-    if (err) {
-      res.json({
-        status: config.status.ERROR,
-        msg: "error"
-      });
-    } else if (result.affectedRows == 1) {
-      res.json({
-        status: config.status.SUCCESS,
-        msg: "删除成功"
-      });
-    } else {
-      res.json({
-        status: config.status.ERROR,
-        msg: `未找到project_id为${project_id}的project`
-      });
-    }
+  conn.query($sql.project.deleteProjectById, [project_id], (err) => {
+    commonDeleteHandler(res, err);
   });
 });
 
@@ -90,18 +68,8 @@ router.post("/", (req, res: Response<ResultCommon>) => {
       project_details.business || "",
       project_details.status || ""
     ],
-    (err, result) => {
-      if (err) {
-        res.json({
-          status: config.status.ERROR,
-          msg: "error"
-        });
-      } else {
-        res.json({
-          status: config.status.SUCCESS,
-          msg: "项目添加成功"
-        });
-      }
+    (err) => {
+      commomUpdateHandler(res, err);
     }
   );
 });
@@ -114,10 +82,7 @@ router.put("/:project_id", (req, res: Response<ResultCommon>) => {
 
   conn.query($sql.project.getProjectById, [project_id], (err, result) => {
     if (err) {
-      res.json({
-        status: config.status.ERROR,
-        msg: "error"
-      });
+      mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
       const old_project = result[0];
       conn.query(
@@ -134,26 +99,14 @@ router.put("/:project_id", (req, res: Response<ResultCommon>) => {
           project_details.status || old_project.status,
           project_id
         ],
-        (err2, result2) => {
-          if (err2) {
-            res.json({
-              status: config.status.ERROR,
-              msg: "error"
-            });
-          } else {
-            res.json({
-              status: config.status.SUCCESS,
-              msg: "success"
-            });
-          }
+        (err2) => {
+          commomUpdateHandler(res, err2);
         }
       );
     } else {
-      res.json({
-        status: config.status.ERROR,
-        msg: `未找到project_id为${project_id}的project`
-      });
+      notFoundErrorHandler(res);
     }
   });
 });
+
 export default router;

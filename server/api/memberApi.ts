@@ -4,6 +4,7 @@ import express, { Response } from "express";
 import mysql from "mysql";
 import $sql from "./sqlMap";
 import { GetMemberResult, ResultCommon } from "achieve-it-contract";
+import { commonDeleteHandler, commomInsertHandler, mysqlErrorHandler, commomUpdateHandler, notFoundErrorHandler } from "../util";
 
 const router = express.Router();
 
@@ -18,11 +19,7 @@ router.get("/:member_id", (req, res: Response<GetMemberResult>) => {
     const member_id = req.params.member_id;
     conn.query($sql.member.getMemberById, [member_id], (err, result) => {
         if (err) {
-            res.json({
-                member: null,
-                status: config.status.ERROR,
-                msg: "error"
-            });
+            mysqlErrorHandler(res, err);
         } else if (result.length == 1) {
             result[0].job = config.numberMap.memberJob[result[0].job];
             res.json({
@@ -31,11 +28,7 @@ router.get("/:member_id", (req, res: Response<GetMemberResult>) => {
                 msg: config.msg.GET_MEMBER
             });
         } else {
-            res.json({
-                member: null,
-                status: config.status.ERROR,
-                msg: `未找到member_id为${member_id}的member`
-            });
+            notFoundErrorHandler(res);
         }
     });
 });
@@ -49,10 +42,7 @@ router.put("/:member_id", (req, res: Response<ResultCommon>) => {
 
     conn.query($sql.member.getMemberById, [member_id], (err, result) => {
         if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "error"
-            });
+            mysqlErrorHandler(res, err);
         } else if (result.length == 1) {
             const old_member = result[0];
             conn.query(
@@ -66,25 +56,12 @@ router.put("/:member_id", (req, res: Response<ResultCommon>) => {
                     member_details.job || old_member.job,
                     member_id
                 ],
-                (err2, result2) => {
-                    if (err2) {
-                        res.json({
-                            status: config.status.ERROR,
-                            msg: `更新member_id为${member_id}的member失败`
-                        });
-                    } else {
-                        res.json({
-                            status: "ok",
-                            msg: config.msg.UPDATE_MEMBER
-                        });
-                    }
+                (err2) => {
+                    commomUpdateHandler(res, err2);
                 }
             );
         } else {
-            res.json({
-                status: config.status.ERROR,
-                msg: `未找到member_id为${member_id}的member`
-            });
+            notFoundErrorHandler(res);
         }
     });
 });
@@ -105,10 +82,7 @@ router.post("/", (req, res: Response<ResultCommon>) => {
         ],
         (err, result) => {
             if (err) {
-                res.json({
-                    status: config.status.ERROR,
-                    msg: "添加员工失败"
-                });
+                mysqlErrorHandler(res, err);
             } else {
                 conn.query(
                     $sql.user.insertUser,
@@ -117,18 +91,8 @@ router.post("/", (req, res: Response<ResultCommon>) => {
                         member_details.password || result.insertId,
                         result.insertId
                     ],
-                    (err2, result2) => {
-                        if (err2) {
-                            res.json({
-                                status: config.status.ERROR,
-                                msg: "error"
-                            });
-                        } else {
-                            res.json({
-                                status: config.status.SUCCESS,
-                                msg: "success"
-                            });
-                        }
+                    (err2) => {
+                        commomInsertHandler(res, err2);
                     }
                 );
             }
@@ -140,18 +104,8 @@ router.post("/", (req, res: Response<ResultCommon>) => {
 // unfinished: 未实现级联删除
 router.delete("/:member_id", (req, res: Response<ResultCommon>) => {
     const member_id = req.params.member_id;
-    conn.query($sql.member.deleteMemberById, [member_id], (err, result) => {
-        if (err) {
-            res.json({
-                status: "error",
-                msg: "error"
-            });
-        } else {
-            res.json({
-                status: "ok",
-                msg: "member删除成功"
-            });
-        }
+    conn.query($sql.member.deleteMemberById, [member_id], (err) => {
+        commonDeleteHandler(res, err);
     });
 });
 

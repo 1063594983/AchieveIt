@@ -4,6 +4,7 @@ import mysql from 'mysql'
 import jwt from 'jsonwebtoken'
 import $sql from './sqlMap'
 import { ResultCommon, UserLoginResult, } from 'achieve-it-contract'
+import { mysqlErrorHandler } from '../util'
 
 const router = express.Router();
 
@@ -19,11 +20,7 @@ router.post("/login", (req, res: Response<UserLoginResult>) => {
 
     conn.query($sql.user.checkUser, [username, password], (err, result) => {
         if (err) {
-            console.log(err);
-            res.json({
-                status: "error",
-                msg: "error"
-            })
+            mysqlErrorHandler(res, err);
         }
         else if (result.length == 1) {
             // 生成token

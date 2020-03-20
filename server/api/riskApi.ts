@@ -8,7 +8,8 @@ import express, { Response } from "express";
 import mysql from "mysql";
 import $sql from './sqlMap'
 import { GetActivityResult, ResultCommon } from "achieve-it-contract";
-import { GetRiskResult } from "achieve-it-contract/namespaces/risk";
+import { GetRiskResult, GetProjectRiskListResult } from "achieve-it-contract/namespaces/risk";
+import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomInsertHandler, commomUpdateHandler } from "../util";
 
 const router = express.Router();
 
@@ -21,11 +22,7 @@ router.get("/:risk_id", (req, res: Response<GetRiskResult>) => {
     const risk_id = req.params.risk_id;
     conn.query($sql.risk.getRiskById, [risk_id], (err, result) => {
         if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "[mysql] " + err,
-                risk: null
-            })
+            mysqlErrorHandler(res, err);
         } else if (result.length == 1) {
             result[0].detail = JSON.parse(result[0].detail);
             res.json({
@@ -34,11 +31,7 @@ router.get("/:risk_id", (req, res: Response<GetRiskResult>) => {
                 risk: result[0]
             })
         } else {
-            res.json({
-                status: config.status.ERROR,
-                msg: `risk_id为${risk_id}的risk不存在`,
-                risk: null
-            })
+            notFoundErrorHandler(res);
         }
     })
 })
@@ -47,18 +40,8 @@ router.get("/:risk_id", (req, res: Response<GetRiskResult>) => {
 // insertRisk
 router.post("/", (req, res: Response<ResultCommon>) => {
     const risk_details = req.body;
-    conn.query($sql.risk.insertRisk, [JSON.stringify(risk_details.detail)], (err, result) => {
-        if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "[mysql] " + err
-            })
-        } else {
-            res.json({
-                status: config.status.SUCCESS,
-                msg: "success"
-            })
-        }
+    conn.query($sql.risk.insertRisk, [JSON.stringify(risk_details.detail), risk_details.project_id, risk_details.solve_status], (err) => {
+        commomInsertHandler(res, err);
     })
 })
 
@@ -69,31 +52,15 @@ router.put("/:risk_id", (req, res: Response<ResultCommon>) => {
     const risk_details = req.body;
     conn.query($sql.risk.getRiskById, [risk_id], (err, result) => {
         if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "[mysql] " + err
-            })
+            mysqlErrorHandler(res, err);
         } else if (result.length == 1) {
             const old_risk = result[0];
             const new_detail = Object.assign(JSON.parse(old_risk.detail), risk_details.detail);
-            conn.query($sql.risk.updateRiskById, [JSON.stringify(new_detail), risk_id], (err2, result2) => {
-                if (err2) {
-                    res.json({
-                        status: config.status.ERROR,
-                        msg: "[mysql] " + err2
-                    })
-                } else {
-                    res.json({
-                        status: config.status.SUCCESS,
-                        msg: "更新成功"
-                    })
-                }
+            conn.query($sql.risk.updateRiskById, [JSON.stringify(new_detail), risk_details.solve_status, risk_id], (err2) => {
+                commomUpdateHandler(res, err2);
             })
         } else {
-            res.json({
-                status: config.status.ERROR,
-                msg: "not found"
-            })
+            notFoundErrorHandler(res);
         }
     }) 
 })
@@ -103,15 +70,27 @@ router.put("/:risk_id", (req, res: Response<ResultCommon>) => {
 router.delete("/:risk_id", (req, res: Response<ResultCommon>) => {
     const risk_id = req.params.risk_id;
     conn.query($sql.risk.deleteRiskById, [risk_id], (err, result) => {
+        commonDeleteHandler(res, err);
+    })
+})
+
+// get /risk/getProjectRiskList
+router.get("/getProjectRiskList/:project_id", (req, res: Response<GetProjectRiskListResult>) => {
+    const project_id = req.params.project_id;
+    conn.query($sql.risk.getProjectRiskList, [project_id], (err, result) => {
+        
         if (err) {
-            res.json({
-                status: config.status.ERROR,
-                msg: "[mysql] " + err
-            })
+            mysqlErrorHandler(res, err);
         } else {
+            for (const risk of result) {
+                risk.detail = JSON.parse(risk.detail);
+                risk.solve_status = config.numberMap.riskStatus[risk.solve_status];
+            }
             res.json({
-                status: config.status.SUCCESS,
-                msg: "删除成功"
+                project_id,
+                risk_list: result,
+                status: config.status.ERROR,
+                msg: 'success'
             })
         }
     })

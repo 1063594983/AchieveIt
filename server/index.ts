@@ -11,6 +11,8 @@ import functionApi from "./api/featureApi";
 import projectApi from "./api/projectApi";
 import deviceApi from "./api/deviceApi";
 import riskApi from "./api/riskApi"
+import activityApi from "./api/activityApi";
+
 import { ResultCommon } from "achieve-it-contract";
 
 const app = express();
@@ -49,6 +51,7 @@ app.use("/function", functionApi);
 app.use("/project", projectApi);
 app.use("/device", deviceApi);
 app.use("/risk", riskApi);
+app.use("/activity", activityApi);
 
 // 身份验证错误处理
 app.use((err, req, res: Response<ResultCommon>, next) => {
