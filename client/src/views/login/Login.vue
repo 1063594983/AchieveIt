@@ -39,13 +39,13 @@ export default class Login extends Vue {
   async handleLogin() {
     this.isLoggingIn = true;
     try {
-      const result = await agent.user.login(this.username, this.password);
+      const result = await agent.user.login({ username: this.username, password: this.password });
       this.$notify.success({
         title: result.msg,
         message: `欢迎回来 ${this.username}！`,
-        position: 'bottom-left'
+        position: 'bottom-right'
       });
-      commonStore.login({ username: this.username, token: result.token, member_id: result.member_id });
+      commonStore.login({ username: this.username, token: result.token!, member_id: result.member_id! });
       this.$router.push('/home');
     } catch (e) {
       this.$notify.error('服务器发生错误啦');
