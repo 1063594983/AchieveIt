@@ -12,6 +12,8 @@ import projectApi from "./api/projectApi";
 import deviceApi from "./api/deviceApi";
 import riskApi from "./api/riskApi"
 import activityApi from "./api/activityApi";
+import workTimeApi from "./api/workTimeApi";
+import configApi from "./api/configApi";
 
 import { ResultCommon } from "achieve-it-contract";
 
@@ -52,6 +54,8 @@ app.use("/project", projectApi);
 app.use("/device", deviceApi);
 app.use("/risk", riskApi);
 app.use("/activity", activityApi);
+app.use("/workTime", workTimeApi);
+app.use("/config", configApi);
 
 // 身份验证错误处理
 app.use((err, req, res: Response<ResultCommon>, next) => {

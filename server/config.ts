@@ -49,7 +49,8 @@ const config: { [key: string]: any; status: { [key: string]: StatusType } } = {
         activityList: ["配置管理", "QA 审计", "会议报告总结", "培训", "其他"]
       }
     ],
-    riskStatus: ['未处理', '正在跟进', '已解决']
+    riskStatus: ['未处理', '正在跟进', '已解决'],
+    memberRoleInProject: ["开发 Leader", "测试 Leader", "开发人员", "测试人员", "配置管理人员", "QA", "EPG"]
   }
 };
 

@@ -20,7 +20,7 @@ router.post("/login", (req, res: Response<UserLoginResult>) => {
         }
         else if (result.length == 1) {
             // 生成token
-            const token = jwt.sign({
+            const token = jwt.sign({ 
                 username
             }, config.jwt.signKey, {
                 expiresIn: 600

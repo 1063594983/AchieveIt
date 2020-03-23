@@ -4,7 +4,7 @@ import config from './config';
 const pool = mysql.createPool(config.mysqlPool);
 
 export const conn = {
-    query: (sql, values, callback) => {
+    query: (sql: string, values, callback) => {
         pool.getConnection((err, conn) => {
             if (err) {
                 throw err;
