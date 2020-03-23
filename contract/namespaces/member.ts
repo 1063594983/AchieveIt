@@ -5,24 +5,22 @@
 import { ResultCommon, Authorization } from "../common";
 
 interface Member {
-  member_id: number,
-  member_name: string,
-  email: string,
-  department: string,
-  leader_email: string,
-  phone: string,
-  job: string // ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager', '普通员工']
+  member_id: number;
+  member_name: string;
+  email: string;
+  department: string;
+  leader_email: string;
+  phone: string;
+  job: string; // ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager', '普通员工']
 }
 
 // requestBody
 
 // get /member/:member_id
-interface MemberGetBody extends Authorization {
-
-}
+export interface MemberGetBody extends Authorization {}
 
 // post /member
-interface MemberPostBody extends Authorization {
+export interface MemberPostBody extends Authorization {
   member_name: string,
   email?: string,
   department?: string,
@@ -32,7 +30,7 @@ interface MemberPostBody extends Authorization {
 }
 
 // put /member/:member_id
-interface MemberPutBody extends Authorization {
+export interface MemberPutBody extends Authorization {
   member_name: string,
   email?: string,
   department?: string,
@@ -42,9 +40,8 @@ interface MemberPutBody extends Authorization {
 }
 
 // delete /member/:member_id
-interface MemberDeleteBody extends Authorization {
+export interface MemberDeleteBody extends Authorization {}
 
-}
 
 // get /member/getProjectMemberList/:project_id
 interface ProjectMemberListGetBody extends Authorization {

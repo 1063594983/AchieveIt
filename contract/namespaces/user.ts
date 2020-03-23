@@ -1,9 +1,10 @@
 import { ResultCommon } from "../common";
 
 // requestBody
-interface UserLoginBody {
-  username: string,
-  password: string
+// /user/login
+export interface UserLoginBody {
+  username: string;
+  password: string;
 }
 
 export interface UserLoginResult extends ResultCommon {
