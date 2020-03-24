@@ -1,26 +1,30 @@
-
-import config from "../config";
-import express, { Response } from "express";
-import $sql from "./sqlMap";
-import { ResultCommon, GetDeviceResult } from "achieve-it-contract";
-import { mysqlErrorHandler, notFoundErrorHandler, commomUpdateHandler, commomInsertHandler, commonDeleteHandler } from "../util";
+import config from '../config';
+import express, { Response } from 'express';
+import $sql from './sqlMap';
+import { ResultCommon, GetDeviceResult } from 'achieve-it-contract';
+import {
+  mysqlErrorHandler,
+  notFoundErrorHandler,
+  commomUpdateHandler,
+  commomInsertHandler,
+  commonDeleteHandler
+} from '../util';
 import { conn } from '../mysqlPool';
 const router = express.Router();
 
-
 // get /device/:device_id
 // getDevice
-router.get("/:device_id", (req, res: Response<GetDeviceResult>) => {
+router.get('/:device_id', (req, res: Response<GetDeviceResult>) => {
   const device_id = req.params.device_id;
   conn.query($sql.device.getDeviceById, [device_id], (err, result) => {
     if (err) {
       mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
-        result[0].device_status = config.numberMap.deviceStatus[result[0].device_status];
+      result[0].device_status = config.numberMap.deviceStatus[result[0].device_status];
       res.json({
         device: result[0],
         status: config.status.SUCCESS,
-        msg: "success"
+        msg: 'success'
       });
     } else {
       notFoundErrorHandler(res);
@@ -30,7 +34,7 @@ router.get("/:device_id", (req, res: Response<GetDeviceResult>) => {
 
 // put /device/:device_id
 // updateDevice
-router.put("/:device_id", (req, res: Response<ResultCommon>) => {
+router.put('/:device_id', (req, res: Response<ResultCommon>) => {
   const device_details = req.body;
   const device_id = req.params.device_id;
 
@@ -46,9 +50,8 @@ router.put("/:device_id", (req, res: Response<ResultCommon>) => {
           device_details.device_status || old_device.device_status,
           device_id
         ],
-        (err2) => {
+        err2 => {
           commomUpdateHandler(res, err2);
-          
         }
       );
     } else {
@@ -59,18 +62,18 @@ router.put("/:device_id", (req, res: Response<ResultCommon>) => {
 
 // post /device
 // insertDevice
-router.post("/", (req, res: Response<ResultCommon>) => {
+router.post('/', (req, res: Response<ResultCommon>) => {
   const device_details = req.body;
-  conn.query($sql.device.insertDevice, [device_details.device_name, device_details.device_status], (err) => {
+  conn.query($sql.device.insertDevice, [device_details.device_name, device_details.device_status], err => {
     commomInsertHandler(res, err);
-  })
+  });
 });
 
 // delete /device/:device_id
 // unfinished: 未实现级联删除
-router.delete("/:device_id", (req, res: Response<ResultCommon>) => {
+router.delete('/:device_id', (req, res: Response<ResultCommon>) => {
   const device_id = req.params.device_id;
-  conn.query($sql.device.deleteDeviceById, [device_id], (err) => {
+  conn.query($sql.device.deleteDeviceById, [device_id], err => {
     commonDeleteHandler(res, err);
   });
 });

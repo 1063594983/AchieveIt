@@ -1,9 +1,8 @@
-
-import config from "../config";
-import express, { Response, response } from "express";
-import $sql from "./sqlMap";
-import { ResultCommon, GetProjectResult } from "achieve-it-contract";
-import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from "../util";
+import config from '../config';
+import express, { Response, response } from 'express';
+import $sql from './sqlMap';
+import { ResultCommon, GetProjectResult } from 'achieve-it-contract';
+import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from '../util';
 import { conn } from '../mysqlPool';
 
 const router = express.Router();
@@ -11,18 +10,18 @@ const router = express.Router();
 // get /project/:project_id
 // getProject
 
-router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
+router.get('/:project_id', (req, res: Response<GetProjectResult>) => {
   const project_id = req.params.project_id;
 
   conn.query($sql.project.getProjectById, [project_id], (err, result) => {
     if (err) {
       mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
-        result[0].status = config.numberMap.projectStatus[result[0].status];
+      result[0].status = config.numberMap.projectStatus[result[0].status];
       res.json({
         project: result[0],
         status: config.status.SUCCESS,
-        msg: "success"
+        msg: 'success'
       });
     } else {
       notFoundErrorHandler(res);
@@ -33,38 +32,38 @@ router.get("/:project_id", (req, res: Response<GetProjectResult>) => {
 // delete /project/:project_id
 // deleteProject
 
-router.delete("/:project_id", (req, res: Response<ResultCommon>) => {
+router.delete('/:project_id', (req, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
-  conn.query($sql.project.deleteProjectById, [project_id], (err) => {
+  conn.query($sql.project.deleteProjectById, [project_id], err => {
     commonDeleteHandler(res, err);
   });
 });
 
 // post /project
 // insertProject
-router.post("/", (req, res: Response<ResultCommon>) => {
+router.post('/', (req, res: Response<ResultCommon>) => {
   const project_details = req.body;
   if (!project_details.project_id) {
     return res.json({
       status: config.status.ERROR,
-      msg: "项目id不能为空"
+      msg: '项目id不能为空'
     });
   }
   conn.query(
     $sql.project.insertProject,
     [
-      project_details.project_id || "",
-      project_details.project_name || "",
-      project_details.client_info || "",
-      project_details.start_time || "",
-      project_details.end_time || "",
-      project_details.manager || "",
-      project_details.important_events || "",
-      project_details.technology || "",
-      project_details.business || "",
-      project_details.status || ""
+      project_details.project_id || '',
+      project_details.project_name || '',
+      project_details.client_info || '',
+      project_details.start_time || '',
+      project_details.end_time || '',
+      project_details.manager || '',
+      project_details.important_events || '',
+      project_details.technology || '',
+      project_details.business || '',
+      project_details.status || ''
     ],
-    (err) => {
+    err => {
       commomUpdateHandler(res, err);
     }
   );
@@ -72,7 +71,7 @@ router.post("/", (req, res: Response<ResultCommon>) => {
 
 // put /project/:project_id
 // updateProject
-router.put("/:project_id", (req, res: Response<ResultCommon>) => {
+router.put('/:project_id', (req, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
   const project_details = req.body;
 
@@ -95,7 +94,7 @@ router.put("/:project_id", (req, res: Response<ResultCommon>) => {
           project_details.status || old_project.status,
           project_id
         ],
-        (err2) => {
+        err2 => {
           commomUpdateHandler(res, err2);
         }
       );

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2019",
     "module": "esnext",
     "strict": true,
     "importHelpers": true,
@@ -18,5 +18,5 @@
   "types": ["webpack-env"],
   "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
   "include": ["*.d.ts", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
