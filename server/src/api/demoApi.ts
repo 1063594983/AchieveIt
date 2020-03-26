@@ -1,21 +1,20 @@
-
-import express, { Response } from "express";
-import { DemoResult } from "achieve-it-contract";
+import express, { Response } from 'express';
+import { DemoResult } from 'achieve-it-contract';
 
 const router = express.Router();
 
 // /demo/hello
-router.get("/hello", (req, res: Response<DemoResult>) => {
+router.get('/hello', (req, res: Response<DemoResult>) => {
   console.log(res);
   res.json({
-    project: "AchieveIt",
-    msg: "Test",
-    status: "ok"
+    project: 'AchieveIt',
+    msg: 'Test',
+    status: 'ok'
   });
 });
 
 // /demo/getDemo
-router.get("/getDemo/:employ_id", (req, res) => {
+router.get('/getDemo/:employ_id', (req, res) => {
   const employ_id = req.params.employ_id;
   res.json({
     employ_id
@@ -23,7 +22,7 @@ router.get("/getDemo/:employ_id", (req, res) => {
 });
 
 // /demo/postDemo
-router.post("/postDemo/:employ_id", (req, res) => {
+router.post('/postDemo/:employ_id', (req, res) => {
   const employ_id = req.params.employ_id;
   const username = req.body.username;
   const password = req.body.password;
@@ -35,7 +34,7 @@ router.post("/postDemo/:employ_id", (req, res) => {
 });
 
 // /demo/putDemo
-router.put("/putDemo", (req, res) => {
+router.put('/putDemo', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   res.json({
@@ -45,7 +44,7 @@ router.put("/putDemo", (req, res) => {
 });
 
 // /demo/deleteDemo
-router.put("/deleteDemo", (req, res) => {
+router.put('/deleteDemo', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   res.json({

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Layout from '@/layout/Layout.vue';
+import Layout from '@/Layout.vue';
 import store, { commonStore } from '@/store';
 
 Vue.use(VueRouter);
@@ -32,23 +32,32 @@ const routes: RouteConfig[] = [
       {
         path: '/projects',
         name: 'Projects',
-        component: () => import(/* webpackChunkName: "Home" */ '@/views/projectCenter/Projects.vue')
+        component: () => import(/* webpackChunkName: "Home" */ '@/views/projects/Projects.vue')
       },
       {
         path: '/defects',
         name: 'Defects',
-        component: () => import(/* webpackChunkName: "Defects" */ '@/views/defectCenter/Defects.vue')
+        component: () => import(/* webpackChunkName: "Defects" */ '@/views/defects/Defects.vue')
       },
       {
         path: '/devices',
         name: 'Devices',
-        component: () => import(/* webpackChunkName: "Home" */ '@/views/deviceCenter/Devices.vue')
+        component: () => import(/* webpackChunkName: "Devices" */ '@/views/device/Devices.vue')
       },
-
+      {
+        path: '/activity',
+        name: 'Activity',
+        component: () => import(/* webpackChunkName: "Activity" */ '@/views/activity/Activity.vue')
+      },
       {
         path: 'about',
         name: 'About',
         component: () => import(/* webpackChunkName: "about" */ '@/views/about/About.vue')
+      },
+      {
+        path: 'risk',
+        name: 'Risk',
+        component: () => import(/* webpackChunkName: "risk" */ '@/views/risk/Risk.vue')
       }
     ]
   },

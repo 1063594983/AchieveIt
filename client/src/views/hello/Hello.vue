@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <h1>这是AchieveIt的主页</h1>
-    <el-button round @click="go('login')" v-if="!currentUser">登录</el-button>
+  <div class="container">
+    <div v-if="!currentUser">
+      <h1>让协作更加轻松</h1>
+      <h2>使用内置的项目管理系统，工时管理系统来参与项目的开发……</h2>
+      <el-button plain round @click="go('login')" v-if="!currentUser">登录</el-button>
+    </div>
     <div v-else>
-      <h3>{{ currentUser.username }} 你好！</h3>
-      <el-button round @click="go('home')">前往主页</el-button>
+      <h1>Achieve It</h1>
+      <h2>{{ currentUser.username }}，你好！</h2>
+      <el-button plain round @click="go('home')">前往主页</el-button>
     </div>
   </div>
 </template>
@@ -23,4 +27,13 @@ export default class Hello extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.container {
+  padding: 100px;
+  height: 100vh;
+  background-color: #fafafa;
+  h2 {
+    font-weight: normal;
+  }
+}
+</style>
