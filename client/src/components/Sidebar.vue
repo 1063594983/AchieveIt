@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar wrap-class="el-scrollbar-wrapper">
-    <el-menu mode="vertical" :show-timeout="200" :default-active="$route.name" @select="handleSelect">
+    <el-menu mode="vertical" :default-active="$route.name" @select="handleSelect">
       <sidebar-item :menu="menuList"></sidebar-item>
     </el-menu>
   </el-scrollbar>
@@ -18,8 +18,7 @@ export default class Sidebar extends Vue {
   menuList = menu;
 
   handleSelect(index: string) {
-    console.log(index);
-    this.$router.push({ name: index });
+    if (this.$router.currentRoute.name !== index) this.$router.push({ name: index });
   }
 }
 </script>

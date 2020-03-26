@@ -5,6 +5,7 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "@types/nprogress": "^0.2.0",
     "achieve-it-contract": "0.0.1",
     "camel-2-dash": "^0.1.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -33,6 +34,7 @@
     "axios": "^0.19.2",
     "element-ui": "^2.13.0",
     "normalize.css": "^8.0.1",
+    "nprogress": "^0.2.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.0",

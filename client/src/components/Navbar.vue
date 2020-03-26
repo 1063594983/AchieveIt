@@ -64,7 +64,8 @@ export default class Navbar extends Vue {
 .container {
   height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid #e6e6e6;
+  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .left-container {

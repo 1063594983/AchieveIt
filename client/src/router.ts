@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
 import store, { commonStore } from '@/store';
+import NProgress from 'nprogress';
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const menu: RouteConfig[] = [
     component: Layout,
     redirect: '/home/index',
     meta: {
+      icon: 's-home',
       title: '首页'
     },
     children: [
@@ -20,7 +22,8 @@ const menu: RouteConfig[] = [
         path: 'index',
         component: () => import('@/views/home/index.vue'),
         meta: {
-          title: '首页'
+          icon: 'user',
+          title: '成员信息'
         }
       }
     ]
@@ -31,6 +34,7 @@ const menu: RouteConfig[] = [
     component: Layout,
     redirect: '/projects/index',
     meta: {
+      icon: 'menu',
       title: '项目中心'
     },
     children: [
@@ -39,6 +43,7 @@ const menu: RouteConfig[] = [
         path: 'index',
         component: () => import('@/views/projects/index.vue'),
         meta: {
+          icon: 'set-up',
           title: '项目管理'
         }
       },
@@ -47,6 +52,7 @@ const menu: RouteConfig[] = [
         path: 'defect',
         component: () => import('@/views/projects/defect.vue'),
         meta: {
+          icon: 'odometer',
           title: '缺陷管理'
         }
       },
@@ -55,6 +61,7 @@ const menu: RouteConfig[] = [
         path: 'devices',
         component: () => import('@/views/projects/devices.vue'),
         meta: {
+          icon: 'mobile-phone',
           title: '设备管理'
         }
       },
@@ -63,6 +70,7 @@ const menu: RouteConfig[] = [
         path: 'activity',
         component: () => import('@/views/projects/activity.vue'),
         meta: {
+          icon: 'time',
           title: '活动中心'
         }
       },
@@ -71,6 +79,7 @@ const menu: RouteConfig[] = [
         path: 'risk',
         component: () => import('@/views/projects/risk.vue'),
         meta: {
+          icon: 'aim',
           title: '风险管理'
         }
       }
@@ -113,6 +122,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  NProgress.start();
   // 与vuex-persist兼容使用，保证状态已经完全存储了
   await (store as any).restored;
   if (to.matched.some(record => !record.meta.noAuth)) {
@@ -126,10 +136,8 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-router.onError(error => {
-  const pattern = /Loading chunk (\d)+ failed/g;
-  const isChunkLoadFailed = error.message.match(pattern);
-  console.log(error);
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export { menu };
