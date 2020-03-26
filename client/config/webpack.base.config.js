@@ -68,6 +68,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/' // 坑，dynamic import的时候可能会出错在这里
   }
 };

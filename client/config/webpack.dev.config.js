@@ -7,7 +7,7 @@ module.exports = merge(baseWebpackConfig, {
     contentBase: './public',
     hot: true,
     historyApiFallback: true, // 支持router的history模式，刷新不显式404
-    open: true,
+    open: false,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

@@ -28,8 +28,8 @@ import agent from '@/agent';
 
 @Component
 export default class Login extends Vue {
-  username: string = '';
-  password: string = '';
+  username: string = '1';
+  password: string = '1';
   isLoggingIn: boolean = false;
 
   handleBack() {
@@ -46,7 +46,7 @@ export default class Login extends Vue {
         position: 'bottom-right'
       });
       commonStore.login({ username: this.username, token: result.token!, member_id: result.member_id! });
-      this.$router.push('/home');
+      await this.$router.push('/home');
     } catch (e) {
       this.$notify.error('服务器发生错误啦');
     }

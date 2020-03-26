@@ -1,7 +1,6 @@
 {
   "name": "achieve-it",
   "version": "0.0.1",
-  "main": "index.js",
   "repository": "https://github.com/1063594983/AchieveIt",
   "workspaces": [
     "client",
