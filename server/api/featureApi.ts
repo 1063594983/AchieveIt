@@ -1,7 +1,13 @@
+/**
+ * @author: gbk
+ * @description: feature相关的api定义
+ */
+
 import config from "../config";
 import express, { Response } from "express";
 import $sql from "./sqlMap";
 import { GetFeatureListResult, ResultCommon } from "achieve-it-contract";
+import { commonDeleteHandler, commomInsertHandler, mysqlErrorHandler, commomUpdateHandler, notFoundErrorHandler } from "../util";
 import { conn } from '../mysqlPool';
 
 const router = express.Router();
@@ -16,11 +22,7 @@ router.get("/:project_id", (req, res: Response<GetFeatureListResult>) => {
     [project_id],
     (err, result) => {
       if (err) {
-        res.json({
-          featureList: [],
-          status: config.status.ERROR,
-          msg: "查找失败"
-        });
+        mysqlErrorHandler(res, err);
       } else {
         res.json({
           featureList: result,
@@ -45,15 +47,9 @@ router.post("/addFunction", (req, res: Response<ResultCommon>) => {
     ],
     (err, result) => {
       if (err) {
-        res.json({
-          status: config.status.ERROR,
-          msg: "添加功能失败"
-        });
+        mysqlErrorHandler(res, err);
       } else {
-        res.json({
-          status: config.status.SUCCESS,
-          msg: "添加功能成功"
-        });
+        commomInsertHandler(res, err)
       }
     }
   );
@@ -68,15 +64,9 @@ router.post("/setFunctionRelation", (req, res: Response<ResultCommon>) => {
     [relation_details.first_function_id, relation_details.second_function_id],
     (err, result) => {
       if (err) {
-        res.json({
-          status: config.status.ERROR,
-          msg: "设置失败"
-        });
+        mysqlErrorHandler(res, err);
       } else {
-        res.json({
-          status: config.status.SUCCESS,
-          msg: "设置成功"
-        });
+        commomUpdateHandler(res, err)
       }
     }
   );
