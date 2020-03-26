@@ -12,7 +12,7 @@ import agent from '@/agent';
 
 @Component
 export default class Risk extends Vue {
-  riskDetail: string = 'loading...';
+  riskDetail = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
     const result = await agent.risk.get(4, { token: user.token });

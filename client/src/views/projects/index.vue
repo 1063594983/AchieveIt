@@ -12,7 +12,7 @@ import agent from '@/agent';
 
 @Component
 export default class Projects extends Vue {
-  projectDetail: string = 'loading...';
+  projectDetail = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
     const result = await agent.project.get(123, { token: user.token });

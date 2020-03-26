@@ -12,7 +12,7 @@ import agent from '@/agent';
 
 @Component
 export default class Devices extends Vue {
-  deviceProject: string = 'loading...';
+  deviceProject = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
     const result = await agent.device.get(1, { token: user.token });

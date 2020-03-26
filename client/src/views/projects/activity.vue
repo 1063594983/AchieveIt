@@ -17,7 +17,7 @@ import agent from '@/agent';
 
 @Component
 export default class Activity extends Vue {
-  activityDetail: string = 'loading...';
+  activityDetail = 'loading...';
   reverse = true;
   activities = [
     {

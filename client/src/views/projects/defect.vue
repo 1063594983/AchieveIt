@@ -7,13 +7,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { commonStore } from '@/store';
-import agent from '@/agent';
 
 @Component
-export default class Defects extends Vue {
-  async mounted() {}
-}
+export default class Defects extends Vue {}
 </script>
 
 <style scoped></style>

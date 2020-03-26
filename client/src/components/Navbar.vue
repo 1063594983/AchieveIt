@@ -2,7 +2,9 @@
   <el-row class="container" type="flex" align="middle">
     <el-col :span="18">
       <div class="left-container">
-        <div class="brand">AchieveIt</div>
+        <div class="brand">
+          <img src="../assets/logo.png" alt="logo" />
+        </div>
         <breadcrumb></breadcrumb>
       </div>
     </el-col>
@@ -74,9 +76,9 @@ export default class Navbar extends Vue {
 
   & > .brand {
     width: 220px;
-    font-weight: bold;
-    font-size: 26px;
-    color: #409eff;
+    img {
+      height: 40px;
+    }
   }
 }
 .right-container {

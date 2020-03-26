@@ -15,9 +15,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { RouteRecord } from 'vue-router';
+
 @Component
 export default class SidebarItem extends Vue {
-  @Prop() menu: any;
+  @Prop({ default: () => [] }) menu!: RouteRecord[];
 }
 </script>
 

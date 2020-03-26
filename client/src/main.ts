@@ -5,12 +5,9 @@ import store from '@/store';
 import 'normalize.css';
 import './assets/main.scss';
 import 'nprogress/nprogress.css';
-import Element from 'element-ui';
-// 暂时不考虑按需引入
-import 'element-ui/lib/theme-chalk/index.css';
 import 'vue-class-component/hooks'; // import hooks type to enable auto-complete
+import './element-ui';
 
-Vue.use(Element);
 new Vue({
   router,
   store,

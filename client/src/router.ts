@@ -122,13 +122,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  NProgress.start();
   // 与vuex-persist兼容使用，保证状态已经完全存储了
-  await (store as any).restored;
+  // @ts-ignore
+  await store.restored;
   if (to.matched.some(record => !record.meta.noAuth)) {
     if (!commonStore.isAuth) {
       next({ name: 'Login' });
     } else {
+      NProgress.start();
       next();
     }
   } else {

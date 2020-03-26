@@ -12,7 +12,7 @@ import agent from '@/agent';
 
 @Component
 export default class Main extends Vue {
-  memberDetail: string = 'loading...';
+  memberDetail = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
     const result = await agent.member.get(user.member_id, { token: user.token });
