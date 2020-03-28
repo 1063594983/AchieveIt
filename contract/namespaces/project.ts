@@ -14,8 +14,11 @@ interface Project {
 }
 
 // requestBody
+
+// get /project/:project_id
 export interface ProjectGetBody extends Authorization {}
 
+// put /project/:project_id
 export interface ProjectPutBBody extends Authorization {
   project_name?: string;
   client_info?: string;
@@ -28,6 +31,7 @@ export interface ProjectPutBBody extends Authorization {
   status?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
+// post /project
 export interface ProjectPostBody extends Authorization {
   project_id: string;
   project_name?: string;
@@ -41,6 +45,7 @@ export interface ProjectPostBody extends Authorization {
   status: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
+// delete /project/:project_id
 export interface ProjectDeleteBody extends Authorization {}
 
 // responseResult

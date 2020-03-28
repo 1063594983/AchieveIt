@@ -131,6 +131,10 @@ export default {
     getMemberWorkTimeList: pattern.selectPattern({
       table_name: 'work_time',
       key_name: 'member_id'
+    }),
+    insertWorkTime: pattern.insertPattern({
+      table_name: 'work_time',
+      select_col: 'member_id, function_id, activity_content, project_id, start_time, end_time'
     })
   }
 };

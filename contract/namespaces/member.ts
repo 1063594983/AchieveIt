@@ -11,8 +11,12 @@ interface Member {
 }
 
 // requestBody
+
+// get /member/:member_id
 export interface MemberGetBody extends Authorization {}
 
+
+// post /member
 export interface MemberPostBody extends Authorization {
   member_name: string;
   email?: string;
@@ -22,6 +26,7 @@ export interface MemberPostBody extends Authorization {
   job?: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
+// put /member/:member_id
 export interface MemberPutBody extends Authorization {
   member_name: string;
   email?: string;
@@ -31,7 +36,10 @@ export interface MemberPutBody extends Authorization {
   job?: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
+// delete /member/:member_id
 export interface MemberDeleteBody extends Authorization {}
+
+// get /member/getMemberRoleInProject
 
 // responseResult
 export interface GetMemberResult extends ResultCommon {

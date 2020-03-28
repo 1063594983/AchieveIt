@@ -7,8 +7,8 @@ import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
 import { conn } from '../mysqlPool';
-import { mysqlErrorHandler } from '../util';
-import { GetMemberWorkTimeListResul } from 'achieve-it-contract';
+import { mysqlErrorHandler, commomInsertHandler } from '../util';
+import { GetMemberWorkTimeListResul, ResultCommon } from 'achieve-it-contract';
 const router = express.Router();
 
 // get /workTime/getMemberWorkTimeList/:member_id
@@ -25,6 +25,15 @@ router.get("/getMemberWorkTimeList/:member_id", (req, res: Response<GetMemberWor
                 msg: 'get success'
             })
         }
+    })
+})
+
+// post /workTime/:member_id
+router.post("/:member_id", (req, res: Response<ResultCommon>) => {
+    const member_id = req.params.member_id;
+    const details = req.body;
+    conn.query($sql.workTime.insertWorkTime, [member_id, details.function_id, details.activity_content, details.project_id, details.start_time, details.end_time], (err) => {
+        commomInsertHandler(res, err);
     })
 })
 
