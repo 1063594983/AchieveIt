@@ -95,7 +95,9 @@ export default {
     getDeviceById: 'select * from device where device_id = ?',
     updateDeviceById: 'update device set device_name = ?, device_status = ? where device_id = ?',
     insertDevice: 'insert into device (device_name, device_status) values (?, ?)',
-    deleteDeviceById: 'delete from device where device_id = ?'
+    deleteDeviceById: 'delete from device where device_id = ?',
+    getProjectDeviceList: 'SELECT a.device_id, a.member_id, a.return_time, b.device_name FROM project_device a inner join device b on a.device_id = b.device_id where a.project_id = ?',
+    applyDeviceForProject: 'call applyDeviceForProject(?, ?, ?, ?)'
   },
   /**
    * @author: zou
@@ -121,5 +123,14 @@ export default {
    */
   config: {
     getConfigById: 'select * from config'
+  },
+  /**
+   * @author: zou
+   */
+  workTime: {
+    getMemberWorkTimeList: pattern.selectPattern({
+      table_name: 'work_time',
+      key_name: 'member_id'
+    })
   }
 };
