@@ -1,8 +1,8 @@
 import { ResultCommon } from "../common";
 
 // requestBody
-
 // post /user/login
+
 export interface UserLoginBody {
   username: string;
   password: string;

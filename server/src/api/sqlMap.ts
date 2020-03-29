@@ -70,7 +70,9 @@ export default {
     deleteMemberById: pattern.deletePattern({
       table_name: 'member',
       key_name: 'member_id'
-    })
+    }),
+    getMemberRole: "select * from member_project where project_id = ? and member_id = ?",
+    changeMemberRole: "update member_project set role = ?, authority = ? where project_id = ? and member_id = ?"
   },
   function: {
     // getFunctionByProjectId: "select * from function where project_id = ?",
@@ -122,7 +124,23 @@ export default {
    * @author: zou
    */
   config: {
-    getConfigById: 'select * from config'
+    getConfigByProjectId: pattern.selectPattern({
+      table_name: "config",
+      key_name: "project_id"
+    }),
+    insertConfig: pattern.insertPattern({
+      table_name: "config",
+      select_col: "git_address, server_menu, vm_space, project_id"
+    }),
+    updateConfigByProjectId: pattern.updatePattern({
+      table_name: "config",
+      select_col: "git_address, server_menu, vm_space",
+      key_name: "project_id"
+    }),
+    deleteConfigByProjectId: pattern.deletePattern({
+      table_name: "config",
+      key_name: "project_id"
+    })
   },
   /**
    * @author: zou

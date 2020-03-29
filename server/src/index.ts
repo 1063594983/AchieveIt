@@ -3,16 +3,17 @@ import bodyParser from 'body-parser';
 import expressJwt from 'express-jwt';
 import config from './config';
 import cors from 'cors';
+import userApi from "./api/userApi";
+import demoApi from "./api/demoApi";
+import memberApi from "./api/memberApi";
+import functionApi from "./api/featureApi";
+import projectApi from "./api/projectApi";
+import deviceApi from "./api/deviceApi";
+import riskApi from "./api/riskApi"
+import activityApi from "./api/activityApi";
+import workTimeApi from "./api/workTimeApi";
+import configApi from "./api/configApi";
 
-import userApi from './api/userApi';
-import demoApi from './api/demoApi';
-import memberApi from './api/memberApi';
-import functionApi from './api/featureApi';
-import projectApi from './api/projectApi';
-import deviceApi from './api/deviceApi';
-import riskApi from './api/riskApi';
-import activityApi from './api/activityApi';
-import workTimeApi from './api/workTimeApi';
 
 import { ResultCommon } from 'achieve-it-contract';
 
@@ -42,6 +43,7 @@ app.use(cors());
 // }).unless({
 //     path: ["/user/login"]
 // }))
+
 
 app.use('/demo', demoApi);
 app.use('/user', userApi);

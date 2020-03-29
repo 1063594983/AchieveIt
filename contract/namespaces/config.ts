@@ -14,7 +14,7 @@ interface Config {
 
 // requestBody
 
-// get /config/:config_id
+// get /config/:project_id
 interface ConfigGetBody extends Authorization {
 
 }
@@ -27,14 +27,14 @@ interface ConfigPostBody extends Authorization {
     project_id: string
 }
 
-// put /config/:config_id
+// put /config/:project_id
 interface ConfigPutBody extends Authorization {
     git_address?: string,
     server_menu?: string,
     vm_space?: string
 }
 
-// delete /config/:config_id
+// delete /config/:project_id
 interface ConfigDeleteBody extends Authorization {
 
 }

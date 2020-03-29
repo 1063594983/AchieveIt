@@ -7,16 +7,17 @@ interface Device {
 }
 
 // requestBody
+
 // get /device/:device_id
 export interface DeviceGetBody extends Authorization {}
 
-// post /device
+// post /deivce
 export interface DevicePostBody extends Authorization {
   device_name: string;
   device_status: 0 | 1;
 }
 
-// put /device/:device_id
+// put /deivce/:device_id
 export interface DevicePutBody extends Authorization {
   device_name: string;
   device_status: 0 | 1;
