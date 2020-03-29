@@ -11,10 +11,10 @@
     </el-col>
     <el-col :span="6">
       <div class="right-container">
-        <el-input prefix-icon="el-icon-search" placeholder="搜索想要的功能"></el-input>
+        <navbar-search></navbar-search>
         <el-dropdown @command="handleCommand" trigger="click">
           <span class="dropdown-link">
-            <img src="../assets/profile.jpg" />
+            <img src="../assets/profile.jpg" alt="avatar" />
             <el-icon name="arrow-down"></el-icon>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -32,9 +32,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { userStore, commonStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
+import NavbarSearch from '@/components/NavbarSearch.vue';
 
 @Component({
-  components: { Breadcrumb }
+  components: { NavbarSearch, Breadcrumb }
 })
 export default class Navbar extends Vue {
   get isDark() {
@@ -100,10 +101,6 @@ export default class Navbar extends Vue {
       width: 40px;
       border-radius: 4px;
     }
-  }
-
-  & > .el-input {
-    margin-right: 20px;
   }
 }
 </style>

@@ -1,14 +1,17 @@
 import axios from 'axios';
 import { ResultCommon } from 'achieve-it-contract';
 
-const baseURL = '/api';
+const baseURL = 'http://localhost:3000';
 
 function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response?: {} }) {
-  console.error(`${type} ${url} failed`);
+  const title = `${type} ${url} failed`;
+  let body = '';
+  let response = '';
   if (payload) {
-    if (payload.body) console.error(`body: ${JSON.stringify(payload.body)}`);
-    if (payload.response) console.error(`response: ${JSON.stringify(payload.response)}`);
+    if (payload.body) body = `body: ${JSON.stringify(payload.body)}`;
+    if (payload.response) response = `response: ${JSON.stringify(payload.response)}`;
   }
+  throw new Error(JSON.stringify({ title, body, response }));
 }
 
 export async function axiosPost<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {

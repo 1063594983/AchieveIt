@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
 import store, { userStore } from '@/store';
 import NProgress from 'nprogress';
+import _ from 'lodash';
 
 Vue.use(VueRouter);
 
@@ -162,5 +163,14 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-export { menu };
+const flatMenu = _.flatMap(menu, i =>
+  i.children!.map(child => ({
+    title: child.meta.title!,
+    icon: child.meta.icon!,
+    fatherTitle: i.meta.title!,
+    name: child.name!
+  }))
+);
+
+export { menu, flatMenu };
 export default router;

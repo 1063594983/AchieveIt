@@ -17,7 +17,6 @@ export default class Projects extends Vue {
     const user = userStore.currentUser!;
     const result = await agent.project.get(123, { token: user.token });
     this.projectDetail = JSON.stringify(result, null, 2);
-    console.log(result);
   }
 }
 </script>
