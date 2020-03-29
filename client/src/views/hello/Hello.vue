@@ -15,14 +15,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { commonStore } from '@/store';
+import { userStore } from '@/store';
 @Component
 export default class Hello extends Vue {
   go(path: string) {
     this.$router.push(path);
   }
   get currentUser() {
-    return commonStore.currentUser;
+    return userStore.currentUser;
   }
 }
 </script>
@@ -31,7 +31,6 @@ export default class Hello extends Vue {
 .container {
   padding: 100px;
   height: 100vh;
-  background-color: #fafafa;
   h2 {
     font-weight: normal;
   }
