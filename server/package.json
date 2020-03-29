@@ -1,0 +1,33 @@
+{
+  "name": "achieve-it-server",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "husky": "^4.2.3",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "sucrase": "^3.12.1",
+    "nodemon": "^2.0.2",
+    "achieve-it-contract": "0.0.1"
+  },
+  "scripts": {
+    "build": "sucrase src  -d ./dist --transforms typescript,imports",
+    "start": "nodemon -e ts --watch src --exec \\\"sucrase-node ./src/index.ts\\\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
