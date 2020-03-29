@@ -9,6 +9,7 @@ import $sql from './sqlMap'
 import { ResultCommon, GetConfigResult } from "achieve-it-contract";
 import { mysqlErrorHandler, notFoundErrorHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
 import { conn } from '../mysqlPool';
+import email from "../email";
 const router = express.Router();
 
 // get /config/:project_id
@@ -32,8 +33,33 @@ router.get("/:project_id", (req, res: Response<GetConfigResult>) => {
 // post /config
 router.post("/", (req, res: Response<ResultCommon>) => {
     const details = req.body;
-    conn.query($sql.config.insertConfig, [details.git_address, details.server_menu, details.vm_space, details.project_id], (err, result) => {
-        commomInsertHandler(res, err);
+    conn.query($sql.config.insertConfig, [details.git_address, details.server_menu, details.vm_space, details.project_id], (err) => {
+        // commomInsertHandler(res, err);
+        if (err) {
+            mysqlErrorHandler(res, err);
+        } else {
+            // 通知项目经理
+            conn.query("select job, email from member where job = ?", [0], (err2, result) => {
+                if (err) {
+                    mysqlErrorHandler(res, err2);
+                } else {
+                    const emailList = result;
+                    for (const e of emailList) {
+                        const subject = `[${details.project_id}]项目配置库已建立 to: 项目经理`;
+                        const text = `[${details.project_id}]项目配置库已建立，请开始进行人员权限设置`
+                        email.sendEmail({
+                            to: e.email,
+                            subject,
+                            text
+                        }, (err, info) => {
+                            if (err) {
+                                console.log('send to 项目经理 failed');
+                            }
+                        })
+                    }
+                }
+            })
+        }
     })
 })
 

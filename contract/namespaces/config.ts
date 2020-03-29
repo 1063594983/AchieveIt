@@ -21,6 +21,7 @@ interface ConfigGetBody extends Authorization {
 }
 
 // post /config
+// 配置库建立后，发送邮件给项目经理通知其进行人员权限设置
 interface ConfigPostBody extends Authorization {
     git_address?: string,
     server_menu?: string,
