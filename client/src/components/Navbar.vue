@@ -2,8 +2,9 @@
   <el-row class="container" type="flex" align="middle">
     <el-col :span="18">
       <div class="left-container">
-        <div class="brand">
-          <img src="../assets/logo.png" alt="logo" />
+        <div class="brand" v-once>
+          <img v-if="!isDark" src="../assets/logo.svg" alt="logo" />
+          <img v-else src="../assets/logo-dark.svg" alt="logo" />
         </div>
         <breadcrumb></breadcrumb>
       </div>
@@ -13,7 +14,7 @@
         <el-input prefix-icon="el-icon-search" placeholder="搜索想要的功能"></el-input>
         <el-dropdown @command="handleCommand" trigger="click">
           <span class="dropdown-link">
-            <el-avatar shape="square"></el-avatar>
+            <img src="../assets/profile.jpg" />
             <el-icon name="arrow-down"></el-icon>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -29,18 +30,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { commonStore } from '@/store';
+import { userStore, commonStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 
 @Component({
   components: { Breadcrumb }
 })
 export default class Navbar extends Vue {
+  get isDark() {
+    return commonStore.isDarkMode;
+  }
   get path() {
     return this.$route.path;
   }
   get user() {
-    return commonStore.currentUser;
+    return userStore.currentUser;
   }
 
   handleLogin() {
@@ -50,7 +54,7 @@ export default class Navbar extends Vue {
   handleCommand(command: string) {
     switch (command) {
       case 'logout': {
-        commonStore.logout();
+        userStore.logout();
         this.handleLogin();
         return;
       }
@@ -77,7 +81,7 @@ export default class Navbar extends Vue {
   & > .brand {
     width: 220px;
     img {
-      height: 40px;
+      height: 35px;
     }
   }
 }
@@ -90,6 +94,11 @@ export default class Navbar extends Vue {
     align-items: center;
     i {
       margin-left: 0.75rem;
+    }
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 4px;
     }
   }
 

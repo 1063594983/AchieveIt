@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "sucrase src  -d ./dist --transforms typescript,imports",
-    "start": "nodemon -e ts --watch src --exec \\\"sucrase-node ./src/index.ts\\\""
+    "start": "nodemon -e ts --watch src --exec \"sucrase-node ./src/index.ts\""
   },
   "husky": {
     "hooks": {
