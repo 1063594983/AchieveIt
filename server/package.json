@@ -13,7 +13,9 @@
     "mysql": "^2.18.1",
     "husky": "^4.2.3",
     "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "nodemailer": "^6.4.6",
+    "sendcloud": "^1.6.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.3",

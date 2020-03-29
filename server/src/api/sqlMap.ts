@@ -30,6 +30,7 @@ const pattern = {
   },
   insertPattern: (option: InsertOption) => {
     const col_count = option.select_col.split(',').length;
+    
     return `insert into ${option.table_name} (${option.select_col}) values (${Array.from(
       { length: col_count },
       () => '?'
