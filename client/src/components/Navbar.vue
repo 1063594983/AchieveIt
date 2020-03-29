@@ -2,18 +2,19 @@
   <el-row class="container" type="flex" align="middle">
     <el-col :span="18">
       <div class="left-container">
-        <div class="brand">
-          <img src="../assets/logo.png" alt="logo" />
+        <div class="brand" v-once>
+          <img v-if="!isDark" src="../assets/logo.svg" alt="logo" />
+          <img v-else src="../assets/logo-dark.svg" alt="logo" />
         </div>
         <breadcrumb></breadcrumb>
       </div>
     </el-col>
     <el-col :span="6">
       <div class="right-container">
-        <el-input prefix-icon="el-icon-search" placeholder="搜索想要的功能"></el-input>
+        <navbar-search></navbar-search>
         <el-dropdown @command="handleCommand" trigger="click">
           <span class="dropdown-link">
-            <el-avatar shape="square"></el-avatar>
+            <img src="../assets/profile.jpg" alt="avatar" />
             <el-icon name="arrow-down"></el-icon>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -29,18 +30,22 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { commonStore } from '@/store';
+import { userStore, commonStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
+import NavbarSearch from '@/components/NavbarSearch.vue';
 
 @Component({
-  components: { Breadcrumb }
+  components: { NavbarSearch, Breadcrumb }
 })
 export default class Navbar extends Vue {
+  get isDark() {
+    return commonStore.isDarkMode;
+  }
   get path() {
     return this.$route.path;
   }
   get user() {
-    return commonStore.currentUser;
+    return userStore.currentUser;
   }
 
   handleLogin() {
@@ -50,7 +55,7 @@ export default class Navbar extends Vue {
   handleCommand(command: string) {
     switch (command) {
       case 'logout': {
-        commonStore.logout();
+        userStore.logout();
         this.handleLogin();
         return;
       }
@@ -77,7 +82,7 @@ export default class Navbar extends Vue {
   & > .brand {
     width: 220px;
     img {
-      height: 40px;
+      height: 35px;
     }
   }
 }
@@ -91,10 +96,11 @@ export default class Navbar extends Vue {
     i {
       margin-left: 0.75rem;
     }
-  }
-
-  & > .el-input {
-    margin-right: 20px;
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 4px;
+    }
   }
 }
 </style>

@@ -1,7 +1,7 @@
 import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
-import { GetMemberResult, ResultCommon } from 'achieve-it-contract';
+import { GetMemberResult, ResultCommon, GetMemberRoleResult } from 'achieve-it-contract';
 import {
   commonDeleteHandler,
   commomInsertHandler,
@@ -16,6 +16,7 @@ const router = express.Router();
 // getMember
 
 router.get('/:member_id', (req, res: Response<GetMemberResult>) => {
+  // console.log(req.user)
   const member_id = req.params.member_id;
   conn.query($sql.member.getMemberById, [member_id], (err, result) => {
     if (err) {
@@ -103,5 +104,24 @@ router.delete('/:member_id', (req, res: Response<ResultCommon>) => {
     commonDeleteHandler(res, err);
   });
 });
+
+// get /member/getMemberRoleInProject/:projec_id
+router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberRoleResult>) => {
+  const projec_id = req.params.project_id;
+  const member_id = req.query.member_id;
+  conn.query($sql.member.getMemberRole, [projec_id, member_id], (err, result) => {
+      if (err) {
+          mysqlErrorHandler(res, err);
+      } else if (result.length == 1) {
+          res.json({
+              member_role: result[0],
+              status: config.status.SUCCESS,
+              msg: 'get success'
+          })
+      } else {
+          notFoundErrorHandler(res);
+      }
+  })
+})
 
 export default router;

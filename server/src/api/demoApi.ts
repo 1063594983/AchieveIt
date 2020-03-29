@@ -1,11 +1,34 @@
 import express, { Response } from 'express';
-import { DemoResult } from 'achieve-it-contract';
+import { DemoResult, ResultCommon } from 'achieve-it-contract';
+import config from '../config';
+import email from '../email';
 
 const router = express.Router();
 
+// post /demo/sendEmail
+router.post('/sendEmail', (req, res: Response<ResultCommon>) => {
+  email.sendEmail({
+    to: '1063594983@qq.com',
+    subject: 'Hello World',
+    text: 'Hello',
+    html: '<b>Hello</b>'
+  }, (err, info) => {
+    if (err) {
+      res.json({
+        status: config.status.ERROR,
+        msg: '[email] ' + err.response
+      })
+    } else {
+      res.json({
+        status: config.status.SUCCESS,
+        msg: 'send success ' + info.messageId
+      })
+    }
+  })
+})
+
 // /demo/hello
 router.get('/hello', (req, res: Response<DemoResult>) => {
-  console.log(res);
   res.json({
     project: 'AchieveIt',
     msg: 'Test',

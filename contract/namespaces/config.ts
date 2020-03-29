@@ -1,6 +1,7 @@
 /**
  * @author: zou
  * @description: 和Config相关的RequestBody和ResponseResult格式
+ * 组织配置管理员才能对其进行修改
  */
 import { ResultCommon, Authorization } from "../common";
 
@@ -18,6 +19,7 @@ interface Config {
 interface ConfigGetBody extends Authorization {}
 
 // post /config
+// 配置库建立后，发送邮件给项目经理通知其进行人员权限设置
 interface ConfigPostBody extends Authorization {
   git_address?: string;
   server_menu?: string;

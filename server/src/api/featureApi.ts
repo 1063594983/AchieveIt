@@ -3,6 +3,7 @@ import express, { Response } from 'express';
 import $sql from './sqlMap';
 import { GetFeatureListResult, ResultCommon } from 'achieve-it-contract';
 import { conn } from '../mysqlPool';
+import { mysqlErrorHandler } from '../util';
 
 const router = express.Router();
 
@@ -13,11 +14,7 @@ router.get('/:project_id', (req, res: Response<GetFeatureListResult>) => {
   const project_id = req.params.project_id;
   conn.query($sql.function.getFunctionByProjectId, [project_id], (err, result) => {
     if (err) {
-      res.json({
-        featureList: [],
-        status: config.status.ERROR,
-        msg: '查找失败'
-      });
+      mysqlErrorHandler(res, err);
     } else {
       res.json({
         featureList: result,

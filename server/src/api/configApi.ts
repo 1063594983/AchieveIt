@@ -3,6 +3,7 @@
  * @description: config相关的api定义
  */
 
+<<<<<<< HEAD:server/api/configApi.ts
 import config from '../config';
 import express, { Response, response } from 'express';
 import mysql from 'mysql';
@@ -17,6 +18,15 @@ import {
 } from '../util';
 import { conn } from '../mysqlPool';
 import e from 'express';
+=======
+import config from "../config";
+import express, { Response, response } from "express";
+import $sql from './sqlMap'
+import { ResultCommon, GetConfigResult } from "achieve-it-contract";
+import { mysqlErrorHandler, notFoundErrorHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
+import { conn } from '../mysqlPool';
+import email from "../email";
+>>>>>>> f3a96436c2683d604a85f2a7dfd04b4527dc6885:server/src/api/configApi.ts
 const router = express.Router();
 
 // get /config/:project_id
@@ -38,6 +48,7 @@ router.get('/:project_id', (req, res: Response<GetConfigResult>) => {
 });
 
 // post /config
+<<<<<<< HEAD:server/api/configApi.ts
 router.post('/', (req, res: Response<ResultCommon>) => {
   const details = req.body;
   conn.query(
@@ -48,6 +59,39 @@ router.post('/', (req, res: Response<ResultCommon>) => {
     }
   );
 });
+=======
+router.post("/", (req, res: Response<ResultCommon>) => {
+    const details = req.body;
+    conn.query($sql.config.insertConfig, [details.git_address, details.server_menu, details.vm_space, details.project_id], (err) => {
+        // commomInsertHandler(res, err);
+        if (err) {
+            mysqlErrorHandler(res, err);
+        } else {
+            // 通知项目经理
+            conn.query("select job, email from member where job = ?", [0], (err2, result) => {
+                if (err) {
+                    mysqlErrorHandler(res, err2);
+                } else {
+                    const emailList = result;
+                    for (const e of emailList) {
+                        const subject = `[${details.project_id}]项目配置库已建立 to: 项目经理`;
+                        const text = `[${details.project_id}]项目配置库已建立，请开始进行人员权限设置`
+                        email.sendEmail({
+                            to: e.email,
+                            subject,
+                            text
+                        }, (err, info) => {
+                            if (err) {
+                                console.log('send to 项目经理 failed');
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    })
+})
+>>>>>>> f3a96436c2683d604a85f2a7dfd04b4527dc6885:server/src/api/configApi.ts
 
 // put /config/:project_id
 router.put('/:project_id', (req, res: Response<ResultCommon>) => {

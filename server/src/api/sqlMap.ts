@@ -30,6 +30,7 @@ const pattern = {
   },
   insertPattern: (option: InsertOption) => {
     const col_count = option.select_col.split(',').length;
+    
     return `insert into ${option.table_name} (${option.select_col}) values (${Array.from(
       { length: col_count },
       () => '?'
@@ -48,7 +49,7 @@ const pattern = {
 
 export default {
   user: {
-    checkUser: 'select username, member_id from user where username = ? and password = ?',
+    checkUser: 'select a.username, a.member_id, b.job from user a inner join member b on a.member_id = b.member_id  where a.username = ? and a.password = ?',
     insertUser: 'insert into user (username, password, member_id) values (?, ?, ?)',
     deleteUser: 'delete from user where member_id = ?'
   },
@@ -70,7 +71,9 @@ export default {
     deleteMemberById: pattern.deletePattern({
       table_name: 'member',
       key_name: 'member_id'
-    })
+    }),
+    getMemberRole: "select * from member_project where project_id = ? and member_id = ?",
+    changeMemberRole: "update member_project set role = ?, authority = ? where project_id = ? and member_id = ?"
   },
   function: {
     // getFunctionByProjectId: "select * from function where project_id = ?",
@@ -86,7 +89,12 @@ export default {
     insertProject:
       'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
-            business = ?, status = ? where project_id = ?`
+            business = ?, status = ? where project_id = ?`,
+    updateProjectStatus: pattern.updatePattern({
+      table_name: 'project',
+      select_col: 'status',
+      key_name: 'project_id'
+    })
   },
   /**
    * @author: zou
@@ -95,7 +103,9 @@ export default {
     getDeviceById: 'select * from device where device_id = ?',
     updateDeviceById: 'update device set device_name = ?, device_status = ? where device_id = ?',
     insertDevice: 'insert into device (device_name, device_status) values (?, ?)',
-    deleteDeviceById: 'delete from device where device_id = ?'
+    deleteDeviceById: 'delete from device where device_id = ?',
+    getProjectDeviceList: 'SELECT a.device_id, a.member_id, a.return_time, b.device_name FROM project_device a inner join device b on a.device_id = b.device_id where a.project_id = ?',
+    applyDeviceForProject: 'call applyDeviceForProject(?, ?, ?, ?)'
   },
   /**
    * @author: zou
@@ -120,6 +130,35 @@ export default {
    * @author: zou
    */
   config: {
-    getConfigById: 'select * from config'
+    getConfigByProjectId: pattern.selectPattern({
+      table_name: "config",
+      key_name: "project_id"
+    }),
+    insertConfig: pattern.insertPattern({
+      table_name: "config",
+      select_col: "git_address, server_menu, vm_space, project_id"
+    }),
+    updateConfigByProjectId: pattern.updatePattern({
+      table_name: "config",
+      select_col: "git_address, server_menu, vm_space",
+      key_name: "project_id"
+    }),
+    deleteConfigByProjectId: pattern.deletePattern({
+      table_name: "config",
+      key_name: "project_id"
+    })
+  },
+  /**
+   * @author: zou
+   */
+  workTime: {
+    getMemberWorkTimeList: pattern.selectPattern({
+      table_name: 'work_time',
+      key_name: 'member_id'
+    }),
+    insertWorkTime: pattern.insertPattern({
+      table_name: 'work_time',
+      select_col: 'member_id, function_id, activity_content, project_id, start_time, end_time'
+    })
   }
 };

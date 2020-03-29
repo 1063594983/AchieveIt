@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
-import store, { commonStore } from '@/store';
+import store, { userStore } from '@/store';
 import NProgress from 'nprogress';
+import _ from 'lodash';
 
 Vue.use(VueRouter);
 
@@ -84,6 +85,27 @@ const menu: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    name: 'setting',
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/index',
+    meta: {
+      icon: 'setting',
+      title: '首选项'
+    },
+    children: [
+      {
+        name: 'setting.index',
+        path: 'index',
+        component: () => import('@/views/setting/index.vue'),
+        meta: {
+          icon: 'sunny',
+          title: '界面设置'
+        }
+      }
+    ]
   }
 ];
 
@@ -126,7 +148,7 @@ router.beforeEach(async (to, from, next) => {
   // @ts-ignore
   await store.restored;
   if (to.matched.some(record => !record.meta.noAuth)) {
-    if (!commonStore.isAuth) {
+    if (!userStore.isAuth) {
       next({ name: 'Login' });
     } else {
       NProgress.start();
@@ -141,5 +163,14 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-export { menu };
+const flatMenu = _.flatMap(menu, i =>
+  i.children!.map(child => ({
+    title: child.meta.title!,
+    icon: child.meta.icon!,
+    fatherTitle: i.meta.title!,
+    name: child.name!
+  }))
+);
+
+export { menu, flatMenu };
 export default router;

@@ -22,7 +22,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { commonStore } from '@/store';
+import { userStore } from '@/store';
+import { Notify } from '@/theme';
 import agent from '@/agent';
 
 @Component
@@ -39,17 +40,11 @@ export default class Login extends Vue {
     this.isLoggingIn = true;
     try {
       const result = await agent.user.login({ username: this.username, password: this.password });
-      // @ts-ignore
-      this.$notify.success({
-        title: result.msg,
-        message: `欢迎回来 ${this.username}！`,
-        position: 'bottom-right'
-      });
-      commonStore.login({ username: this.username, token: result.token!, member_id: result.member_id! });
+      Notify.success(result.msg, `欢迎回来 ${this.username}！`);
+      userStore.login({ username: this.username, token: result.token!, member_id: result.member_id! });
       await this.$router.push('/home');
     } catch (e) {
-      // @ts-ignore
-      this.$notify.error('服务器发生错误啦');
+      Notify.error('服务器发生错误啦');
     }
     this.isLoggingIn = false;
   }
@@ -63,7 +58,7 @@ export default class Login extends Vue {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fafafa;
+  background-color: rgba(128, 128, 128, 0.1); /*中间灰无敌*/
 }
 .login {
   width: 25rem;
