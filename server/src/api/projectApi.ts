@@ -4,6 +4,7 @@ import $sql from './sqlMap';
 import { ResultCommon, GetProjectResult } from 'achieve-it-contract';
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from '../util';
 import { conn } from '../mysqlPool';
+import email from '../email';
 
 const router = express.Router();
 
@@ -18,6 +19,9 @@ router.get('/:project_id', (req, res: Response<GetProjectResult>) => {
       mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
       result[0].status = config.numberMap.projectStatus[result[0].status];
+      result[0].important_events = JSON.parse(result[0].important_events);
+      result[0].technology = JSON.parse(result[0].technology);
+      result[0].business = JSON.parse(result[0].business);
       res.json({
         project: result[0],
         status: config.status.SUCCESS,
@@ -58,13 +62,86 @@ router.post('/', (req, res: Response<ResultCommon>) => {
       project_details.start_time || '',
       project_details.end_time || '',
       project_details.manager || '',
-      project_details.important_events || '',
-      project_details.technology || '',
-      project_details.business || '',
-      project_details.status || ''
+      JSON.stringify(project_details.important_events) || '[]',
+      JSON.stringify(project_details.technology) || '[]',
+      JSON.stringify(project_details.business) || '[]',
+      project_details.status
     ],
     err => {
-      commomUpdateHandler(res, err);
+      if (err) {
+        mysqlErrorHandler(res, err);
+      } else {
+        // 向相关者发送邮件(1-项目上级，3-EPGLeader，4-QA Manager，2-配置管理员)
+        conn.query("select job, email from member where job = ? or job = ? or job = ? or job = ?", [1, 2, 3, 4], (err, result) => {
+          if (err) {
+            mysqlErrorHandler(res, err);
+          } else {
+            const emailList = result;
+            for (const e of emailList) {
+              const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`; 
+              
+              switch (e.job) {
+                case 1:
+                  email.sendEmail({
+                    to: e.email,
+                    subject,
+                    html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3000/project/acceptProject/${project_details.project_id}">批准立项</a>
+                    &nbsp;&nbsp;<a href="http://localhost:3000/project/refuseProject/${project_details.project_id}">不批准立项</a>`
+                  }, (err, info) => {
+                    if (err) {
+                      console.log('send to 项目上级 failed')
+                    }
+                  })
+                  break;
+                case 2:
+                  // email.sendEmail({
+                  //   to: e.email,
+                  //   subject,
+                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目建立基本的配置库`
+                  // }, (err, info) => {
+                  //   if (err) {
+                  //     console.log('send to 配置管理员 failed')
+                  //   }
+                  // })
+                  break;
+                case 3:
+                  // email.sendEmail({
+                  //   to: e.email,
+                  //   subject,
+                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配EPG`
+                  // }, (err, info) => {
+                  //   if (err) {
+                  //     console.log('send to EPG Leader failed')
+                  //   }
+                  // })
+                  break;
+                case 4:
+                  // email.sendEmail({
+                  //   to: e.email,
+                  //   subject,
+                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配QA`
+                  // }, (err, info) => {
+                  //   if (err) {
+                  //     console.log('send to QA Manager failed')
+                  //   }
+                  // })
+                  break;
+              }
+              // email.sendEmail({
+              //   to: e.email,
+              //   subject: '项目立项 to: ' + config.numberMap.memberJob[e.job],
+              //   text: JSON.stringify(project_details),
+              //   html: e.job == 1 ? JSON.stringify(project_details) + "<br/><a href=''>批准立项</a>&nbsp;&nbsp;<a href=''>不批准立项</a>" : ""
+              // }, () => {})
+            }
+            console.log(emailList);
+            res.json({
+              status: config.status.SUCCESS,
+              msg: 'success'
+            })
+          }
+        })
+      }
     }
   );
 });
@@ -88,8 +165,8 @@ router.put('/:project_id', (req, res: Response<ResultCommon>) => {
           project_details.start_time || old_project.start_time,
           project_details.end_time || old_project.end_time,
           project_details.manager || old_project.manager,
-          project_details.important_events || old_project.important_events,
-          project_details.technology || old_project.technology,
+          JSON.stringify(project_details.important_events) || old_project.important_events,
+          JSON.stringify(project_details.technology) || old_project.technology,
           project_details.business || old_project.business,
           project_details.status || old_project.status,
           project_id
@@ -103,5 +180,117 @@ router.put('/:project_id', (req, res: Response<ResultCommon>) => {
     }
   });
 });
+
+// get /project/acceptProject/:project_id
+// 批准立项
+router.get('/acceptProject/:project_id', (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  conn.query($sql.project.updateProjectStatus, [1, project_id], err => {
+    // commomUpdateHandler(res, err);
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      // 通知组织配置管理员，EPG Leader， QA Manager
+      conn.query("select job, email from member where job = ? or job = ? or job = ? or job = ?", [0, 2, 3, 4], (err2, result) => {
+        if (err2) {
+          mysqlErrorHandler(res, err2);
+        } else {
+          const emailList = result;
+          for (const e of emailList) {
+            const subject = `[${project_id}]项目已立项 to: ${config.numberMap.memberJob[e.job]}`
+            switch (e.job) {
+              case 0:
+                email.sendEmail({
+                  to: e.email,
+                  subject,
+                  text: `[${project_id}]项目已立项, 请为项目分配人员和任务`
+                }, (err, info) => {
+                  if (err) {
+                    console.log("send to 组织配置管理员 failed");
+                  }
+                })
+                break;
+              case 2:
+                email.sendEmail({
+                  to: e.email,
+                  subject,
+                  text: `[${project_id}]项目已立项, 请为项目建立基本的配置库`
+                }, (err, info) => {
+                  if (err) {
+                    console.log("send to 组织配置管理员 failed");
+                  }
+                })
+                break;
+              case 3:
+                email.sendEmail({
+                  to: e.email,
+                  subject,
+                  text: `[${project_id}]项目已立项, 请为项目分配EPG`
+                }, (err, info) => {
+                  if (err) {
+                    console.log("send to EPG Leader failed");
+                  }
+                })
+                break;
+              case 4:
+                email.sendEmail({
+                  to: e.email,
+                  subject,
+                  text: `[${project_id}]项目已立项, 请为项目分配QA`
+                }, (err, info) => {
+                  if (err) {
+                    console.log("send to QA Manager failed");
+                  }
+                })
+                break;
+            }
+          }
+        }
+        res.json({
+          status: config.status.SUCCESS,
+          msg: 'success'
+        })
+      })
+    }
+  })
+})
+
+// get /project/refuseProject/:project_id
+// 不批准立项
+router.get('/refuseProject/:project_id', (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  conn.query($sql.project.updateProjectStatus, [2, project_id], err => {
+    // commomUpdateHandler(res, err);
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      // 通知组织配置管理员，EPG Leader， QA Manager
+      conn.query("select job, email from member where job = ? or job = ? or job = ? or job = ?", [0, 2, 3, 4], (err2, result) => {
+        if (err2) {
+          mysqlErrorHandler(res, err2);
+        } else {
+          const emailList = result;
+          for (const e of emailList) {
+            const subject = `[${project_id}]项目已被驳回 to: ${config.numberMap.memberJob[e.job]}`
+            const text = "如题";
+            email.sendEmail({
+              to: e.email,
+              subject,
+              text
+            }, (err, info) => {
+              if (err) {
+                console.log(`send to ${config.numberMap.memberJob[e.job]} failed`);
+              }
+            })
+          }
+        }
+        res.json({
+          status: config.status.SUCCESS,
+          msg: 'success'
+        })
+      })
+    }
+  })
+})
 
 export default router;

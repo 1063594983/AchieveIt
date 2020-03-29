@@ -8,6 +8,7 @@ interface EmailOption {
 }
 
 const transporter = nodeMailer.createTransport({
+  pool: true,
     service: '126',
     port: 465,
     secure: true,
@@ -18,11 +19,15 @@ const transporter = nodeMailer.createTransport({
 });
 
 const email = {
-  sendEmail: (option: EmailOption, callback: Function) => {
+  sendEmail: async (option: EmailOption, callback: Function) => {
     transporter.sendMail({...option, from: "xuanlinzou@126.com"}, (err, info) => {
       callback(err, info);
     })
   }
+}
+
+const emailUtil = {
+  
 }
 
 export default email;

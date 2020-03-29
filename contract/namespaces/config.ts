@@ -1,6 +1,7 @@
 /**
  * @author: zou
  * @description: 和Config相关的RequestBody和ResponseResult格式
+ * 组织配置管理员才能对其进行修改
  */
 import { ResultCommon, Authorization } from "../common";
 

@@ -16,6 +16,7 @@ const router = express.Router();
 // getMember
 
 router.get('/:member_id', (req, res: Response<GetMemberResult>) => {
+  // console.log(req.user)
   const member_id = req.params.member_id;
   conn.query($sql.member.getMemberById, [member_id], (err, result) => {
     if (err) {

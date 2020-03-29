@@ -18,17 +18,21 @@ router.post('/login', (req, res: Response<UserLoginResult>) => {
     if (err) {
       mysqlErrorHandler(res, err);
     } else if (result.length == 1) {
+      const user = result[0];
       // 生成token
+
       const token = jwt.sign(
         {
-          username
+          username,
+          job: config.numberMap.memberJob[user.job]
         },
         config.jwt.signKey,
         {
           expiresIn: 600
         }
       );
-      const user = result[0];
+      
+      console.log(user);
       res.json({
         status: 'ok',
         msg: '登陆成功',

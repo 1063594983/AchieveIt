@@ -49,7 +49,7 @@ const pattern = {
 
 export default {
   user: {
-    checkUser: 'select username, member_id from user where username = ? and password = ?',
+    checkUser: 'select a.username, a.member_id, b.job from user a inner join member b on a.member_id = b.member_id  where a.username = ? and a.password = ?',
     insertUser: 'insert into user (username, password, member_id) values (?, ?, ?)',
     deleteUser: 'delete from user where member_id = ?'
   },
@@ -89,7 +89,12 @@ export default {
     insertProject:
       'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
-            business = ?, status = ? where project_id = ?`
+            business = ?, status = ? where project_id = ?`,
+    updateProjectStatus: pattern.updatePattern({
+      table_name: 'project',
+      select_col: 'status',
+      key_name: 'project_id'
+    })
   },
   /**
    * @author: zou
