@@ -30,6 +30,7 @@ export default class Layout extends Vue {}
 .wrapper {
   width: 100vw;
   height: 100vh;
+  min-width: 700px;
 
   & > .el-container {
     height: 100vh;

@@ -1,31 +1,27 @@
 <template>
-  <el-row class="container" type="flex" align="middle">
-    <el-col :span="18">
-      <div class="left-container">
-        <div class="brand" v-once>
-          <img v-if="!isDark" src="../assets/logo.svg" alt="logo" />
-          <img v-else src="../assets/logo-dark.svg" alt="logo" />
-        </div>
-        <breadcrumb></breadcrumb>
+  <div class="container">
+    <div class="left-container">
+      <div class="brand" v-once>
+        <img v-if="!isDark" src="../assets/logo.svg" alt="logo" />
+        <img v-else src="../assets/logo-dark.svg" alt="logo" />
       </div>
-    </el-col>
-    <el-col :span="6">
-      <div class="right-container">
-        <navbar-search></navbar-search>
-        <el-dropdown @command="handleCommand" trigger="click">
-          <span class="dropdown-link">
-            <img src="../assets/profile.jpg" alt="avatar" />
-            <el-icon name="arrow-down"></el-icon>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>偏好设置</el-dropdown-item>
-            <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </el-col>
-  </el-row>
+      <breadcrumb></breadcrumb>
+    </div>
+    <div class="right-container">
+      <navbar-search></navbar-search>
+      <el-dropdown @command="handleCommand" trigger="click">
+        <span class="dropdown-link">
+          <img src="../assets/profile.jpg" alt="avatar" />
+          <el-icon name="arrow-down"></el-icon>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item>偏好设置</el-dropdown-item>
+          <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -73,6 +69,9 @@ export default class Navbar extends Vue {
   padding: 0 20px;
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .left-container {
