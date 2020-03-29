@@ -32,7 +32,13 @@ import {
   ActivityPutBody
 } from 'achieve-it-contract';
 
-function createCRUD<GetBody, DeleteBody, PutBody, PostBody, GetResult extends ResultCommon>(namespace: string) {
+function createCRUD<
+  GetBody extends {},
+  DeleteBody extends {},
+  PutBody extends {},
+  PostBody extends {},
+  GetResult extends ResultCommon
+>(namespace: string) {
   return {
     get: (id: number, body: GetBody) => axiosGet<GetResult>(namespace, id.toString(), body),
     insert: (body: PostBody) => axiosPost(namespace, '', body),

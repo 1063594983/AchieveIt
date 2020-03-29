@@ -5,41 +5,37 @@
 import { ResultCommon, Authorization } from "../common";
 
 interface Config {
-    config_id: number
-    git_address: string,
-    server_menu: string,
-    vm_space: string,
-    project_id: string
+  config_id: number;
+  git_address: string;
+  server_menu: string;
+  vm_space: string;
+  project_id: string;
 }
 
 // requestBody
 
-// get /config/:config_id
-interface ConfigGetBody extends Authorization {
-
-}
+// get /config/:project_id
+interface ConfigGetBody extends Authorization {}
 
 // post /config
 interface ConfigPostBody extends Authorization {
-    git_address?: string,
-    server_menu?: string,
-    vm_space?: string,
-    project_id: string
+  git_address?: string;
+  server_menu?: string;
+  vm_space?: string;
+  project_id: string;
 }
 
-// put /config/:config_id
+// put /config/:project_id
 interface ConfigPutBody extends Authorization {
-    git_address?: string,
-    server_menu?: string,
-    vm_space?: string
+  git_address?: string;
+  server_menu?: string;
+  vm_space?: string;
 }
 
-// delete /config/:config_id
-interface ConfigDeleteBody extends Authorization {
-
-}
+// delete /config/:project_id
+interface ConfigDeleteBody extends Authorization {}
 
 // responseResult
 export interface GetConfigResult extends ResultCommon {
-    config?: Config
+  config?: Config;
 }

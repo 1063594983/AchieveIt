@@ -23,14 +23,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { commonStore } from '@/store';
-
 import agent from '@/agent';
 
 @Component
 export default class Login extends Vue {
-  username: string = '';
-  password: string = '';
-  isLoggingIn: boolean = false;
+  username = '1';
+  password = '1';
+  isLoggingIn = false;
 
   handleBack() {
     this.$router.push('/');
@@ -40,14 +39,16 @@ export default class Login extends Vue {
     this.isLoggingIn = true;
     try {
       const result = await agent.user.login({ username: this.username, password: this.password });
+      // @ts-ignore
       this.$notify.success({
         title: result.msg,
         message: `欢迎回来 ${this.username}！`,
         position: 'bottom-right'
       });
       commonStore.login({ username: this.username, token: result.token!, member_id: result.member_id! });
-      this.$router.push('/home');
+      await this.$router.push('/home');
     } catch (e) {
+      // @ts-ignore
       this.$notify.error('服务器发生错误啦');
     }
     this.isLoggingIn = false;

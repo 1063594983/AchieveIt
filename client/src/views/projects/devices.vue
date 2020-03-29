@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>项目管理</h1>
-    <pre>{{ projectDetail }}</pre>
+    <h1>设备管理</h1>
+    <pre>{{ deviceProject }}</pre>
   </div>
 </template>
 
@@ -11,12 +11,12 @@ import { commonStore } from '@/store';
 import agent from '@/agent';
 
 @Component
-export default class Projects extends Vue {
-  projectDetail: string = 'loading...';
+export default class Devices extends Vue {
+  deviceProject = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
-    const result = await agent.project.get(123, { token: user.token });
-    this.projectDetail = JSON.stringify(result, null, 2);
+    const result = await agent.device.get(1, { token: user.token });
+    this.deviceProject = JSON.stringify(result, null, 2);
     console.log(result);
   }
 }

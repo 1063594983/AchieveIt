@@ -67,15 +67,26 @@ export default {
         deleteMemberById: pattern.deletePattern({
             table_name: "member",
             key_name: "member_id"
-        })
+        }),
+        getProjectMemberList: pattern.selectPattern({
+            table_name: "member_project",
+            key_name: "project_id"
+        }),
+        getMemberRole: "select * from member_project where project_id = ? and member_id = ?",
+        changeMemberRole: "update member_project set role = ?, authority = ? where project_id = ? and member_id = ?"
     },
     function: {
         // getFunctionByProjectId: "select * from function where project_id = ?",
-        getFunctionByProjectId: pattern.selectPattern({table_name: "function", key_name: "function_id"}),
+        getFunctionByProjectId: pattern.selectPattern({
+            table_name: "function", 
+            key_name: "function_id"
+        }),
         // insertFunction: "insert into function (function_name, project_id, layer) values (?, ?, ?)",
-        insertFunction: pattern.insertPattern({table_name: "function", select_col: "function_name, project_id, layer"}),
-        //setFunctionRelation: "insert into function_function (first_function_id, second_function_id) values (?, ?)"
-        setFunctionRelation:  pattern.insertPattern({table_name: "function_function", select_col: "first_function_id, second_function_id"}),
+        insertFunction: pattern.insertPattern({
+            table_name: "function", 
+            select_col: "function_name, project_id, layer"
+        }),
+        setFunctionRelation: "insert into function_function (first_function_id, second_function_id) values (?, ?)"
     },
 
     project: {
@@ -92,7 +103,12 @@ export default {
         getDeviceById: "select * from device where device_id = ?",
         updateDeviceById: "update device set device_name = ?, device_status = ? where device_id = ?",
         insertDevice: "insert into device (device_name, device_status) values (?, ?)",
+<<<<<<< HEAD
         deleteDeviceById: "delete from device where device_id = ?"
+=======
+        deleteDeviceById: "delete from device where device_id = ?",
+        getProjectDeviceList: "select a.device_id, a.device_name from device a inner join project_device b on a.device_id = b.device_id where b.project_id = ?"
+>>>>>>> c909d57e6b773b5ad72d80e4ccd5d185f5183fc7
 
     },
     /**
@@ -118,6 +134,48 @@ export default {
      * @author: zou
      */
     config: {
+<<<<<<< HEAD
         getConfigById: "select * from config"
+=======
+        getConfigByProjectId: pattern.selectPattern({
+            table_name: "config",
+            key_name: "project_id"
+        }),
+        insertConfig: pattern.insertPattern({
+            table_name: "config",
+            select_col: "git_address, server_menu, vm_space, project_id"
+        }),
+        updateConfigByProjectId: pattern.updatePattern({
+            table_name: "config",
+            select_col: "git_address, server_menu, vm_space",
+            key_name: "project_id"
+        }),
+        deleteConfigByProjectId: pattern.deletePattern({
+            table_name: "config",
+            key_name: "project_id"
+        })
+    },
+    /**
+     * @author: zou
+     */
+    workTime: {
+        getWorkTimeById: pattern.selectPattern({
+            table_name: "work_time",
+            key_name: "work_time_id"
+        }),
+        insertWorkTime: pattern.insertPattern({
+            table_name: "work_time",
+            select_col: "member_id, function_id, activity_content, project_id, start_time, end_time"
+        }),
+        updateWorkTimeById: pattern.updatePattern({
+            table_name: "work_time",
+            select_col: "member_id, function_id, activity_content, project_id, start_time, end_time",
+            key_name: "work_time_id"
+        }),
+        deleteWorkTimeById: pattern.deletePattern({
+            table_name: "work_time",
+            key_name: "work_time_id"
+        })
+>>>>>>> c909d57e6b773b5ad72d80e4ccd5d185f5183fc7
     }
 }

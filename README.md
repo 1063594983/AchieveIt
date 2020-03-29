@@ -9,6 +9,8 @@
 
 ```shell script
 npm install -g yarn
+// 切淘宝源
+yarn config set registry https://registry.npm.taobao.org
 ```
 
 ```shell script

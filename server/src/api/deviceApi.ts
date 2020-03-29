@@ -1,3 +1,11 @@
+<<<<<<< HEAD:server/api/deviceApi.ts
+
+import config from "../config";
+import express, { Response } from "express";
+import $sql from "./sqlMap";
+import { ResultCommon, GetDeviceResult, GetProjectDeviceListResult } from "achieve-it-contract";
+import { mysqlErrorHandler, notFoundErrorHandler, commomUpdateHandler, commomInsertHandler, commonDeleteHandler } from "../util";
+=======
 import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
@@ -9,6 +17,7 @@ import {
   commomInsertHandler,
   commonDeleteHandler
 } from '../util';
+>>>>>>> 33b9c4624cb00b6b575336c6de03872c207006fa:server/src/api/deviceApi.ts
 import { conn } from '../mysqlPool';
 const router = express.Router();
 
@@ -77,5 +86,24 @@ router.delete('/:device_id', (req, res: Response<ResultCommon>) => {
     commonDeleteHandler(res, err);
   });
 });
+
+// get /device/getProjectDeviceList/:project_id
+router.get("/getProjectDeviceList/:project_id", (req, res: Response<GetProjectDeviceListResult>) => {
+  const project_id = req.params.project_id;
+  conn.query($sql.device.getProjectDeviceList, [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else if (result.length == 1) {
+      res.json({
+        device_list: result,
+        status: config.status.SUCCESS,
+        msg: 'get success'
+      })
+    } else {
+      console.log('123')
+      notFoundErrorHandler(res);
+    }
+  })
+})
 
 export default router;

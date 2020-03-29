@@ -3,7 +3,7 @@ import { ResultCommon } from 'achieve-it-contract';
 
 const baseURL = '/api';
 
-function sendErrorMsg(type: string, url: string, payload?: { body?: any; response?: any }) {
+function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response?: {} }) {
   console.error(`${type} ${url} failed`);
   if (payload) {
     if (payload.body) console.error(`body: ${JSON.stringify(payload.body)}`);
@@ -11,7 +11,7 @@ function sendErrorMsg(type: string, url: string, payload?: { body?: any; respons
   }
 }
 
-export async function axiosPost<Response extends ResultCommon>(namespace: string, endpoint: string, body?: any) {
+export async function axiosPost<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {
   const url = `${baseURL}/${namespace}/${endpoint}`;
   const result = await axios.post<Response>(url, body);
   if (result.data.status === 'error') {
@@ -21,7 +21,7 @@ export async function axiosPost<Response extends ResultCommon>(namespace: string
   return result.data;
 }
 
-export async function axiosGet<Response extends ResultCommon>(namespace: string, endpoint: string, body?: any) {
+export async function axiosGet<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {
   const url = `${baseURL}/${namespace}/${endpoint}`;
   const result = await axios.get<Response>(url, body);
   if (result.data.status === 'error') {
@@ -31,7 +31,7 @@ export async function axiosGet<Response extends ResultCommon>(namespace: string,
   return result.data;
 }
 
-export async function axiosDelete<Response extends ResultCommon>(namespace: string, endpoint: string, body?: any) {
+export async function axiosDelete<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {
   const url = `${baseURL}/${namespace}/${endpoint}`;
   const result = await axios.delete<Response>(url, body);
   if (result.data.status === 'error') {
@@ -41,7 +41,7 @@ export async function axiosDelete<Response extends ResultCommon>(namespace: stri
   return result.data;
 }
 
-export async function axiosPut<Response extends ResultCommon>(namespace: string, endpoint: string, body?: any) {
+export async function axiosPut<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {
   const url = `${baseURL}/${namespace}/${endpoint}`;
   const result = await axios.put<Response>(url, body);
   if (result.data.status === 'error') {

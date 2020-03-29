@@ -1,0 +1,16 @@
+.el-scrollbar-wrapper {
+  overflow-x: hidden !important;
+
+  & * {
+    user-select: none;
+  }
+}
+
+* {
+  outline: none;
+}
+
+#nprogress .spinner {
+  top: 20px !important;
+  left: 200px;
+}

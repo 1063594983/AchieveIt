@@ -1,6 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 
-interface IUser {
+interface User {
   username: string;
   token: string;
   member_id: number;
@@ -8,10 +8,10 @@ interface IUser {
 
 @Module({ name: 'common' })
 export default class CommonModule extends VuexModule {
-  currentUser: IUser | null = null;
+  currentUser: User | null = null;
 
   @Mutation
-  private modifyUser(user: IUser | null) {
+  private modifyUser(user: User | null) {
     this.currentUser = user;
   }
 
@@ -20,7 +20,7 @@ export default class CommonModule extends VuexModule {
   }
 
   @Action({ commit: 'modifyUser' })
-  login(user: IUser) {
+  login(user: User) {
     return user;
   }
 

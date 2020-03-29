@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>风险管理</h1>
-    <pre>{{ riskDetail }}</pre>
+    <h1>项目管理</h1>
+    <pre>{{ projectDetail }}</pre>
   </div>
 </template>
 
@@ -11,12 +11,12 @@ import { commonStore } from '@/store';
 import agent from '@/agent';
 
 @Component
-export default class Risk extends Vue {
-  riskDetail: string = 'loading...';
+export default class Projects extends Vue {
+  projectDetail = 'loading...';
   async mounted() {
     const user = commonStore.currentUser!;
-    const result = await agent.risk.get(4, { token: user.token });
-    this.riskDetail = JSON.stringify(result, null, 2);
+    const result = await agent.project.get(123, { token: user.token });
+    this.projectDetail = JSON.stringify(result, null, 2);
     console.log(result);
   }
 }
