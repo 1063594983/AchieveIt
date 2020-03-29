@@ -1,12 +1,17 @@
 <template>
   <div class="container">
-    <div class="not-found">页面丢失了，<router-link to="/" class="back">返回</router-link>上层</div>
+    <div class="not-found">页面丢失了，<span @click="handleBack" class="back">返回</span>上层</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'notFound'
+  name: 'notFound',
+  methods: {
+    handleBack() {
+      this.$router.back();
+    }
+  }
 };
 </script>
 
@@ -24,6 +29,7 @@ export default {
   color: #9b9b9b;
 }
 .back {
+  cursor: pointer;
   text-decoration: none;
   color: black;
   border-bottom: 0.2rem solid black;
