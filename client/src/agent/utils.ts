@@ -11,7 +11,7 @@ function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response
     if (payload.body) body = `body: ${JSON.stringify(payload.body)}`;
     if (payload.response) response = `response: ${JSON.stringify(payload.response)}`;
   }
-  throw new Error(JSON.stringify({ title, body, response }));
+  throw { title, body, response, raw: payload?.response };
 }
 
 export async function axiosPost<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {

@@ -11,7 +11,7 @@ const vuexLocal = new VuexPersistence({
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+const store = new Vuex.Store<any>({
   state: {},
   mutations: {},
   actions: {},
