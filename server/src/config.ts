@@ -30,6 +30,7 @@ const config: { [key: string]: any; status: { [key: string]: StatusType } } = {
   numberMap: {
     deviceStatus: ['可用', '不可用'],
     memberJob: ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager', '普通员工'],
+    projectRole: ["开发 Leader", "测试 Leader", "开发人员", "测试人员", "配置管理人员", "QA", "EPG"],
     projectStatus: ['申请立项', '已立项', '立刻驳回', '进行中', '已交付', '结束', '已归档'],
     activityName: [
       {

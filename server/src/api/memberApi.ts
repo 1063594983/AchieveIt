@@ -10,6 +10,7 @@ import {
   notFoundErrorHandler
 } from '../util';
 import { conn } from '../mysqlPool';
+import email from '../email';
 const router = express.Router();
 
 // get /member/:member_id
@@ -113,6 +114,10 @@ router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberR
       if (err) {
           mysqlErrorHandler(res, err);
       } else if (result.length == 1) {
+          result[0].role = JSON.parse(result[0].role).map((x) => {
+            return config.numberMap.projectRole[x];
+          });
+          result[0].authority = JSON.parse(result[0].authority);
           res.json({
               member_role: result[0],
               status: config.status.SUCCESS,
@@ -123,5 +128,42 @@ router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberR
       }
   })
 })
+
+// post /member/addMemberToProject/:project_id
+// 添加成功后会向该员工发送通知邮件
+
+router.post("/addMemberToProject/:project_id", (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  const details = req.body;
+
+  conn.query($sql.member.addMemberToProject, [project_id, details.member_id, JSON.stringify(details.role), JSON.stringify(details.authority)], (err) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      conn.query($sql.member.getMemberById, [details.member_id], (err2, result) => {
+        if (err2) {
+          mysqlErrorHandler(res, err2);
+        } else {
+          const member = result[0];
+          email.sendEmail({
+            to: member.email,
+            subject: `[${project_id}]项目邀请`,
+            text: `你已被邀请加入${project_id}项目,你的角色为[${details.role.map((x) => config.numberMap.projectRole[x])}],你的权限为[${details.authority}]`
+          }, (err, info) => {
+            if (err) {
+              console.log(`send to member ${details.member_id} failed`);
+            }
+          })
+          res.json({
+            status: config.status.SUCCESS,
+            msg: 'success'
+          })
+        }
+      })
+    }
+  })
+
+})
+
 
 export default router;

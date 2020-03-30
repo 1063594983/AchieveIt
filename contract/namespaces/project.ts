@@ -9,7 +9,7 @@ interface Project {
   manager: number;
   important_events: string[];
   technology: string[];
-  business: string;
+  business: string[];
   status: string; //  ['申请立项', '已立项', '立刻驳回', '进行中', '已交付', '结束', '已归档']
 }
 
