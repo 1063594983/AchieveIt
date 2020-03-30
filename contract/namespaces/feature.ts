@@ -15,18 +15,6 @@ interface Feature {
   parent?: string
 }
 
-// get /function/getProjectFunctionList/:project_id
-// requestBody
-export interface GetProjectFunctionListGetBody extends Authorization {
-
-}
-
-// post /function/addFunctionToProject/:project_id
-export interface AddFunctionToProject extends Authorization {
-  function_name: string,
-  layer: 1 | 2
-}
-
 interface FunctionExcelItem {
   parent: {
     function_name: string
@@ -36,16 +24,40 @@ interface FunctionExcelItem {
   } []
 }
 
-// post /function/importFunctionExcelToProject/:project_id
-export interface ImportFunctionExcelToProject extends Authorization {
-  function_excel: FunctionExcelItem []
-}
 
-export interface GetFeatureResult extends ResultCommon {
-  feature: Feature;
-}
+/**
+ * api: get /function/getProjectFunctionList/:project_id
+ */
 
+// request
+export interface GetProjectFunctionListGetBody extends Authorization {}
+
+// result
 export interface GetProjectFeatureListResult extends ResultCommon {
   feature_list: Feature[];
   project_id: string
 }
+
+
+/**
+ * api: post /function/addFunctionToProject/:project_id
+ */
+
+// request
+export interface AddFunctionToProject extends Authorization {
+  function_name: string,
+  layer: 1 | 2
+}
+
+
+/**
+ * api: post /function/importFunctionExcelToProject/:project_id
+ */
+
+// request
+export interface ImportFunctionExcelToProject extends Authorization {
+  function_excel: FunctionExcelItem []
+}
+
+
+

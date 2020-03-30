@@ -15,17 +15,36 @@ interface WorkTime {
   end_time: string;
 }
 
+/**
+ * api: get /workTime/getMemberWorkTimeList/:member_id
+ */
 
-// requestBody
-
-// get /workTime/getMemberWorkTimeList/:member_id
+//  request
 export interface MemberWorkTimeListGetBody extends Authorization {}
 
-// get /workTime/:work_time_id
+// result
+export interface GetMemberWorkTimeListResul extends ResultCommon {
+  member_id: number,
+  work_time_list: WorkTime[]
+}
+
+/**
+ * api: get /workTime/:work_time_id
+ */
+// request
 interface workTimeGetBody extends Authorization {}
 
-// post /workTime
-interface workTimePostBody extends Authorization {
+// result
+export interface getWorkTimeResult extends ResultCommon {
+  work_time?: WorkTime;
+}
+
+/**
+ * api: post /workTime
+ */
+
+// request
+export interface WorkTimePostBody extends Authorization {
   member_id: number;
   feature_id: number;
   activity_content: string;
@@ -34,13 +53,12 @@ interface workTimePostBody extends Authorization {
   end_time: string;
 }
 
-// responseResult
-export interface GetMemberWorkTimeListResul extends ResultCommon {
-    member_id: number,
-    work_time_list: WorkTime[]
-}
 
-// put /workTime/:work_time_id
+/**
+ * api: put /workTime/:work_time_id
+ */
+
+// request
 interface workTimePutBody extends Authorization {
   member_id?: number;
   feature_id?: number;
@@ -50,11 +68,10 @@ interface workTimePutBody extends Authorization {
   end_time?: string;
 }
 
-// delete /workTime/:work_time_id
-interface workTimeDeleteBody extends Authorization {}
+/**
+ * api: delete /workTime/:work_time_id
+ */
 
-// get /workTime/:work_time_id
-export interface getWorkTimeResult extends ResultCommon {
-  work_time?: WorkTime;
-}
+// request
+interface workTimeDeleteBody extends Authorization {}
 
