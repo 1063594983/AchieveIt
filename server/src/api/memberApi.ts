@@ -98,11 +98,19 @@ router.post('/', (req, res: Response<ResultCommon>) => {
 });
 
 // delete /member/:member_id
-// unfinished: 未实现级联删除
+// 已在数据库中实现级联删除
 router.delete('/:member_id', (req, res: Response<ResultCommon>) => {
   const member_id = req.params.member_id;
-  conn.query($sql.member.deleteMemberById, [member_id], err => {
-    commonDeleteHandler(res, err);
+  conn.query($sql.member.getMemberById, [member_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else if (result.length == 0) {
+      notFoundErrorHandler(res);
+    } else {
+      conn.query($sql.member.deleteMemberById, [member_id], err => {
+        commonDeleteHandler(res, err);
+      });
+    }
   });
 });
 

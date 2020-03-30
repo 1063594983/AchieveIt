@@ -20,9 +20,95 @@ describe('getMember test', function () {
             .send()
             .set('Content-Type', 'application/json')
             .end(function (err, res) {
-                console.log(res.body);
                 expect(res.body.msg).to.be.eql('not found')
                 done();
             })
     })
 });
+
+describe('updateMember test', function () {
+    it('updateMember success', function (done) {
+        request
+            .put(testBaseURL + 'member/15')
+            .send({
+                "member_name": "kkkk",
+                "email": "1063594983@qq.com",
+                "department": "unknown",
+                "leader_email": "unknown",
+                "phone": "18321572818",
+                "job": 5
+            })
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('update success')
+                done();
+            });
+    });
+
+    it('updateMember fail', function (done) {
+        request
+            .put(testBaseURL + 'member/1000')
+            .send({
+                "member_name": "kkk",
+                "email": "1063594983@qq.com",
+                "department": "unknown",
+                "leader_email": "unknown",
+                "phone": "18321572818",
+                "job": 5
+            })
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('not found')
+                done();
+            })
+    })
+});
+
+describe('insertMember test', function () {
+    it('insertMember success', function (done) {
+        request
+            .post(testBaseURL + 'member')
+            .send({
+                "member_name": "jotaro",
+                "email": "1063594983@qq.com",
+                "department": "unknown",
+                "leader_email": "unknown",
+                "phone": "18321572818",
+                "job": 5
+            })
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('insert success')
+                done();
+            });
+    });
+});
+
+
+describe('deleteMember test', function () {
+    it('deleteMember success', function (done) {
+        request
+            .delete(testBaseURL + 'member/23')
+            .send()
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('delete success')
+                done();
+            });
+    });
+
+    it('deleteMember failed', function (done) {
+        request
+            .delete(testBaseURL + 'member/1000')
+            .send()
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('not found')
+                done();
+            });
+    });
+});
+
+
+
+
