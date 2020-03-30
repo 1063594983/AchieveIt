@@ -88,7 +88,7 @@ describe('insertMember test', function () {
 describe('deleteMember test', function () {
     it('deleteMember success', function (done) {
         request
-            .delete(testBaseURL + 'member/23')
+            .delete(testBaseURL + 'member/26')
             .send()
             .set('Content-Type', 'application/json')
             .end(function (err, res) {
