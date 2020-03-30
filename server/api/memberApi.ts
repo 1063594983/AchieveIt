@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../src/config';
 import express, { Response, response } from 'express';
 import $sql from './sqlMap';
 import { GetMemberResult, ResultCommon, getProjectMemberListResult, GetMemberRoleResult } from 'achieve-it-contract';
@@ -8,8 +8,8 @@ import {
   mysqlErrorHandler,
   commomUpdateHandler,
   notFoundErrorHandler
-} from '../util';
-import { conn } from '../mysqlPool';
+} from '../src/util';
+import { conn } from '../src/mysqlPool';
 const router = express.Router();
 
 // get /member/:member_id
