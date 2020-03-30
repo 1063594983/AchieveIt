@@ -110,4 +110,26 @@ TODO
 
 用`nodemon`实现脚本的自动更新
 
+后端api开发书写标准
+例: 在server/src/api/projectApi.ts写了如下api:
+```typescript
+// get /project/:project_id
+router.get('/:project_id', (req, res: Response<GetProjectResult>) => {...})
+```
+要相应的在contract/namespace/project.ts中添加如下内容:
+```typescript
+/**
+ * api: get /project/:project_id
+ */
+
+// request
+export interface ProjectGetBody extends Authorization {}
+
+// result
+export interface GetProjectResult extends ResultCommon {
+  project: Project;
+}
+```
+其中request是请求体格式，result为返回结果格式，一般只有get方法有返回体格式，其他方法默认格式为ResultCommon，可省略不写
+建议: namespace里最好按get, post, put, delete顺序将api分类写
 TODO
