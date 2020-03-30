@@ -88,7 +88,7 @@ describe('insertMember test', function () {
 describe('deleteMember test', function () {
     it('deleteMember success', function (done) {
         request
-            .delete(testBaseURL + 'member/26')
+            .delete(testBaseURL + 'member/36')
             .send()
             .set('Content-Type', 'application/json')
             .end(function (err, res) {
@@ -110,5 +110,28 @@ describe('deleteMember test', function () {
 });
 
 
+describe('getMemberRoleInProject test', function () {
+    it('getMemberRoleInProject success', function (done) {
+        request
+            .get(testBaseURL + 'member/getMemberRoleInProject/20200329M?member_id=1')
+            .send()
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('get success')
+                done();
+            });
+    });
+
+    it('getMemberRoleInProject fail', function (done) {
+        request
+            .get(testBaseURL + 'member/getMemberRoleInProject/2020032M?member_id=1')
+            .send()
+            .set('Content-Type', 'application/json')
+            .end(function (err, res) {
+                expect(res.body.msg).to.be.eql('not found')
+                done();
+            })
+    })
+});
 
 

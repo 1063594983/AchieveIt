@@ -1,12 +1,36 @@
 import config from '../config';
 import express, { Response, response } from 'express';
 import $sql from './sqlMap';
-import { ResultCommon, GetProjectResult } from 'achieve-it-contract';
+import { ResultCommon, GetProjectResult, ProjectList } from 'achieve-it-contract';
 import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from '../util';
 import { conn } from '../mysqlPool';
 import email from '../email';
 
 const router = express.Router();
+
+
+  // get /project/getAllProjects
+  // 获取所有项目的列表
+  router.get('/getAllProjects', (req, res: Response<ProjectList>) => {
+    conn.query($sql.project.getAllProjects, [], (err, result) => {
+      if(err) {
+        mysqlErrorHandler(res, err);
+      } else {
+        for(let i in result) {
+          result[i].status = config.numberMap.projectStatus[result[i].status];
+          result[i].important_events = JSON.parse(result[i].important_events);
+          result[i].technology = JSON.parse(result[i].technology);
+          result[i].business = JSON.parse(result[i].business);
+        }
+        res.json({
+          project_list: result,
+          msg: 'success',
+          status: config.status.SUCCESS
+        })
+      }
+    })
+  })
+
 
 // get /project/:project_id
 // getProject
@@ -292,5 +316,7 @@ router.get('/refuseProject/:project_id', (req, res: Response<ResultCommon>) => {
     }
   })
 })
+
+
 
 export default router;

@@ -28,8 +28,8 @@ import { Notify } from '@/theme';
 @Component
 export default class Login extends Vue {
   form = {
-    username: '1',
-    password: '1'
+    username: '3',
+    password: '3'
   };
   isLoggingIn = false;
 
@@ -40,8 +40,7 @@ export default class Login extends Vue {
   async handleLogin() {
     this.isLoggingIn = true;
     try {
-      const reswult = await userStore.login(this.form);
-      console.log(reswult);
+      await userStore.login(this.form);
       Notify.success('登陆成功', `欢迎回来 ${userStore.currentUser?.username}！`);
       await this.$router.push('/home');
     } catch (e) {

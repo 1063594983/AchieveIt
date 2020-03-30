@@ -4,7 +4,7 @@ import agent from '@/agent';
 interface User {
   username: string;
   token: string;
-  member_id: number;
+  member_id: string;
 }
 
 @Module({ name: 'user' })

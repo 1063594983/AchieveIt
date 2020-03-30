@@ -80,9 +80,7 @@ export default {
     })
   },
   function: {
-    // getFunctionByProjectId: "select * from function where project_id = ?",
     getFunctionByProjectId: pattern.selectPattern({ table_name: 'function', key_name: 'function_id' }),
-    // insertFunction: "insert into function (function_name, project_id, layer) values (?, ?, ?)",
     insertFunction: pattern.insertPattern({ table_name: 'function', select_col: 'function_name, project_id, layer' }),
     setFunctionRelation: 'insert into function_function (first_function_id, second_function_id) values (?, ?)'
   },
@@ -98,7 +96,8 @@ export default {
       table_name: 'project',
       select_col: 'status',
       key_name: 'project_id'
-    })
+    }),
+    getAllProjects: 'select * from project',
   },
   /**
    * @author: zou

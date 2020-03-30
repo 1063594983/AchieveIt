@@ -2,8 +2,8 @@
   <div class="container">
     <div class="left-container">
       <div class="brand" v-once>
-        <img v-if="!isDark" src="../assets/logo.svg" alt="logo" />
-        <img v-else src="../assets/logo-dark.svg" alt="logo" />
+        <img v-if="!isDark" src="../assets/img/logo.svg" alt="logo" />
+        <img v-else src="../assets/img/logo-dark.svg" alt="logo" />
       </div>
       <breadcrumb></breadcrumb>
     </div>
@@ -11,7 +11,7 @@
       <navbar-search></navbar-search>
       <el-dropdown @command="handleCommand" trigger="click">
         <span class="dropdown-link">
-          <img src="../assets/profile.jpg" alt="avatar" />
+          <img src="../assets/img/profile.jpg" alt="avatar" />
           <el-icon name="arrow-down"></el-icon>
         </span>
         <el-dropdown-menu slot="dropdown">

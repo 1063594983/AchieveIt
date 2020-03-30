@@ -2,28 +2,29 @@ var expect = require('chai').expect;
 var request = require('superagent');
 var testBaseURL = require('./util').testBaseURL;
 
-describe('login test', function() {
-  it('login success', function (done) {
+describe('risk test', function() {
+  it('get risk success', function (done) {
+    let testRiskID = 4;
     request
-      .post(testBaseURL + 'user/login')
-      .send('{"username":"1","password":"1"}')
+      .get(testBaseURL + 'risk/' + testRiskID)
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
-        // console.log(res.body.status);
         expect(res.body.status).to.be.eql('ok');
+        expect(res.body.risk).to.not.be.empty;
         done();
       });
   });
   
-  it('login fail', function (done) {
+  it('get risk fail', function (done) {
+    let testRiskID = 9999;
     request
-      .post(testBaseURL + 'user/login')
-      .send('{"username":"1","password":"2"}')
+      .get(testBaseURL + 'risk/' + testRiskID)
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
-        // console.log(res.body.status);
         expect(res.body.status).to.be.eql('error');
+        expect(res.body.risk).to.be.empty;
         done();
-      })
+      });
   });
+  
 });

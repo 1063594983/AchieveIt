@@ -60,3 +60,13 @@ export interface AcceptProjectPutBody extends Authorization {}
 export interface GetProjectResult extends ResultCommon {
   project: Project;
 }
+
+// get /project/getAllProjects
+// 获取所有项目列表
+// Request body
+export interface ProjectListGetBody extends Authorization {}
+
+// Response result
+export interface ProjectList extends ResultCommon {
+  project_list: string[]
+}
