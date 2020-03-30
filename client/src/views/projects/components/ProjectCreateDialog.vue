@@ -5,6 +5,7 @@
     width="420px"
     :close-on-click-modal="false"
     :before-close="onClose"
+    :open="onOpen"
   >
     <el-form :model="form" label-position="left" label-width="5rem">
       <el-form-item label="项目ID">
@@ -41,21 +42,18 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="onClose">取消</el-button>
-      <el-button type="info" @click="onAddDraft">保存到草稿</el-button>
-      <el-button type="primary" @click="onCreateProject">创建</el-button>
+      <el-button type="info" @click="addDraft">保存到草稿</el-button>
+      <el-button type="primary" @click="createProject">创建</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import agent from '@/agent';
-import { projectStore } from '@/store';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ProjectDraft } from '@/store/project.module';
-import { Notify } from '@/theme';
-import { ResultCommon } from 'achieve-it-contract';
+import { projectStore } from '@/store';
 
-const formInit = {
+const formInit = () => ({
   project_id: '',
   project_name: '',
   client_info: '',
@@ -63,17 +61,19 @@ const formInit = {
   end_time: '',
   technology: [],
   business: []
-};
+});
 
 @Component
 export default class ProjectCreateDialog extends Vue {
-  @Prop() visible!: boolean;
-  @Prop() onClose!: () => void;
+  @Prop({ required: true }) visible!: boolean;
+  @Prop({ required: true }) onClose!: () => void;
+  @Prop({ required: true }) onAddDraft!: (form: ProjectDraft) => void;
+  @Prop({ required: true }) onCreateProject!: (form: ProjectDraft) => boolean;
 
   businessType = ['企业内部管理', '技术框架开发', '面向客户软件'].map(i => ({ label: i, value: i }));
   developingStack = ['node.js', 'Vue.js', 'React.js', 'Java', 'Golang'].map(i => ({ label: i, value: i }));
 
-  form: ProjectDraft = formInit;
+  form: ProjectDraft = formInit();
   treeParams = {
     clickParent: false,
     filterable: false,
@@ -85,22 +85,23 @@ export default class ProjectCreateDialog extends Vue {
     }
   };
 
-  async onCreateProject() {
-    let result: ResultCommon | null = null;
-    try {
-      result = await agent.project.insert({ ...this.form, status: 0 });
-      Notify.success('创建项目《' + this.form.project_name + '》成功');
-      this.onClose();
-    } catch (e) {
-      Notify.error('创建项目《' + this.form.project_name + '》失败', result?.msg);
+  @Watch('visible')
+  onOpen() {
+    if (this.visible) {
+      this.form = projectStore.currentDraft ?? formInit();
     }
+    projectStore.setCurrentDraft(null);
   }
 
-  onAddDraft() {
-    projectStore.addProjectDraft(this.form);
-    Notify.info('保存《' + this.form.project_name + '》到草稿箱');
-    this.form = formInit;
+  addDraft() {
     this.onClose();
+    this.onAddDraft(this.form);
+  }
+  createProject(form: ProjectDraft) {
+    const result = this.onCreateProject(form);
+    if (result) {
+      this.onClose();
+    }
   }
 }
 </script>
