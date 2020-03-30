@@ -12,6 +12,8 @@ const loadTheme = async () => {
   if (commonStore.isDarkMode) {
     // @ts-ignore
     await import('element-theme-dark');
+    // @ts-ignore
+    await import('./assets/darkMode.scss');
   }
 };
 

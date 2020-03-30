@@ -49,6 +49,15 @@ const menu: RouteConfig[] = [
         }
       },
       {
+        name: 'projects.review',
+        path: 'review',
+        component: () => import('@/views/projects/review.vue'),
+        meta: {
+          icon: 'receiving',
+          title: '项目审核'
+        }
+      },
+      {
         name: 'projects.defect',
         path: 'defect',
         component: () => import('@/views/projects/defect.vue'),
@@ -82,6 +91,27 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'aim',
           title: '风险管理'
+        }
+      }
+    ]
+  },
+  {
+    name: 'human',
+    path: '/human',
+    component: Layout,
+    redirect: '/human/index',
+    meta: {
+      icon: 'coordinate',
+      title: '人事信息'
+    },
+    children: [
+      {
+        name: 'human.index',
+        path: 'index',
+        component: () => import('@/views/human/index.vue'),
+        meta: {
+          icon: 'alarm-clock',
+          title: '工时管理'
         }
       }
     ]
