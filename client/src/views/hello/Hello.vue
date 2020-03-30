@@ -6,9 +6,14 @@
       <el-button plain round @click="go('login')" v-if="!currentUser">登录</el-button>
     </div>
     <div v-else>
-      <h1>Achieve It</h1>
-      <h2>{{ currentUser.username }}，你好！</h2>
-      <el-button plain round @click="go('home')">前往主页</el-button>
+      <div class="logo">
+        <span class="achieve">Achieve</span>
+        <span class="it">It</span>
+      </div>
+      <h2>> 你好，{{ currentUser.username }}！</h2>
+      <h2>> 请选择你的指令</h2>
+      <h2>> <span class="link" @click="go('home')">前往主页</span></h2>
+      <h2>> <span class="link" @click="logout">退出登录</span></h2>
     </div>
   </div>
 </template>
@@ -20,6 +25,9 @@ import { userStore } from '@/store';
 export default class Hello extends Vue {
   go(path: string) {
     this.$router.push(path);
+  }
+  logout() {
+    userStore.logout();
   }
   get currentUser() {
     return userStore.currentUser;
@@ -33,6 +41,26 @@ export default class Hello extends Vue {
   height: 100vh;
   h2 {
     font-weight: normal;
+  }
+  .link {
+    cursor: pointer;
+    border-bottom: 2px solid rgb(128, 128, 128);
+  }
+  .logo {
+    display: flex;
+    font-size: 30px;
+    font-weight: 500;
+    align-items: center;
+    font-family: Consolas, monospace;
+    .achieve {
+    }
+    .it {
+      margin-left: 10px;
+      background-color: #00adff;
+      padding: 4px 10px;
+      border-radius: 3px;
+      color: white;
+    }
   }
 }
 </style>

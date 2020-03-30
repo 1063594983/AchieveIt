@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
 import store, { userStore } from '@/store';
 import NProgress from 'nprogress';
+import _ from 'lodash';
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,15 @@ const menu: RouteConfig[] = [
         }
       },
       {
+        name: 'projects.review',
+        path: 'review',
+        component: () => import('@/views/projects/review.vue'),
+        meta: {
+          icon: 'receiving',
+          title: '项目审核'
+        }
+      },
+      {
         name: 'projects.defect',
         path: 'defect',
         component: () => import('@/views/projects/defect.vue'),
@@ -81,6 +91,27 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'aim',
           title: '风险管理'
+        }
+      }
+    ]
+  },
+  {
+    name: 'human',
+    path: '/human',
+    component: Layout,
+    redirect: '/human/index',
+    meta: {
+      icon: 'coordinate',
+      title: '人事信息'
+    },
+    children: [
+      {
+        name: 'human.index',
+        path: 'index',
+        component: () => import('@/views/human/index.vue'),
+        meta: {
+          icon: 'alarm-clock',
+          title: '工时管理'
         }
       }
     ]
@@ -162,5 +193,14 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-export { menu };
+const flatMenu = _.flatMap(menu, i =>
+  i.children!.map(child => ({
+    title: child.meta.title!,
+    icon: child.meta.icon!,
+    fatherTitle: i.meta.title!,
+    name: child.name!
+  }))
+);
+
+export { menu, flatMenu };
 export default router;

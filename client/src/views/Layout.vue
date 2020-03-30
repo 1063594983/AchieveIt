@@ -30,14 +30,20 @@ export default class Layout extends Vue {}
 .wrapper {
   width: 100vw;
   height: 100vh;
+  min-width: 700px;
 
   & > .el-container {
     height: 100vh;
     overflow: hidden;
   }
+
+  .el-aside {
+    border-right: 1px solid rgba(128, 128, 128, 0.06);
+  }
 }
 
 .el-header {
   padding: 0;
+  z-index: 1000;
 }
 </style>

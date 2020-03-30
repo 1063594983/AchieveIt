@@ -17,7 +17,6 @@ export default class Main extends Vue {
     const user = userStore.currentUser!;
     const result = await agent.member.get(user.member_id, { token: user.token });
     this.memberDetail = JSON.stringify(result, null, 2);
-    console.log(result);
   }
 }
 </script>
