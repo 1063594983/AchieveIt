@@ -15,7 +15,7 @@ describe('risk test', function() {
       });
   });
   
-  it('get risk success', function (done) {
+  it('get risk fail', function (done) {
     let testRiskID = 9999;
     request
       .get(testBaseURL + 'risk/' + testRiskID)
