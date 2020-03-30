@@ -24,7 +24,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { userStore } from '@/store';
 import { Notify } from '@/theme';
-import agent from '@/agent';
 
 @Component
 export default class Login extends Vue {

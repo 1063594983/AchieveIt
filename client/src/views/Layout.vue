@@ -20,6 +20,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Navbar from '@/components/Navbar.vue';
 import Sidebar from '@/components/Sidebar.vue';
+
 @Component({
   components: { Sidebar, Navbar }
 })

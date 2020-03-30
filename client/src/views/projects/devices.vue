@@ -15,7 +15,7 @@ export default class Devices extends Vue {
   deviceProject = 'loading...';
   async mounted() {
     const user = userStore.currentUser!;
-    const result = await agent.device.get(1, { token: user.token });
+    const result = await agent.device.get('1', { token: user.token });
     this.deviceProject = JSON.stringify(result, null, 2);
   }
 }

@@ -1,49 +1,59 @@
 import { axiosDelete, axiosGet, axiosPost, axiosPut } from '@/agent/utils';
+import { Subtract } from 'utility-types';
+
 import {
-  UserLoginResult,
-  UserLoginBody,
+  ActivityDeleteBody,
+  ActivityGetBody,
+  ActivityPostBody,
+  ActivityPutBody,
+  Authorization,
+  DeviceDeleteBody,
+  DeviceGetBody,
+  DevicePostBody,
+  DevicePutBody,
+  GetActivityResult,
+  GetDeviceResult,
   GetMemberResult,
-  MemberPostBody,
-  MemberPutBody,
   GetProjectResult,
-  ProjectPostBody,
-  ProjectPutBBody,
-  MemberGetBody,
-  MemberDeleteBody,
-  ProjectGetBody,
-  ProjectDeleteBody,
   GetProjectRiskListResult,
   GetRiskResult,
+  MemberDeleteBody,
+  MemberGetBody,
+  MemberPostBody,
+  MemberPutBody,
+  ProjectDeleteBody,
+  ProjectGetBody,
+  ProjectPostBody,
+  ProjectPutBBody,
   ProjectRiskListGetBody,
+  ResultCommon,
   RiskDeleteBody,
   RiskGetBody,
   RiskPostBody,
   RiskPutBody,
-  ResultCommon,
-  DeviceGetBody,
-  DeviceDeleteBody,
-  DevicePutBody,
-  DevicePostBody,
-  GetDeviceResult,
-  ActivityPostBody,
-  ActivityDeleteBody,
-  GetActivityResult,
-  ActivityGetBody,
-  ActivityPutBody
+  UserLoginBody,
+  UserLoginResult
 } from 'achieve-it-contract';
+import { userStore } from '@/store';
 
+function wrapToken(body: {}) {
+  if ('token' in body) return body;
+  return { ...body, token: userStore.currentUser?.token };
+}
+
+type authBody = { token: string };
 function createCRUD<
-  GetBody extends {},
-  DeleteBody extends {},
-  PutBody extends {},
-  PostBody extends {},
+  GetBody extends Authorization,
+  DeleteBody extends Authorization,
+  PutBody extends Authorization,
+  PostBody extends Authorization,
   GetResult extends ResultCommon
 >(namespace: string) {
   return {
-    get: (id: number, body: GetBody) => axiosGet<GetResult>(namespace, id.toString(), body),
-    insert: (body: PostBody) => axiosPost(namespace, '', body),
-    update: (id: number, body: PutBody) => axiosPut(namespace, id.toString(), body),
-    delete: (id: number, body: DeleteBody) => axiosDelete(namespace, id.toString(), body)
+    get: (id: string, body: Subtract<GetBody, authBody>) => axiosGet<GetResult>(namespace, id, wrapToken(body)),
+    insert: (body: Subtract<PostBody, authBody>) => axiosPost(namespace, '', wrapToken(body)),
+    update: (id: string, body: Subtract<PutBody, authBody>) => axiosPut(namespace, id, wrapToken(body)),
+    delete: (id: string, body: Subtract<DeleteBody, authBody>) => axiosDelete(namespace, id, wrapToken(body))
   };
 }
 const user = {

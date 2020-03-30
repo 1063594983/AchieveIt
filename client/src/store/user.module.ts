@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import agent from '@/agent';
 
 interface User {

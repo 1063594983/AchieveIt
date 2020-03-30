@@ -19,8 +19,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { userStore } from '@/store';
+
 @Component
 export default class Hello extends Vue {
   go(path: string) {
