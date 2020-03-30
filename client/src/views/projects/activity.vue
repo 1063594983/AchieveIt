@@ -15,7 +15,7 @@ export default class Activity extends Vue {
   activityDetail = 'loading...';
   async mounted() {
     const user = userStore.currentUser!;
-    const result = await agent.activity.get(2, { token: user.token });
+    const result = await agent.activity.get('2', { token: user.token });
     this.activityDetail = JSON.stringify(result, null, 2);
   }
 }

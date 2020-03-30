@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { userStore, commonStore } from '@/store';
+import { commonStore, userStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import NavbarSearch from '@/components/NavbarSearch.vue';
 

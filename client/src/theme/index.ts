@@ -9,6 +9,13 @@ const Notify = {
       message
     });
   },
+  info(title: string, message?: string) {
+    Notification.info({
+      position: 'bottom-right',
+      title,
+      message
+    });
+  },
   error(title: string, message?: string) {
     Notification.error({
       position: 'bottom-right',

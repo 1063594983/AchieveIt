@@ -15,7 +15,7 @@ export default class Risk extends Vue {
   riskDetail = 'loading...';
   async mounted() {
     const user = userStore.currentUser!;
-    const result = await agent.risk.get(4, { token: user.token });
+    const result = await agent.risk.get('4', { token: user.token });
     this.riskDetail = JSON.stringify(result, null, 2);
   }
 }

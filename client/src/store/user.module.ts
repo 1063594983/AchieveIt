@@ -1,4 +1,5 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import agent from '@/agent';
 
 interface User {
   username: string;
@@ -19,9 +20,10 @@ export default class UserModule extends VuexModule {
     return this.currentUser !== null;
   }
 
-  @Action({ commit: 'modifyUser' })
-  login(user: User) {
-    return user;
+  @Action({ commit: 'modifyUser', rawError: true })
+  async login(form: { username: string; password: string }) {
+    const result = await agent.user.login(form);
+    return { token: result.token, member_id: result.member_id, username: form.username };
   }
 
   @Action({ commit: 'modifyUser' })

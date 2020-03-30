@@ -1,6 +1,6 @@
 import { ResultCommon, Authorization } from "../common";
 
-interface Project {
+export interface Project {
   project_id: number;
   project_name: string;
   client_info: string;
