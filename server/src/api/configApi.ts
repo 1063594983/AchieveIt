@@ -3,22 +3,6 @@
  * @description: config相关的api定义
  */
 
-<<<<<<< HEAD:server/api/configApi.ts
-import config from '../config';
-import express, { Response, response } from 'express';
-import mysql from 'mysql';
-import $sql from './sqlMap';
-import { ResultCommon, GetConfigResult } from 'achieve-it-contract';
-import {
-  mysqlErrorHandler,
-  notFoundErrorHandler,
-  commonDeleteHandler,
-  commomInsertHandler,
-  commomUpdateHandler
-} from '../util';
-import { conn } from '../mysqlPool';
-import e from 'express';
-=======
 import config from "../config";
 import express, { Response, response } from "express";
 import $sql from './sqlMap'
@@ -26,7 +10,6 @@ import { ResultCommon, GetConfigResult } from "achieve-it-contract";
 import { mysqlErrorHandler, notFoundErrorHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
 import { conn } from '../mysqlPool';
 import email from "../email";
->>>>>>> f3a96436c2683d604a85f2a7dfd04b4527dc6885:server/src/api/configApi.ts
 const router = express.Router();
 
 // get /config/:project_id
@@ -48,18 +31,6 @@ router.get('/:project_id', (req, res: Response<GetConfigResult>) => {
 });
 
 // post /config
-<<<<<<< HEAD:server/api/configApi.ts
-router.post('/', (req, res: Response<ResultCommon>) => {
-  const details = req.body;
-  conn.query(
-    $sql.config.insertConfig,
-    [details.git_address, details.server_menu, details.vm_space, details.project_id],
-    (err, result) => {
-      commomInsertHandler(res, err);
-    }
-  );
-});
-=======
 router.post("/", (req, res: Response<ResultCommon>) => {
     const details = req.body;
     conn.query($sql.config.insertConfig, [details.git_address, details.server_menu, details.vm_space, details.project_id], (err) => {
@@ -91,7 +62,6 @@ router.post("/", (req, res: Response<ResultCommon>) => {
         }
     })
 })
->>>>>>> f3a96436c2683d604a85f2a7dfd04b4527dc6885:server/src/api/configApi.ts
 
 // put /config/:project_id
 router.put('/:project_id', (req, res: Response<ResultCommon>) => {

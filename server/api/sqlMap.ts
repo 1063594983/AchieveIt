@@ -51,7 +51,7 @@ export default {
     },
     member: {
         getMemberById: pattern.selectPattern({
-            table_name: "member", 
+            table_name: "member",
             key_name: "member_id"
         }),
         // updateMemberById: "update member set member_name = ?, email = ?, department = ?, leader_email = ?, phone = ?, job = ? where member_id = ?",
@@ -61,7 +61,7 @@ export default {
             key_name: "member_id"
         }),
         insertMember: pattern.insertPattern({
-            table_name: "member", 
+            table_name: "member",
             select_col: "member_name, email, department, leader_email, phone, job"
         }),
         deleteMemberById: pattern.deletePattern({
@@ -78,12 +78,12 @@ export default {
     function: {
         // getFunctionByProjectId: "select * from function where project_id = ?",
         getFunctionByProjectId: pattern.selectPattern({
-            table_name: "function", 
+            table_name: "function",
             key_name: "function_id"
         }),
         // insertFunction: "insert into function (function_name, project_id, layer) values (?, ?, ?)",
         insertFunction: pattern.insertPattern({
-            table_name: "function", 
+            table_name: "function",
             select_col: "function_name, project_id, layer"
         }),
         setFunctionRelation: "insert into function_function (first_function_id, second_function_id) values (?, ?)"
@@ -103,12 +103,8 @@ export default {
         getDeviceById: "select * from device where device_id = ?",
         updateDeviceById: "update device set device_name = ?, device_status = ? where device_id = ?",
         insertDevice: "insert into device (device_name, device_status) values (?, ?)",
-<<<<<<< HEAD
-        deleteDeviceById: "delete from device where device_id = ?"
-=======
         deleteDeviceById: "delete from device where device_id = ?",
         getProjectDeviceList: "select a.device_id, a.device_name from device a inner join project_device b on a.device_id = b.device_id where b.project_id = ?"
->>>>>>> c909d57e6b773b5ad72d80e4ccd5d185f5183fc7
 
     },
     /**
@@ -134,9 +130,6 @@ export default {
      * @author: zou
      */
     config: {
-<<<<<<< HEAD
-        getConfigById: "select * from config"
-=======
         getConfigByProjectId: pattern.selectPattern({
             table_name: "config",
             key_name: "project_id"
@@ -176,6 +169,5 @@ export default {
             table_name: "work_time",
             key_name: "work_time_id"
         })
->>>>>>> c909d57e6b773b5ad72d80e4ccd5d185f5183fc7
     }
 }

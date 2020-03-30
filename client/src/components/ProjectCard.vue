@@ -12,7 +12,7 @@
       ></el-avatar>
       <el-avatar
         size="small"
-        src="https://tupian.qqw21.com/article/UploadPic/2019-8/20198816503664815.jpeg"
+        src="https://lh3.googleusercontent.com/proxy/2E_JBphH_18RF_rxm_amyvQbL9J1CMLBmUGCFVjUjrzb_BhLNNN0164UU09lBrjdFYl3s6fCnALC5JgAIzZ5bop8GtxLvVCIWVGtojF5D5hLK11JBnS9ziopuypudputFg"
       ></el-avatar>
     </div>
     <div class="bottom-container">
@@ -62,8 +62,7 @@ export default class ProjectCard extends Vue {}
     margin-bottom: 20px;
   }
   .bottom-container {
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin: 10px -10px -10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
