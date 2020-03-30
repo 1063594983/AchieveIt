@@ -73,7 +73,11 @@ export default {
       key_name: 'member_id'
     }),
     getMemberRole: "select * from member_project where project_id = ? and member_id = ?",
-    changeMemberRole: "update member_project set role = ?, authority = ? where project_id = ? and member_id = ?"
+    changeMemberRole: "update member_project set role = ?, authority = ? where project_id = ? and member_id = ?",
+    addMemberToProject: pattern.insertPattern({
+      table_name: 'member_project',
+      select_col: "project_id, member_id, role, authority"
+    })
   },
   function: {
     // getFunctionByProjectId: "select * from function where project_id = ?",

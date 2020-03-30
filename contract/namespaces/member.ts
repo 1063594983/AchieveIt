@@ -52,12 +52,25 @@ interface ProjectMemberRoleGetBody extends Authorization {
   member_id: number
 }
 
+/**
+ * role:
+ * ["开发 Leader", "测试 Leader", "开发人员", "测试人员", "配置管理人员", "QA", "EPG"]
+ */
+
+// post /member/addMemberToProject/:project_id
+interface AddMemberToProjectPostBody extends Authorization {
+  member_id: number,
+  role: number[], // [0, 1, 2] --> ["开发 Leader", "测试 Leader", "开发人员"]
+  authority: string[] //[git.read, git.write, project.read, project.write, in_email_list.receive, in_email_list.send, in_work_time_register]
+}
+
 // put /member/changeMemberRole/:project_id
 interface ProjectMemberRolePutBody extends Authorization {
   member_id: number,
-  role?: string,  // "0,1,2" --> ["开发 Leader", "测试 Leader", "开发人员"]
-  authority?: string
+  role?: number[],  // [0, 1, 2] --> ["开发 Leader", "测试 Leader", "开发人员"]
+  authority?: string[]  //[git.read, git.write, project.read, project.write, in_email_list.receive, in_email_list.send, in_work_time_register]
 }
+
 
 // responseResult
 export interface GetMemberResult extends ResultCommon {
