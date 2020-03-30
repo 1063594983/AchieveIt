@@ -13,31 +13,48 @@ interface Config {
   project_id: string;
 }
 
-// requestBody
 
-// get /config/:project_id
-interface ConfigGetBody extends Authorization {}
+/**
+ * api: get /config/:project_id
+ */
 
-// post /config
-// 配置库建立后，发送邮件给项目经理通知其进行人员权限设置
-interface ConfigPostBody extends Authorization {
+// request
+export interface ConfigGetBody extends Authorization {}
+
+// result
+export interface GetConfigResult extends ResultCommon {
+  config?: Config;
+}
+
+
+/**
+ * api: post /config
+ * description: 组织级配置管理员建立配置库后，发送邮件给项目经理通知其进行人员权限设置(由后端完成)
+ */
+
+// request
+export interface ConfigPostBody extends Authorization {
   git_address?: string;
   server_menu?: string;
   vm_space?: string;
   project_id: string;
 }
 
-// put /config/:project_id
+
+/**
+ * api: put /config/:project_id
+ */
+// request
 interface ConfigPutBody extends Authorization {
   git_address?: string;
   server_menu?: string;
   vm_space?: string;
 }
 
-// delete /config/:project_id
+
+/**
+ * api: delete /config/:project_id
+ */
+// request
 interface ConfigDeleteBody extends Authorization {}
 
-// responseResult
-export interface GetConfigResult extends ResultCommon {
-  config?: Config;
-}

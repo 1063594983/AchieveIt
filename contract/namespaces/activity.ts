@@ -32,27 +32,46 @@ interface Activity {
     ]
  */
 
-// requestBody
 
-// get /activity/:activiy_id
+ /**
+  * api: get /activity/:activiy_id
+  */
+
+// request
 export interface ActivityGetBody extends Authorization {}
 
-// post /activity
+// result
+export interface GetActivityResult extends ResultCommon {
+  activity: Activity;
+}
+
+
+/**
+ * api: post /activity
+ */
+
+// request
 export interface ActivityPostBody extends Authorization {
   activity_name: string; // 0-0 --> 工程活动-需求开发
   activity_content?: string;
 }
 
-// put /activity/:activity_id
+
+/**
+ * api: put /activity/:activity_id
+ */
+
+// request
 export interface ActivityPutBody extends Authorization {
   activity_name?: string;
   activity_content?: string;
 }
 
-// delete /activity/:activity_id
+
+/**
+ * api: delete /activity/:activity_id
+ */
+
+// request
 export interface ActivityDeleteBody extends Authorization {}
 
-// responseResult
-export interface GetActivityResult extends ResultCommon {
-  activity: Activity;
-}
