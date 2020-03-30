@@ -7,7 +7,7 @@
       <el-table-column align="right" width="220px">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="editProject(scope.row)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="createProject(scope.row)">提交</el-button>
+          <el-button size="mini" type="primary" @click="createProject(scope.row)">创建</el-button>
           <el-button size="mini" type="danger" @click="deleteProject(scope.row)">删除</el-button>
         </template>
       </el-table-column>

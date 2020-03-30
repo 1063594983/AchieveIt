@@ -42,7 +42,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="onClose">取消</el-button>
-      <el-button type="info" @click="addDraft">保存到草稿</el-button>
+      <el-button type="info" @click="addDraft">保存到草稿箱</el-button>
       <el-button type="primary" @click="createProject">创建</el-button>
     </div>
   </el-dialog>

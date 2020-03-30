@@ -1,8 +1,12 @@
 <template>
   <div>
-    <el-button @click="dialogFormVisible = true">创建项目</el-button>
-    <el-button @click="draftBoxVisible = true">打开草稿箱</el-button>
-    <pre>{{ projectDetail }}</pre>
+    <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
+    <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
+    <el-row :gutter="20">
+      <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="item in projects" :key="item.title">
+        <project-card :project="item"></project-card>
+      </el-col>
+    </el-row>
     <project-create-dialog
       :visible="dialogFormVisible"
       :on-close="onCloseDialog"
@@ -22,17 +26,25 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { projectStore, userStore } from '@/store';
 import agent from '@/agent';
-import ProjectCreateDialog from '@/views/projects/components/ProjectCreateDialog.vue';
-import ProjectDraftBox from '@/views/projects/components/ProjectDraftBox.vue';
+import ProjectCreateDialog from '@/components/ProjectCreateDialog.vue';
+import ProjectDraftBox from '@/components/ProjectDraftBox.vue';
 import { ProjectDraft } from '@/store/project.module';
 import { ResultCommon } from 'achieve-it-contract';
 import { Notify } from '@/theme';
+import ProjectCard from '@/components/ProjectCard.vue';
 
 @Component({
-  components: { ProjectDraftBox, ProjectCreateDialog }
+  components: { ProjectCard, ProjectDraftBox, ProjectCreateDialog }
 })
 export default class Projects extends Vue {
-  projectDetail = 'loading...';
+  projects = [
+    { title: '12' },
+    { title: '123' },
+    { title: '122' },
+    { title: '112' },
+    { title: '212' },
+    { title: '312' }
+  ];
   dialogFormVisible = false;
   draftBoxVisible = false;
 
@@ -57,12 +69,6 @@ export default class Projects extends Vue {
   onAddDraft(form: ProjectDraft) {
     projectStore.addProjectDraft(form);
     Notify.info('保存《' + form.project_name + '》到草稿箱');
-  }
-
-  async mounted() {
-    const user = userStore.currentUser!;
-    const result = await agent.project.get('20200329A', { token: user.token });
-    this.projectDetail = JSON.stringify(result, null, 2);
   }
 }
 </script>

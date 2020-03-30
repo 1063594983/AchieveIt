@@ -6,13 +6,13 @@
   >
     <el-table-column label="Date" prop="date"> </el-table-column>
     <el-table-column label="Name" prop="name"> </el-table-column>
-    <el-table-column align="right">
+    <el-table-column align="right" width="234px">
       <template slot="header">
         <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
       </template>
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-        <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">通过</el-button>
+        <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row)">通过</el-button>
         <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">拒绝</el-button>
       </template>
     </el-table-column>

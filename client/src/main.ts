@@ -3,7 +3,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store, { commonStore } from '@/store';
 import 'normalize.css';
-import './assets/main.scss';
+import './assets/css/main.scss';
 import 'nprogress/nprogress.css';
 import 'vue-class-component/hooks'; // import hooks type to enable auto-complete
 import './theme/element-ui';
@@ -13,7 +13,7 @@ const loadTheme = async () => {
     // @ts-ignore
     await import('element-theme-dark');
     // @ts-ignore
-    await import('./assets/darkMode.scss');
+    await import('./assets/css/darkMode.scss');
   }
 };
 
