@@ -6,7 +6,7 @@ describe('login test', function() {
   it('login success', function (done) {
     request
       .post(testBaseURL + 'user/login')
-      .send('{"username":"1","password":"1"}')
+      .send('{"username":"3","password":"3"}')
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
         // console.log(res.body.status);

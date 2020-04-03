@@ -22,7 +22,7 @@ describe('risk test', function() {
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
         expect(res.body.status).to.be.eql('error');
-        expect(res.body.risk).to.be.empty;
+        expect(res.body.msg).to.be.eql('not found');
         done();
       });
   });
