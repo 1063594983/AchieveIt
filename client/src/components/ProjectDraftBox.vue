@@ -1,17 +1,22 @@
 <template>
-  <el-drawer title="项目草稿箱" :visible.sync="visible" :before-close="onClose" direction="rtl" size="70%">
-    <el-table :data="drafts">
-      <el-table-column property="project_id" label="ID"></el-table-column>
-      <el-table-column property="project_name" label="项目名"></el-table-column>
-      <el-table-column property="client_info" label="客户主体"></el-table-column>
-      <el-table-column align="right" width="220px">
-        <template slot-scope="scope">
-          <el-button size="mini" type="info" @click="editProject(scope.row)">编辑</el-button>
-          <el-button size="mini" type="primary" @click="createProject(scope.row)">创建</el-button>
-          <el-button size="mini" type="danger" @click="deleteProject(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <el-drawer :visible.sync="visible" :before-close="onClose" size="60%">
+    <div slot="title">
+      <h3>项目草稿箱</h3>
+    </div>
+    <div class="table-container">
+      <el-table :data="drafts" border>
+        <el-table-column property="project_id" label="ID"></el-table-column>
+        <el-table-column property="project_name" label="项目名"></el-table-column>
+        <el-table-column property="client_info" label="客户主体"></el-table-column>
+        <el-table-column align="right" width="220px">
+          <template slot-scope="scope">
+            <el-button size="mini" type="info" @click="editProject(scope.row)">编辑</el-button>
+            <el-button size="mini" type="primary" @click="createProject(scope.row)">创建</el-button>
+            <el-button size="mini" type="danger" @click="deleteProject(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </el-drawer>
 </template>
 
@@ -44,4 +49,11 @@ export default class ProjectDraftBox extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+h3 {
+  color: rgb(150, 150, 150);
+}
+.table-container {
+  padding: 10px;
+}
+</style>

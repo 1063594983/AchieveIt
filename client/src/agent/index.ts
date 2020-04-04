@@ -14,9 +14,11 @@ import {
   GetActivityResult,
   GetDeviceResult,
   GetMemberResult,
+  GetMemberWorkTimeListResult,
   GetProjectResult,
   GetProjectRiskListResult,
   GetRiskResult,
+  GetWorkTimeResult,
   MemberDeleteBody,
   MemberGetBody,
   MemberPostBody,
@@ -32,7 +34,11 @@ import {
   RiskPostBody,
   RiskPutBody,
   UserLoginBody,
-  UserLoginResult
+  UserLoginResult,
+  WorkTimeDeleteBody,
+  WorkTimeGetBody,
+  WorkTimePostBody,
+  WorkTimePutBody,
 } from 'achieve-it-contract';
 import { userStore } from '@/store';
 
@@ -41,7 +47,7 @@ function wrapToken(body: {}) {
   return { ...body, token: userStore.currentUser?.token };
 }
 
-type authBody = { token: string };
+export type authBody = { token: string };
 function createCRUD<
   GetBody extends Authorization,
   DeleteBody extends Authorization,
@@ -53,29 +59,52 @@ function createCRUD<
     get: (id: string, body: Subtract<GetBody, authBody>) => axiosGet<GetResult>(namespace, id, wrapToken(body)),
     insert: (body: Subtract<PostBody, authBody>) => axiosPost(namespace, '', wrapToken(body)),
     update: (id: string, body: Subtract<PutBody, authBody>) => axiosPut(namespace, id, wrapToken(body)),
-    delete: (id: string, body: Subtract<DeleteBody, authBody>) => axiosDelete(namespace, id, wrapToken(body))
+    delete: (id: string, body: Subtract<DeleteBody, authBody>) => axiosDelete(namespace, id, wrapToken(body)),
   };
 }
+
+// api user
 const user = {
-  login: (loginBody: UserLoginBody) => axiosPost<UserLoginResult>('user', 'login', loginBody)
+  login: (loginBody: UserLoginBody) => axiosPost<UserLoginResult>('user', 'login', loginBody),
 };
 
+// api member
 const member = createCRUD<MemberGetBody, MemberDeleteBody, MemberPutBody, MemberPostBody, GetMemberResult>('member');
 
+// api project
 const project = createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>(
   'project'
 );
 
+// api risk
+const riskCRUD = createCRUD<RiskGetBody, RiskDeleteBody, RiskPutBody, RiskPostBody, GetRiskResult>('risk');
 const risk = {
-  ...createCRUD<RiskGetBody, RiskDeleteBody, RiskPutBody, RiskPostBody, GetRiskResult>('risk'),
+  ...riskCRUD,
   ofProject: (projectId: number, body: ProjectRiskListGetBody) =>
-    axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, body)
+    axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, body),
 };
+
+// api device
 const device = createCRUD<DeviceGetBody, DeviceDeleteBody, DevicePutBody, DevicePostBody, GetDeviceResult>('device');
 
+// api activity
 const activity = createCRUD<ActivityGetBody, ActivityDeleteBody, ActivityPutBody, ActivityPostBody, GetActivityResult>(
   'activity'
 );
+
+// api workTime
+const workTimeCRUD = createCRUD<
+  WorkTimeGetBody,
+  WorkTimeDeleteBody,
+  WorkTimePutBody,
+  WorkTimePostBody,
+  GetWorkTimeResult
+>('workTime');
+const workTime = {
+  ...workTimeCRUD,
+  ofMember: (memberId: string) =>
+    axiosGet<GetMemberWorkTimeListResult>('workTime', `getMemberWorkTimeList/${memberId}`, wrapToken({})),
+};
 
 const agent = {
   user,
@@ -83,7 +112,8 @@ const agent = {
   project,
   risk,
   device,
-  activity
+  activity,
+  workTime,
 };
 
 export default agent;

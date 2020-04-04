@@ -6,14 +6,8 @@
     </div>
     <h2>前端项前端项目前端项目前端项目前端项目目</h2>
     <div class="avatar-container">
-      <el-avatar
-        size="small"
-        src="https://lh3.googleusercontent.com/proxy/2E_JBphH_18RF_rxm_amyvQbL9J1CMLBmUGCFVjUjrzb_BhLNNN0164UU09lBrjdFYl3s6fCnALC5JgAIzZ5bop8GtxLvVCIWVGtojF5D5hLK11JBnS9ziopuypudputFg"
-      ></el-avatar>
-      <el-avatar
-        size="small"
-        src="https://lh3.googleusercontent.com/proxy/2E_JBphH_18RF_rxm_amyvQbL9J1CMLBmUGCFVjUjrzb_BhLNNN0164UU09lBrjdFYl3s6fCnALC5JgAIzZ5bop8GtxLvVCIWVGtojF5D5hLK11JBnS9ziopuypudputFg"
-      ></el-avatar>
+      <img alt="avatar" src="../assets/img/profile.jpg" />
+      <img alt="avatar" src="../assets/img/profile.jpg" />
     </div>
     <div class="bottom-container">
       <div class="status">申请中</div>
@@ -48,6 +42,11 @@ export default class ProjectCard extends Vue {}
   }
   .avatar-container {
     margin-top: 20px;
+    img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
     & > * {
       margin-right: 5px;
     }

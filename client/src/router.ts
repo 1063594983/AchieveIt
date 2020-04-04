@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
-import store, { userStore } from '@/store';
+import store, { commonStore, userStore } from '@/store';
 import NProgress from 'nprogress';
 import _ from 'lodash';
 
@@ -15,7 +15,7 @@ const menu: RouteConfig[] = [
     redirect: '/home/index',
     meta: {
       icon: 's-home',
-      title: '首页'
+      title: '首页',
     },
     children: [
       {
@@ -24,10 +24,10 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           icon: 'user',
-          title: '成员信息'
-        }
-      }
-    ]
+          title: '成员信息',
+        },
+      },
+    ],
   },
   {
     name: 'projects',
@@ -36,7 +36,7 @@ const menu: RouteConfig[] = [
     redirect: '/projects/index',
     meta: {
       icon: 'menu',
-      title: '项目中心'
+      title: '项目中心',
     },
     children: [
       {
@@ -45,8 +45,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/index.vue'),
         meta: {
           icon: 'set-up',
-          title: '项目管理'
-        }
+          title: '项目管理',
+        },
       },
       {
         name: 'projects.review',
@@ -54,8 +54,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/review.vue'),
         meta: {
           icon: 'receiving',
-          title: '项目审核'
-        }
+          title: '项目审核',
+        },
       },
       {
         name: 'projects.defect',
@@ -63,8 +63,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/defect.vue'),
         meta: {
           icon: 'odometer',
-          title: '缺陷管理'
-        }
+          title: '缺陷管理',
+        },
       },
       {
         name: 'projects.devices',
@@ -72,8 +72,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/devices.vue'),
         meta: {
           icon: 'mobile-phone',
-          title: '设备管理'
-        }
+          title: '设备管理',
+        },
       },
       {
         name: 'projects.activity',
@@ -81,8 +81,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/activity.vue'),
         meta: {
           icon: 'time',
-          title: '活动中心'
-        }
+          title: '活动中心',
+        },
       },
       {
         name: 'projects.risk',
@@ -90,10 +90,10 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/risk.vue'),
         meta: {
           icon: 'aim',
-          title: '风险管理'
-        }
-      }
-    ]
+          title: '风险管理',
+        },
+      },
+    ],
   },
   {
     name: 'human',
@@ -102,7 +102,7 @@ const menu: RouteConfig[] = [
     redirect: '/human/index',
     meta: {
       icon: 'coordinate',
-      title: '人事信息'
+      title: '人事信息',
     },
     children: [
       {
@@ -111,10 +111,10 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/human/index.vue'),
         meta: {
           icon: 'alarm-clock',
-          title: '工时管理'
-        }
-      }
-    ]
+          title: '工时管理',
+        },
+      },
+    ],
   },
   {
     name: 'setting',
@@ -123,7 +123,7 @@ const menu: RouteConfig[] = [
     redirect: '/setting/index',
     meta: {
       icon: 'setting',
-      title: '首选项'
+      title: '首选项',
     },
     children: [
       {
@@ -132,11 +132,11 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/setting/index.vue'),
         meta: {
           icon: 'sunny',
-          title: '界面设置'
-        }
-      }
-    ]
-  }
+          title: '界面设置',
+        },
+      },
+    ],
+  },
 ];
 
 const routes: RouteConfig[] = [
@@ -144,48 +144,58 @@ const routes: RouteConfig[] = [
     path: '/login',
     name: 'Login',
     meta: {
-      noAuth: true
+      noAuth: true,
     },
-    component: () => import('@/views/login/Login.vue')
+    component: () => import('@/views/login/Login.vue'),
   },
   {
     path: '/',
     name: 'Hello',
     meta: {
-      noAuth: true
+      noAuth: true,
     },
-    component: () => import('@/views/hello/Hello.vue')
+    component: () => import('@/views/hello/Hello.vue'),
   },
   ...menu,
   {
     path: '*',
     name: '404',
     meta: {
-      noAuth: true
+      noAuth: true,
     },
-    component: () => import('@/views/404.vue')
-  }
+    component: () => import('@/views/404.vue'),
+  },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 router.beforeEach(async (to, from, next) => {
   // 与vuex-persist兼容使用，保证状态已经完全存储了
   // @ts-ignore
   await store.restored;
-  if (to.matched.some(record => !record.meta.noAuth)) {
-    if (!userStore.isAuth) {
-      next({ name: 'Login' });
-    } else {
-      NProgress.start();
-      next();
-    }
-  } else {
+
+  // 如果设置了“跳过欢迎界面”，则直接跳转到主页
+  if (to.matched.some((page) => page.name === 'Hello') && !commonStore.showHello) {
+    next({ name: 'home' });
+  }
+
+  // 若用户已经登录，则均可以访问
+  if (userStore.isAuth) {
+    NProgress.start();
     next();
+  }
+
+  // 若用户未登录，则除了部分页面，都会跳转到Login
+  else {
+    if (to.matched.some((page) => page.meta.noAuth)) {
+      next();
+    } else {
+      next({ name: 'Login' });
+    }
   }
 });
 
@@ -193,12 +203,12 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-const flatMenu = _.flatMap(menu, i =>
-  i.children!.map(child => ({
+const flatMenu = _.flatMap(menu, (i) =>
+  i.children!.map((child) => ({
     title: child.meta.title!,
     icon: child.meta.icon!,
     fatherTitle: i.meta.title!,
-    name: child.name!
+    name: child.name!,
   }))
 );
 

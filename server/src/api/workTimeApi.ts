@@ -8,11 +8,11 @@ import express, { Response } from 'express';
 import $sql from './sqlMap';
 import { conn } from '../mysqlPool';
 import { mysqlErrorHandler, commomInsertHandler } from '../util';
-import { GetMemberWorkTimeListResul, ResultCommon } from 'achieve-it-contract';
+import { GetMemberWorkTimeListResult, ResultCommon } from 'achieve-it-contract';
 const router = express.Router();
 
 // get /workTime/getMemberWorkTimeList/:member_id
-router.get("/getMemberWorkTimeList/:member_id", (req, res: Response<GetMemberWorkTimeListResul>) => {
+router.get("/getMemberWorkTimeList/:member_id", (req, res: Response<GetMemberWorkTimeListResult>) => {
     const member_id = req.params.member_id;
     conn.query($sql.workTime.getMemberWorkTimeList, [member_id], (err, result) => {
         if (err) {

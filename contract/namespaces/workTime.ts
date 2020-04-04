@@ -23,7 +23,7 @@ interface WorkTime {
 export interface MemberWorkTimeListGetBody extends Authorization {}
 
 // result
-export interface GetMemberWorkTimeListResul extends ResultCommon {
+export interface GetMemberWorkTimeListResult extends ResultCommon {
   member_id: number,
   work_time_list: WorkTime[]
 }
@@ -32,10 +32,10 @@ export interface GetMemberWorkTimeListResul extends ResultCommon {
  * api: get /workTime/:work_time_id
  */
 // request
-interface workTimeGetBody extends Authorization {}
+export interface WorkTimeGetBody extends Authorization {}
 
 // result
-export interface getWorkTimeResult extends ResultCommon {
+export interface GetWorkTimeResult extends ResultCommon {
   work_time?: WorkTime;
 }
 
@@ -59,7 +59,7 @@ export interface WorkTimePostBody extends Authorization {
  */
 
 // request
-interface workTimePutBody extends Authorization {
+export interface WorkTimePutBody extends Authorization {
   member_id?: number;
   feature_id?: number;
   activity_content?: string;
@@ -73,5 +73,5 @@ interface workTimePutBody extends Authorization {
  */
 
 // request
-interface workTimeDeleteBody extends Authorization {}
+export interface WorkTimeDeleteBody extends Authorization {}
 

@@ -2,7 +2,8 @@
   <div class="container">
     <el-card shadow="hover" class="login">
       <div slot="header">
-        <el-button type="text" @click="handleBack"><el-icon name="back"></el-icon> 返回</el-button>
+        <el-button v-if="canGoHome" type="text" @click="handleBack"><el-icon name="back"></el-icon> 返回</el-button>
+        <b v-else>登录</b>
       </div>
       <el-form v-model="form" label-position="left" label-width="4rem">
         <el-form-item label="用户名">
@@ -22,14 +23,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { userStore } from '@/store';
+import { commonStore, userStore } from '@/store';
 import { Notify } from '@/theme';
 
 @Component
 export default class Login extends Vue {
+  get canGoHome() {
+    return commonStore.showHello;
+  }
   form = {
     username: '3',
-    password: '3'
+    password: '3',
   };
   isLoggingIn = false;
 
