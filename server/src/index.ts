@@ -66,3 +66,5 @@ app.use((err, req, res: Response<ResultCommon>, next) => {
 });
 
 app.listen(port, () => console.log(`点我 http://localhost:${port}`));
+
+export = app

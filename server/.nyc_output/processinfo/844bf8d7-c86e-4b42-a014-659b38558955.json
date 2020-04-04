@@ -1,0 +1,39 @@
+{
+  "parent": null,
+  "pid": 10476,
+  "argv": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\Program Files\\nodejs\\node_modules\\nyc\\bin\\nyc.js",
+    "mocha",
+    "--require",
+    "ts-node/register",
+    "--recursive",
+    "./test/**/*.test.ts",
+    "--exit"
+  ],
+  "execArgv": [],
+  "cwd": "F:\\课程\\软件开发实践\\AchieveIt\\server",
+  "time": 1585987184884,
+  "ppid": 11344,
+  "coverageFilename": "F:\\课程\\软件开发实践\\AchieveIt\\server\\.nyc_output\\844bf8d7-c86e-4b42-a014-659b38558955.json",
+  "externalId": "",
+  "uuid": "844bf8d7-c86e-4b42-a014-659b38558955",
+  "files": [
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\activityApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\configApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\demoApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\deviceApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\featureApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\memberApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\projectApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\riskApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\sqlMap.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\userApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\api\\workTimeApi.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\config.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\email.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\index.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\mysqlPool.ts",
+    "F:\\课程\\软件开发实践\\AchieveIt\\server\\src\\util.ts"
+  ]
+}
