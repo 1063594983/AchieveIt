@@ -1,18 +1,18 @@
 <template>
-  <div class="container">
-    <div class="left-container">
+  <div class="container flex items-center justify-between">
+    <div class="flex items-center">
       <div class="brand" v-once>
         <img v-if="!isDark" src="../assets/img/logo.svg" alt="logo" />
         <img v-else src="../assets/img/logo-dark.svg" alt="logo" />
       </div>
       <breadcrumb></breadcrumb>
     </div>
-    <div class="right-container">
+    <div class="flex items-center">
       <navbar-search></navbar-search>
       <el-dropdown @command="handleCommand" trigger="click">
-        <span class="dropdown-link">
-          <img src="../assets/img/profile.jpg" alt="avatar" />
-          <el-icon name="arrow-down"></el-icon>
+        <span class="flex items-center">
+          <img src="../assets/img/profile.jpg" alt="avatar" class="rounded avatar" />
+          <el-icon name="arrow-down" class="ml1"></el-icon>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
@@ -31,7 +31,7 @@ import Breadcrumb from '@/components/Breadcrumb.vue';
 import NavbarSearch from '@/components/NavbarSearch.vue';
 
 @Component({
-  components: { NavbarSearch, Breadcrumb }
+  components: { NavbarSearch, Breadcrumb },
 })
 export default class Navbar extends Vue {
   get isDark() {
@@ -68,37 +68,17 @@ export default class Navbar extends Vue {
   height: 60px;
   padding: 0 20px;
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.left-container {
-  display: flex;
-  align-items: center;
-
-  & > .brand {
-    width: 220px;
-    img {
-      height: 35px;
-    }
+.brand {
+  width: 220px;
+  img {
+    height: 35px;
   }
 }
-.right-container {
-  display: flex;
-  justify-content: flex-end;
-  .dropdown-link {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    i {
-      margin-left: 0.75rem;
-    }
-    img {
-      height: 40px;
-      width: 40px;
-      border-radius: 4px;
-    }
-  }
+
+.avatar {
+  width: 40px;
+  height: 40px;
 }
 </style>

@@ -24,7 +24,7 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           icon: 'user',
-          title: '成员信息',
+          title: '我的信息',
         },
       },
     ],

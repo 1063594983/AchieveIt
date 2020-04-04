@@ -4,7 +4,7 @@
  */
 import { ResultCommon, Authorization } from "../common";
 
-interface Member {
+export interface Member {
   member_id: number;
   member_name: string;
   email: string;

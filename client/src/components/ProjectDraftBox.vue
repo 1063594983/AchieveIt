@@ -1,9 +1,9 @@
 <template>
   <el-drawer :visible.sync="visible" :before-close="onClose" size="60%">
     <div slot="title">
-      <h3>项目草稿箱</h3>
+      <div class="h3 bold">项目草稿箱</div>
     </div>
-    <div class="table-container">
+    <div class="p1">
       <el-table :data="drafts" border>
         <el-table-column property="project_id" label="ID"></el-table-column>
         <el-table-column property="project_name" label="项目名"></el-table-column>
@@ -49,11 +49,4 @@ export default class ProjectDraftBox extends Vue {
 }
 </script>
 
-<style scoped>
-h3 {
-  color: rgb(150, 150, 150);
-}
-.table-container {
-  padding: 10px;
-}
-</style>
+<style scoped></style>

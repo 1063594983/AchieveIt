@@ -1,16 +1,10 @@
-.el-scrollbar-wrapper {
-  overflow-x: hidden !important;
+@import './element-fix.scss';
 
-  & * {
-    user-select: none;
-  }
+/* font secondary */
+.opacity {
+  opacity: 0.6;
 }
 
-* {
-  outline: none;
-}
-
-#nprogress .spinner {
-  top: 20px !important;
-  left: 200px;
+.cursor {
+  cursor: pointer;
 }

@@ -1,17 +1,18 @@
 <template>
-  <el-card shadow="hover">
-    <div class="header-container">
-      <h1>项目名称</h1>
-      <span>两天前更新</span>
+  <el-card shadow="hover" class="mt2">
+    <div class="flex justify-between items-center">
+      <div class="bold">项目名称</div>
+      <div class="h6 opacity">两天前更新</div>
     </div>
-    <h2>前端项前端项目前端项目前端项目前端项目目</h2>
-    <div class="avatar-container">
-      <img alt="avatar" src="../assets/img/profile.jpg" />
-      <img alt="avatar" src="../assets/img/profile.jpg" />
-    </div>
-    <div class="bottom-container">
-      <div class="status">申请中</div>
-      <el-icon name="more"></el-icon>
+    <div class="my2 h5">前端项前端项目前端项目前端项目前端项目目</div>
+
+    <div class="flex justify-between items-center mt3">
+      <el-tag>申请中</el-tag>
+      <div class="flex items-center">
+        <img class="avatar circle mr1" alt="avatar" src="../assets/img/profile.jpg" />
+        <img class="avatar circle mr1" alt="avatar" src="../assets/img/profile.jpg" />
+        <el-icon name="more" class="ml1 opacity"></el-icon>
+      </div>
     </div>
   </el-card>
 </template>
@@ -24,56 +25,8 @@ export default class ProjectCard extends Vue {}
 </script>
 
 <style scoped lang="scss">
-.el-card {
-  margin-top: 20px;
-  h1 {
-    margin: 0;
-    font-size: 16px;
-    > span {
-      opacity: 0.5;
-      font-size: 12px;
-    }
-  }
-  h2 {
-    margin: 4px 0 0 0;
-    font-size: 14px;
-    opacity: 0.7;
-    font-weight: normal;
-  }
-  .avatar-container {
-    margin-top: 20px;
-    img {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-    }
-    & > * {
-      margin-right: 5px;
-    }
-  }
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    & > span {
-      opacity: 0.5;
-      font-size: 12px;
-    }
-    margin-bottom: 20px;
-  }
-  .bottom-container {
-    margin: 10px -10px -10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .status {
-      opacity: 0.5;
-      font-size: 14px;
-    }
-    i {
-      opacity: 0.7;
-      padding: 10px;
-      cursor: pointer;
-    }
-  }
+.avatar {
+  width: 28px;
+  height: 28px;
 }
 </style>
