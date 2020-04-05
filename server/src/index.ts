@@ -54,6 +54,7 @@ app.use('/device', deviceApi);
 app.use('/risk', riskApi);
 app.use('/activity', activityApi);
 app.use('/workTime', workTimeApi);
+app.use('/config', configApi);
 
 // 身份验证错误处理
 app.use((err, req, res: Response<ResultCommon>, next) => {

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.83% </span>
+                <span class="strong">56.1% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/41</span>
+                <span class='fraction'>23/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>1/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">55.56% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>5/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.56% </span>
+                <span class="strong">61.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/36</span>
+                <span class='fraction'>22/36</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -150,12 +150,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,9 +181,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -197,22 +197,22 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -229,13 +229,13 @@ const router = express.Router();
 // get /function/getProjectFunctionList/:project_id
 &nbsp;
 // 获取项目功能
-router.get('/getProjectFunctionList/:project_id', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;GetProjectFeatureListResult&gt;) =&gt; {
-  const project_id = <span class="cstat-no" title="statement not covered" >req.params.project_id;</span>
-<span class="cstat-no" title="statement not covered" >  conn.query($sql.function.getFunctionByProjectId, [project_id], <span class="fstat-no" title="function not covered" >(e</span>rr, result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (err) {</span>
+router.get('/getProjectFunctionList/:project_id', (req, res: Response&lt;GetProjectFeatureListResult&gt;) =&gt; {
+  const project_id = req.params.project_id;
+  conn.query($sql.function.getFunctionByProjectId, [project_id], (err, result) =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >      mysqlErrorHandler(res, err);</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      res.json({</span>
+      res.json({
         feature_list: result,
         project_id,
         status: config.status.SUCCESS,
@@ -260,10 +260,10 @@ router.post('/addFunction', <span class="fstat-no" title="function not covered" 
 });
 &nbsp;
 // post /function/importFunctionExcelToProject/:project_id
-router.post('/importFunctionExcelToProject/:project_id', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;ResultCommon&gt;) =&gt; {
-  const project_id = <span class="cstat-no" title="statement not covered" >req.params.project_id;</span>
-  const function_excel = <span class="cstat-no" title="statement not covered" >req.body.function_excel;</span>
-<span class="cstat-no" title="statement not covered" >  for (const <span class="cstat-no" title="statement not covered" >item<span class="cstat-no" title="statement not covered" > of <span class="cstat-no" title="statement not covered" >f</span></span>unction_excel)</span> {</span>
+router.post('/importFunctionExcelToProject/:project_id', (req, res: Response&lt;ResultCommon&gt;) =&gt; {
+  const project_id = req.params.project_id;
+  const function_excel = req.body.function_excel;
+  for (const <span class="cstat-no" title="statement not covered" >item<span class="cstat-no" title="statement not covered" > of f</span></span>unction_excel) {
     const parent = <span class="cstat-no" title="statement not covered" >item.parent;</span>
 <span class="cstat-no" title="statement not covered" >    conn.query("insert into \`function\` (project_id, function_id, function_name, layer) values (?, ?, ?, ?)", [project_id, `${project_id}_${parent.function_name}`, parent.function_name, 1], <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (err) {</span>
@@ -281,18 +281,18 @@ router.post('/importFunctionExcelToProject/:project_id', <span class="fstat-no" 
       }
     })
   }
-<span class="cstat-no" title="statement not covered" >  successHandler(res);</span>
+  successHandler(res);
 })
 &nbsp;
 // /function/setFunctionRelation
 // 设置功能上下级关系
-router.post('/setFunctionRelation', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;ResultCommon&gt;) =&gt; {
-  const relation_details = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >  conn.query(</span>
+router.post('/setFunctionRelation', (req, res: Response&lt;ResultCommon&gt;) =&gt; {
+  const relation_details = req.body;
+  conn.query(
     $sql.function.setFunctionRelation,
     [relation_details.first_function_id, relation_details.second_function_id],
-    (<span class="fstat-no" title="function not covered" >err </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >      commomInsertHandler(res, err);</span>
+    (err =&gt; {
+      commomInsertHandler(res, err);
     })
 )});
 &nbsp;
@@ -304,7 +304,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Apr 04 2020 15:59:57 GMT+0800 (GMT+08:00)
+                at Sun Apr 05 2020 19:14:08 GMT+0800 (GMT+08:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

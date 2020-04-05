@@ -80,8 +80,8 @@ export default {
     })
   },
   function: {
-    getFunctionByProjectId: pattern.selectPattern({ table_name: 'function', key_name: 'function_id' }),
-    insertFunction: pattern.insertPattern({ table_name: 'function', select_col: 'function_name, project_id, layer' }),
+    getFunctionByProjectId: pattern.selectPattern({ table_name: '`function`', key_name: 'function_id' }),
+    insertFunction: pattern.insertPattern({ table_name: '`function`', select_col: 'function_name, project_id, layer' }),
     setFunctionRelation: 'insert into function_function (first_function_id, second_function_id) values (?, ?)'
   },
 

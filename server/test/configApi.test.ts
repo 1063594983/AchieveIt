@@ -6,43 +6,44 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 
-describe('device test', function() {
-  it('get device success', function (done) {
-    let testDeviceID = 1;
+describe('get config test', function() {
+  it('get config success', function (done) {
+    let testProjectID = 123;
     chai.request(app)
-      .get('/device/' + testDeviceID)
+      .get('/config/' + testProjectID)
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
         res.body.status.should.eql('ok');
-        should.exist(res.body.device)
+        should.exist(res.body.config)
         done();
       });
   });
   
-  it('get device fail', function (done) {
-    let testDeviceID = 9999;
+  it('get config fail', function (done) {
+    let testProjectID = 9999;
     chai.request(app)
-      .get('/device/' + testDeviceID)
+      .get('/config/' + testProjectID)
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
         res.body.status.should.eql('error');
         res.body.msg.should.eql('not found');
-        should.not.exist(res.body.device)
+        should.not.exist(res.body.config)
         done();
       });
   });
 });
 
-
-describe('insert device test', function() {
-  it('insert device success', function (done) {
+describe('insert config test', function() {
+  it('insert config success', function (done) {
     chai.request(app)
-      .post('/device')
+      .post('/config')
       .send({
-        "device_name": "device_name test",
-        "device_status": "device_status test"
+        "git_address": "test",
+        "server_menu": "test",
+        "vm_space": 123,
+        "project_id": 1234
       })
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
@@ -54,14 +55,15 @@ describe('insert device test', function() {
   });
 });
 
-describe('update device test', function() {
-  it('update device success', function (done) {
-    let testdeviceID = 2;
+describe('update config test', function() {
+  it('update config success', function (done) {
+    let testProjectID = 1234;
     chai.request(app)
-      .put('/device/' + testdeviceID)
+      .put('/config/' + testProjectID)
       .send({
-        "device_name": "device_name test2",
-        "device_status": "device_status test2"
+        "git_address": "test2",
+        "server_menu": "test2",
+        "vm_space": 123123
       })
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
@@ -73,11 +75,11 @@ describe('update device test', function() {
   });
 });
 
-describe('delete device test', function() {
-  it('delete device success', function (done) {
-    let testdeviceID = 5;
+describe('delete config test', function() {
+  it('delete config success', function (done) {
+    let testProjectID = 5;
     chai.request(app)
-      .delete('/device/' + testdeviceID)
+      .delete('/config/' + testProjectID)
       .set('Content-Type', 'application/json')
       .end(function(err, res) {
         res.should.have.status(200);
@@ -88,10 +90,10 @@ describe('delete device test', function() {
   });
 
   
-  // it('delete device fail', function (done) {
-  //   let testdeviceID = 9999;
+  // it('delete config fail', function (done) {
+  //   let testProjectID = 9999;
   //   chai.request(app)
-  //     .delete('/device/' + testdeviceID)
+  //     .delete('/config/' + testProjectID)
   //     .set('Content-Type', 'application/json')
   //     .end(function(err, res) {
   //       res.should.have.status(200);
@@ -101,3 +103,4 @@ describe('delete device test', function() {
   //     });
   // });
 });
+

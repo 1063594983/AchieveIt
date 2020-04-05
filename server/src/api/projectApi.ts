@@ -191,7 +191,7 @@ router.put('/:project_id', (req, res: Response<ResultCommon>) => {
           project_details.manager || old_project.manager,
           JSON.stringify(project_details.important_events) || old_project.important_events,
           JSON.stringify(project_details.technology) || old_project.technology,
-          project_details.business || old_project.business,
+          JSON.stringify(project_details.business) || old_project.business,
           project_details.status || old_project.status,
           project_id
         ],

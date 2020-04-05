@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.43% </span>
+                <span class="strong">91.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/35</span>
+                <span class='fraction'>32/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/12</span>
+                <span class='fraction'>7/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.43% </span>
+                <span class="strong">91.43% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/35</span>
+                <span class='fraction'>32/35</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -196,23 +196,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,18 +224,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -297,24 +297,24 @@ router.get('/:device_id', (req, res: Response&lt;GetDeviceResult&gt;) =&gt; {
 &nbsp;
 // put /device/:device_id
 // updateDevice
-router.put('/:device_id', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;ResultCommon&gt;) =&gt; {
-  const device_details = <span class="cstat-no" title="statement not covered" >req.body;</span>
-  const device_id = <span class="cstat-no" title="statement not covered" >req.params.device_id;</span>
+router.put('/:device_id', (req, res: Response&lt;ResultCommon&gt;) =&gt; {
+  const device_details = req.body;
+  const device_id = req.params.device_id;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  conn.query($sql.device.getDeviceById, [device_id], <span class="fstat-no" title="function not covered" >(e</span>rr, result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (err) {</span>
+  conn.query($sql.device.getDeviceById, [device_id], (err, result) =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >      mysqlErrorHandler(res, err);</span>
-    } else <span class="cstat-no" title="statement not covered" >if (result.length == 1) {</span>
-      const old_device = <span class="cstat-no" title="statement not covered" >result[0];</span>
-<span class="cstat-no" title="statement not covered" >      conn.query(</span>
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (result.length == 1) {
+      const old_device = result[0];
+      conn.query(
         $sql.device.updateDeviceById,
         [
-          device_details.device_name || old_device.device_name,
-          device_details.device_status || old_device.device_status,
+          device_details.device_name || <span class="branch-1 cbranch-no" title="branch not covered" >old_device.device_name,</span>
+          device_details.device_status || <span class="branch-1 cbranch-no" title="branch not covered" >old_device.device_status,</span>
           device_id
         ],
-<span class="fstat-no" title="function not covered" >        err2 </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >          commomUpdateHandler(res, err2);</span>
+        err2 =&gt; {
+          commomUpdateHandler(res, err2);
         }
       );
     } else {
@@ -325,19 +325,19 @@ router.put('/:device_id', <span class="fstat-no" title="function not covered" >(
 &nbsp;
 // post /device
 // insertDevice
-router.post('/', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;ResultCommon&gt;) =&gt; {
-  const device_details = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >  conn.query($sql.device.insertDevice, [device_details.device_name, device_details.device_status], <span class="fstat-no" title="function not covered" >err </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    commomInsertHandler(res, err);</span>
+router.post('/', (req, res: Response&lt;ResultCommon&gt;) =&gt; {
+  const device_details = req.body;
+  conn.query($sql.device.insertDevice, [device_details.device_name, device_details.device_status], err =&gt; {
+    commomInsertHandler(res, err);
   });
 });
 &nbsp;
 // delete /device/:device_id
 // unfinished: 未实现级联删除
-router.delete('/:device_id', <span class="fstat-no" title="function not covered" >(r</span>eq, res: Response&lt;ResultCommon&gt;) =&gt; {
-  const device_id = <span class="cstat-no" title="statement not covered" >req.params.device_id;</span>
-<span class="cstat-no" title="statement not covered" >  conn.query($sql.device.deleteDeviceById, [device_id], <span class="fstat-no" title="function not covered" >err </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    commonDeleteHandler(res, err);</span>
+router.delete('/:device_id', (req, res: Response&lt;ResultCommon&gt;) =&gt; {
+  const device_id = req.params.device_id;
+  conn.query($sql.device.deleteDeviceById, [device_id], err =&gt; {
+    commonDeleteHandler(res, err);
   });
 });
 &nbsp;
@@ -370,7 +370,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Apr 04 2020 15:59:57 GMT+0800 (GMT+08:00)
+                at Sun Apr 05 2020 19:14:08 GMT+0800 (GMT+08:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
