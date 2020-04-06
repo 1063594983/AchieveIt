@@ -5,7 +5,7 @@
  */
 import { ResultCommon, Authorization } from "../common";
 
-interface Config {
+export interface Config {
   config_id: number;
   git_address: string;
   server_menu: string;
@@ -45,7 +45,7 @@ export interface ConfigPostBody extends Authorization {
  * api: put /config/:project_id
  */
 // request
-interface ConfigPutBody extends Authorization {
+export interface ConfigPutBody extends Authorization {
   git_address?: string;
   server_menu?: string;
   vm_space?: string;
@@ -56,5 +56,5 @@ interface ConfigPutBody extends Authorization {
  * api: delete /config/:project_id
  */
 // request
-interface ConfigDeleteBody extends Authorization {}
+export interface ConfigDeleteBody extends Authorization {}
 

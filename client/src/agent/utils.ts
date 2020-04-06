@@ -4,14 +4,11 @@ import { ResultCommon } from 'achieve-it-contract';
 const baseURL = 'http://localhost:3000';
 
 function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response?: {} }) {
-  const title = `${type} ${url} failed`;
-  let body = '';
-  let response = '';
+  console.error(`${type} ${url} failed`);
+
   if (payload) {
-    if (payload.body) body = `body: ${JSON.stringify(payload.body)}`;
-    if (payload.response) response = `response: ${JSON.stringify(payload.response)}`;
+    console.dir(payload);
   }
-  throw { title, body, response, raw: payload?.response };
 }
 
 export async function axiosPost<Response extends ResultCommon>(namespace: string, endpoint: string, body?: object) {
