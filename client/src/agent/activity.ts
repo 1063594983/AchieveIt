@@ -5,7 +5,7 @@ import {
   ActivityPutBody,
   GetActivityResult
 } from "achieve-it-contract";
-import { createCRUD } from "@/agent/index";
+import { createCRUD } from "@/agent/utils";
 
 const activityAPI = createCRUD<ActivityGetBody, ActivityDeleteBody, ActivityPutBody, ActivityPostBody, GetActivityResult>(
   'activity'

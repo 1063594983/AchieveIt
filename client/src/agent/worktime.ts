@@ -6,8 +6,8 @@ import {
   WorkTimePostBody,
   WorkTimePutBody,
 } from 'achieve-it-contract';
-import { axiosGet } from '@/agent/utils';
-import { createCRUD, wrapToken } from '@/agent/index';
+import { axiosGet, createCRUD } from "@/agent/utils";
+import {  wrapToken } from '@/agent/index';
 
 const workTimeCRUD = createCRUD<
   WorkTimeGetBody,

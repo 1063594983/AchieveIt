@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { ResultCommon } from 'achieve-it-contract';
+import { Authorization, ResultCommon } from "achieve-it-contract";
+import { Subtract } from "utility-types";
+import { authBody, wrapToken } from "@/agent/index";
 
 const baseURL = 'http://localhost:3000';
 
@@ -49,4 +51,19 @@ export async function axiosPut<Response extends ResultCommon>(namespace: string,
     throw new Error('error code');
   }
   return result.data;
+}
+
+export function createCRUD<
+  GetBody extends Authorization,
+  DeleteBody extends Authorization,
+  PutBody extends Authorization,
+  PostBody extends Authorization,
+  GetResult extends ResultCommon
+  >(namespace: string) {
+  return {
+    get: (id: string, body: Subtract<GetBody, authBody>) => axiosGet<GetResult>(namespace, id, wrapToken(body)),
+    insert: (body: Subtract<PostBody, authBody>) => axiosPost(namespace, '', wrapToken(body)),
+    update: (id: string, body: Subtract<PutBody, authBody>) => axiosPut(namespace, id, wrapToken(body)),
+    delete: (id: string, body: Subtract<DeleteBody, authBody>) => axiosDelete(namespace, id, wrapToken(body)),
+  };
 }

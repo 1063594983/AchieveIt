@@ -5,7 +5,7 @@ import {
   ProjectPostBody,
   ProjectPutBBody,
 } from 'achieve-it-contract';
-import { createCRUD } from '@/agent/index';
+import { createCRUD } from "@/agent/utils";
 
 const projectAPI = createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>(
   'project'

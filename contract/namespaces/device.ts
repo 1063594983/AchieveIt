@@ -1,6 +1,6 @@
 import { ResultCommon, Authorization } from "../common";
 
-interface Device {
+export interface Device {
   device_id: number;
   device_name: string;
   device_status: string; // ['可用', '不可用']

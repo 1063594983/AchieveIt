@@ -8,7 +8,7 @@ import {
   RiskPutBody,
 } from 'achieve-it-contract';
 import { axiosGet } from '@/agent/utils';
-import { createCRUD } from '@/agent/index';
+import { createCRUD } from "@/agent/utils";
 
 const riskCRUD = createCRUD<RiskGetBody, RiskDeleteBody, RiskPutBody, RiskPostBody, GetRiskResult>('risk');
 const riskAPI = {

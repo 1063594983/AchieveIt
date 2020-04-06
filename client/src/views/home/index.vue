@@ -1,26 +1,27 @@
 <template>
   <div v-if="member">
-    <div class="flex px3 pb1 pt3">
-      <el-card shadow="never" style="min-width: 220px; height: 320px;">
+    <div class="flex px3 pb1 pt3 ">
+      <el-card shadow="never" style="min-width: 250px; height: 320px;">
         <div class="flex flex-column items-center px1 py2">
-          <img alt="avatar" src="../../assets/img/profile.jpg" class="avatar circle" />
+          <img alt="avatar" :src="avatarSrc" class="avatar circle" />
           <div class="h3 bold my1">{{ member.member_name }}</div>
           <div class="h4 opacity">{{ member.email }}</div>
-        </div>
-        <div class="flex fit mt3 justify-between">
-          <div class="flex flex-column items-center" style="width: 70px;">
-            <div class="h3 bold mb1">3</div>
-            <div class="opacity">项目进行</div>
+          <div class="flex mt3">
+            <div class="flex flex-column items-center mr2" style="width: 70px;">
+              <div class="h3 bold mb1">3</div>
+              <div class="opacity">项目进行</div>
+            </div>
+            <div class="flex flex-column items-center" style="width: 70px;">
+              <div class="h3 bold mb1">6</div>
+              <div class="opacity">最近活动</div>
+            </div>
           </div>
-          <div class="flex flex-column items-center" style="width: 70px;">
-            <div class="h3 bold mb1">6</div>
-            <div class="opacity">最近活动</div>
-          </div>
         </div>
+
       </el-card>
-      <el-card class="ml1" shadow="never" style="min-width: 620px;">
-        <div class="flex flex-wrap py2" style="min-width: 620px;">
-          <div class="mb3" v-for="(value, key) of member" :key="key + value" style="width: 200px;">
+      <el-card class="ml1" shadow="never" style="min-width: 700px;">
+        <div class="flex flex-wrap py2" style="min-width: 700px;">
+          <div class="mb3 px1" v-for="(value, key) of member" :key="key + value" style="min-width: 200px;">
             <div class="h4 mb1 opacity">{{ mapProperty[key] }}</div>
             <div class="h4 bold">{{ value || '未指定' }}</div>
           </div>
@@ -45,12 +46,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { userStore } from '@/store';
-import agent from '@/agent';
-import { Member } from 'achieve-it-contract';
 
 @Component
 export default class Main extends Vue {
-  member: Member | null = null;
+  get member() {
+    return userStore.member;
+  }
+  get avatarSrc() {
+    return userStore.gavatar;
+  }
   mapProperty = {
     member_id: '成员编号',
     member_name: '姓名',
@@ -60,16 +64,15 @@ export default class Main extends Vue {
     phone: '手机',
     job: '职位',
   };
-  async mounted() {
-    const user = userStore.currentUser!;
-    const result = await agent.member.get(user.member_id, { token: user.token });
-    this.member = result.member;
+  mounted() {
+    userStore.loadMember();
   }
 }
 </script>
 
 <style scoped lang="scss">
 .avatar {
+  border: 1px solid rgba(0, 0, 0, 0.1);
   width: 80px;
   height: 80px;
 }

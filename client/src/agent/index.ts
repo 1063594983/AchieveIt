@@ -18,20 +18,6 @@ export function wrapToken(body: {}) {
 }
 
 export type authBody = { token: string };
-export function createCRUD<
-  GetBody extends Authorization,
-  DeleteBody extends Authorization,
-  PutBody extends Authorization,
-  PostBody extends Authorization,
-  GetResult extends ResultCommon
->(namespace: string) {
-  return {
-    get: (id: string, body: Subtract<GetBody, authBody>) => axiosGet<GetResult>(namespace, id, wrapToken(body)),
-    insert: (body: Subtract<PostBody, authBody>) => axiosPost(namespace, '', wrapToken(body)),
-    update: (id: string, body: Subtract<PutBody, authBody>) => axiosPut(namespace, id, wrapToken(body)),
-    delete: (id: string, body: Subtract<DeleteBody, authBody>) => axiosDelete(namespace, id, wrapToken(body)),
-  };
-}
 
 const agent = {
   user: userAPI,

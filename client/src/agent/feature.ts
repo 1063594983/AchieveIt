@@ -1,13 +1,5 @@
-import {
-  DeviceDeleteBody,
-  DeviceGetBody,
-  DevicePostBody,
-  DevicePutBody,
-  GetDeviceResult,
-  GetProjectFeatureListResult,
-} from 'achieve-it-contract';
-import { createCRUD } from '@/agent/index';
-import { axiosGet, axiosPost } from "@/agent/utils";
+import { GetProjectFeatureListResult } from "achieve-it-contract";
+import { axiosGet } from "@/agent/utils";
 
 const featureAPI = {
   getFeatureList: (projectId: string) =>
