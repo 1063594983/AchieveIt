@@ -7,6 +7,18 @@ interface Device {
 }
 
 /**
+ * api: get /device/getAllDevices
+ */
+
+// request
+export interface AllDevicesGetBody extends Authorization {}
+
+// result
+export interface GetAllDeviceResult extends ResultCommon {
+  device_list: Device [];
+}
+
+/**
  * api: get /device/:device_id
  */
 

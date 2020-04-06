@@ -54,6 +54,7 @@ export default {
     deleteUser: 'delete from user where member_id = ?'
   },
   member: {
+    getAllMembers: "select * from member",
     getMemberById: pattern.selectPattern({
       table_name: 'member',
       key_name: 'member_id'
@@ -104,6 +105,7 @@ export default {
    */
   device: {
     getDeviceById: 'select * from device where device_id = ?',
+    getAllDevices: 'select * from device',
     updateDeviceById: 'update device set device_name = ?, device_status = ? where device_id = ?',
     insertDevice: 'insert into device (device_name, device_status) values (?, ?)',
     deleteDeviceById: 'delete from device where device_id = ?',

@@ -14,6 +14,18 @@ export interface Member {
   job: string; // ['项目经理', '项目上级', '组织级配置管理员', 'EPG Leader', 'QA Manager', '普通员工']
 }
 
+/**
+ * api: get /member/getAllMembers
+ */
+
+//  request
+export interface AllMembersGetBody extends Authorization {}
+
+// result
+export interface GetAllMembersResult extends ResultCommon {
+  member_list: Member [];
+}
+
 
 /**
  * api: get /member/:member_id
@@ -26,6 +38,8 @@ export interface MemberGetBody extends Authorization {}
 export interface GetMemberResult extends ResultCommon {
   member: Member;
 }
+
+
 
 
 /**

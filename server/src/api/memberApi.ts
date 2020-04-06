@@ -1,7 +1,7 @@
 import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
-import { GetMemberResult, ResultCommon, GetMemberRoleResult } from 'achieve-it-contract';
+import { GetMemberResult, ResultCommon, GetMemberRoleResult, GetAllMembersResult } from 'achieve-it-contract';
 import {
   commonDeleteHandler,
   commomInsertHandler,
@@ -12,6 +12,22 @@ import {
 import { conn } from '../mysqlPool';
 import email from '../email';
 const router = express.Router();
+
+// get /member/getAllMembers
+
+router.get('/getAllMembers', (req, res: Response<GetAllMembersResult>) => {
+  conn.query($sql.member.getAllMembers, [], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      res.json({
+        member_list: result,
+        status: config.status.SUCCESS,
+        msg: 'get success'
+      })
+    }
+  })
+})
 
 // get /member/:member_id
 // getMember
