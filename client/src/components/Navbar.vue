@@ -10,7 +10,7 @@
     <div class="flex items-center">
       <navbar-search></navbar-search>
       <el-dropdown @command="handleCommand" trigger="click">
-        <span class="flex items-center">
+        <span class="flex items-center cursor">
           <img src="../assets/img/profile.jpg" alt="avatar" class="rounded avatar" />
           <el-icon name="arrow-down" class="ml1"></el-icon>
         </span>
