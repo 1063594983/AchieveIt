@@ -98,7 +98,7 @@ export default class ProjectEditDialog extends Vue {
   onTargetChange() {
     if (this.project) {
       this.form = {
-        business: this.project.business,
+        business: [...this.project.business],
         client_info: this.project.client_info,
         end_time: this.project.end_time,
         important_events: this.project.important_events,
@@ -106,7 +106,7 @@ export default class ProjectEditDialog extends Vue {
         project_name: this.project.project_name,
         start_time: this.project.start_time,
         status: 0,
-        technology: this.project.technology,
+        technology: [...this.project.technology],
         token: '',
       };
     }
