@@ -69,7 +69,7 @@ const menu: RouteConfig[] = [
       {
         name: 'projects.devices',
         path: 'devices',
-        component: () => import('@/views/projects/devices.jsx'),
+        component: () => import('@/views/projects/devices.tsx'),
         meta: {
           icon: 'mobile-phone',
           title: '设备管理',

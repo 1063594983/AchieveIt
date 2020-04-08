@@ -2490,7 +2490,7 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
-"@vue/composition-api@^0.5.0":
+"@vue/composition-api@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-0.5.0.tgz#2dbaa02a5d1f5d0d407d53d5529fe444aa8362f3"
   integrity sha512-9QDFWq7q839G1CTTaxeruPOTrrVOPSaVipJ2TxxK9QAruePNTHOGbOOFRpc8WLl4YPsu1/c29yBhMVmrXz8BZw==
@@ -3739,6 +3739,13 @@ babel-preset-jest@^24.9.0:
   dependencies:
     "@babel/plugin-syntax-object-rest-spread" "^7.0.0"
     babel-plugin-jest-hoist "^24.9.0"
+
+babel-preset-vca-jsx@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/babel-preset-vca-jsx/-/babel-preset-vca-jsx-0.3.5.tgz#ff425b15247724c2f602f0b5017a00a32872765d"
+  integrity sha512-UUsTwaUDn2y/7x32dc2veBj4+mqjNOhcxMlHFA4EHZLLxlVWMEFhSYROStpBkmZBy38iw8qFN8+SB9RVlhQ68w==
+  dependencies:
+    "@babel/plugin-syntax-jsx" "^7.2.0"
 
 babel-register@^6.26.0:
   version "6.26.0"
