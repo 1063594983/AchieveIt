@@ -1,6 +1,6 @@
 <template>
   <div v-if="member">
-    <div class="flex px3 pb1 pt3 ">
+    <div class="flex px3 pb1 pt3">
       <el-card shadow="never" style="min-width: 250px; height: 320px;">
         <div class="flex flex-column items-center px1 py2">
           <img alt="avatar" :src="avatarSrc" class="avatar circle" />
@@ -17,7 +17,6 @@
             </div>
           </div>
         </div>
-
       </el-card>
       <el-card class="ml1" shadow="never" style="min-width: 700px;">
         <div class="flex flex-wrap py2" style="min-width: 700px;">
@@ -33,10 +32,9 @@
         <h3 slot="header" class="m0">
           最近登录
         </h3>
-        <el-table :data="[1, 2, 3].map((i) => ({ a: i, b: i, c: i }))" class="fit">
-          <el-table-column label="日期" prop="a" width="100px"> </el-table-column>
-          <el-table-column label="IP" prop="b">123.123.123.123</el-table-column>
-          <el-table-column label="Name" prop="c">SOMETHING</el-table-column>
+        <el-table :data="logs" class="fit">
+          <el-table-column label="日期" prop="date" width="400px"> </el-table-column>
+          <el-table-column label="浏览器" prop="browser"> </el-table-column>
         </el-table>
       </el-card>
     </div>
@@ -46,9 +44,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { userStore } from '@/store';
+import dayjs from 'dayjs';
 
 @Component
 export default class Main extends Vue {
+  logs = [
+    {
+      date: dayjs(Date.now()).format("YYYY年MM月DD日 HH:mm:ss"),
+      browser: navigator.appVersion
+    },
+  ];
   get member() {
     return userStore.member;
   }

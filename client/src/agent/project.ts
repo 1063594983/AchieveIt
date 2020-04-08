@@ -2,13 +2,16 @@ import {
   GetProjectResult,
   ProjectDeleteBody,
   ProjectGetBody,
+  ProjectList,
   ProjectPostBody,
   ProjectPutBBody,
 } from 'achieve-it-contract';
-import { createCRUD } from "@/agent/utils";
+import { axiosGet, createCRUD } from '@/agent/utils';
 
-const projectAPI = createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>(
-  'project'
-);
-
+const projectAPI = {
+  ...createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>('project'),
+  getAll: () => axiosGet<ProjectList>('project', 'getAllProjects'),
+  refuse: (projectId: string) => axiosGet('project', `refuseProject/${projectId}`),
+  accept: (projectId: string) => axiosGet('project', `acceptProject/${projectId}`),
+};
 export default projectAPI;

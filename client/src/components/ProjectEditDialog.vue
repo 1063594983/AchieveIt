@@ -1,16 +1,12 @@
 <template>
   <el-dialog
-    title="创建项目"
+    title="编辑项目"
     :visible.sync="visible"
     width="420px"
     :close-on-click-modal="false"
     :before-close="onClose"
-    :open="onOpen"
   >
     <el-form :model="form" label-position="left" label-width="5rem">
-      <el-form-item label="项目ID">
-        <el-input v-model="form.project_id" placeholder="输入项目ID"></el-input>
-      </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="form.project_name" placeholder="输入项目名称"></el-input>
       </el-form-item>
@@ -18,10 +14,20 @@
         <el-input v-model="form.client_info" placeholder="输入客户名称"></el-input>
       </el-form-item>
       <el-form-item label="项目开始">
-        <el-date-picker type="date" placeholder="开始日期" v-model="form.start_time"></el-date-picker>
+        <el-date-picker
+          type="date"
+          value-format="yyyy-MM-ddTHH:mm"
+          placeholder="开始日期"
+          v-model="form.start_time"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="项目终止">
-        <el-date-picker type="date" placeholder="终止日期" v-model="form.end_time"></el-date-picker>
+        <el-date-picker
+          type="date"
+          value-format="yyyy-MM-ddTHH:mm"
+          placeholder="终止日期"
+          v-model="form.end_time"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="项目类型">
         <el-tree-select
@@ -40,37 +46,27 @@
         />
       </el-form-item>
     </el-form>
-    <div slot="footer">
-      <el-button @click="onClose">取消</el-button>
-      <el-button type="info" @click="addDraft">保存到草稿箱</el-button>
-      <el-button type="primary" @click="createProject">创建</el-button>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="onClose" :loading="isLoading">取消</el-button>
+      <el-button type="primary" @click="onUpdate" :loading="isLoading">更新</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { ProjectDraft } from '@/store/project.module';
-import { projectStore } from '@/store';
+import { Project, ProjectPutBBody } from 'achieve-it-contract';
+import { userStore } from '@/store';
 import { DevelopingStack, BusinessType } from '@/static';
 
-const formInit = () => ({
-  project_id: '',
-  project_name: '',
-  client_info: '',
-  start_time: '',
-  end_time: '',
-  technology: [],
-  business: [],
-});
-
 @Component
-export default class ProjectCreateDialog extends Vue {
+export default class ProjectEditDialog extends Vue {
+  @Prop({ required: true }) project!: Project;
   @Prop({ required: true }) visible!: boolean;
   @Prop({ required: true }) onClose!: () => void;
-  @Prop({ required: true }) onAddDraft!: (form: ProjectDraft) => void;
-  @Prop({ required: true }) onCreateProject!: (form: ProjectDraft) => boolean;
+  @Prop({ required: true }) onEdit!: (project: Project, newProject: ProjectPutBBody) => Promise<boolean>;
 
+  isLoading = false;
   businessType = BusinessType.map((i) => ({ label: i, value: i }));
   developingStack = DevelopingStack.map((i) => ({ label: i, value: i }));
   treeParams = {
@@ -81,25 +77,45 @@ export default class ProjectCreateDialog extends Vue {
       label: 'label',
       value: 'value',
       disabled: 'disabled',
+      key: 'label',
     },
   };
 
-  form: ProjectDraft = formInit();
+  form: ProjectPutBBody = {
+    business: [],
+    client_info: '',
+    end_time: '',
+    important_events: [],
+    manager: 0,
+    project_name: '',
+    start_time: '',
+    status: 0,
+    technology: [],
+    token: '',
+  };
 
-  @Watch('visible')
-  onOpen() {
-    if (this.visible) {
-      this.form = projectStore.currentDraft ?? formInit();
+  @Watch('project')
+  onTargetChange() {
+    if (this.project) {
+      this.form = {
+        business: this.project.business,
+        client_info: this.project.client_info,
+        end_time: this.project.end_time,
+        important_events: this.project.important_events,
+        manager: this.project.manager,
+        project_name: this.project.project_name,
+        start_time: this.project.start_time,
+        status: 0,
+        technology: this.project.technology,
+        token: '',
+      };
     }
-    projectStore.setCurrentDraft(null);
   }
-
-  addDraft() {
-    this.onClose();
-    this.onAddDraft(this.form);
-  }
-  createProject() {
-    const result = this.onCreateProject(this.form);
+  async onUpdate() {
+    this.form.token = userStore.currentUser.token;
+    this.isLoading = true;
+    const result = await this.onEdit(this.project, this.form);
+    this.isLoading = false;
     if (result) {
       this.onClose();
     }
@@ -107,11 +123,4 @@ export default class ProjectCreateDialog extends Vue {
 }
 </script>
 
-<style scoped>
-.el-input {
-  width: 300px;
-}
-.el-select {
-  width: 300px;
-}
-</style>
+<style scoped></style>

@@ -12,6 +12,7 @@
   "main": "src/main.ts",
   "dependencies": {
     "axios": "^0.19.2",
+    "dayjs": "^1.8.23",
     "el-tree-select": "^3.1.8",
     "element-theme-dark": "^1.0.3",
     "element-ui": "2.12.0",

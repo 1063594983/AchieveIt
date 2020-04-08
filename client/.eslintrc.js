@@ -15,6 +15,8 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    'no-empty': 'off',
+    'prefer-const': 'off',
   },
   overrides: [
     {

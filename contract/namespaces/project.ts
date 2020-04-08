@@ -17,7 +17,7 @@ export interface Project {
  * api: get /project/getAllProjects
  */
 
-// request 
+// request
 export interface ProjectListGetBodyy extends Authorization{}
 
 // response
@@ -72,7 +72,7 @@ export interface ProjectPutBBody extends Authorization {
   manager?: number;
   important_events?: Array<string>;
   technology?: Array<string>;
-  business?: string;
+  business?: string[];
   status?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 

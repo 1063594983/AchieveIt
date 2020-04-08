@@ -9,11 +9,12 @@ import {
 } from 'achieve-it-contract';
 import { axiosGet } from '@/agent/utils';
 import { createCRUD } from "@/agent/utils";
+import { wrapToken } from "@/agent/index";
 
 const riskCRUD = createCRUD<RiskGetBody, RiskDeleteBody, RiskPutBody, RiskPostBody, GetRiskResult>('risk');
 const riskAPI = {
   ...riskCRUD,
-  ofProject: (projectId: number, body: ProjectRiskListGetBody) =>
-    axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, body),
+  ofProject: (projectId: number) =>
+    axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, wrapToken({})),
 };
 export default riskAPI;
