@@ -14,7 +14,6 @@ export interface ProjectDraft {
 export default class ProjectModule extends VuexModule {
   projectDrafts: ProjectDraft[] = [];
   currentDraft: ProjectDraft | null = null;
-  projects: string[] = ['AchieveIt前端开发', 'AchieveIt后端开发', '性能测试'];
 
   @Mutation
   addProjectDraft(project: ProjectDraft) {

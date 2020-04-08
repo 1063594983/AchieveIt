@@ -7,7 +7,8 @@ import './assets/css/main.scss';
 import 'nprogress/nprogress.css';
 import 'vue-class-component/hooks'; // import hooks type to enable auto-complete
 import './theme/element-ui';
-import '../vendor/basscss.css'
+import '../vendor/basscss.css';
+import VueCompositionApi from '@vue/composition-api';
 
 const loadTheme = async () => {
   if (commonStore.isDarkMode) {
@@ -17,6 +18,8 @@ const loadTheme = async () => {
     await import('./assets/css/darkMode.scss');
   }
 };
+
+Vue.use(VueCompositionApi);
 
 loadTheme().then(() => {
   new Vue({

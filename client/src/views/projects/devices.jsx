@@ -1,3 +1,4 @@
+/*
 <template>
   <div>
     <h1>设备管理</h1>
@@ -32,3 +33,14 @@ export default class Devices extends Vue {
 </script>
 
 <style scoped></style>
+*/
+
+import { reactive, createComponent } from '@vue/composition-api';
+
+// React users love composition api
+export default createComponent({
+  setUp() {},
+  render() {
+    return <div>123</div>;
+  },
+});

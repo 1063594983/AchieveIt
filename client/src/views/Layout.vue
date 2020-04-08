@@ -5,7 +5,7 @@
         <navbar></navbar>
       </el-header>
       <el-container>
-        <el-aside width="220px">
+        <el-aside width="220px" v-once :style="`background-color: ${bgColor}`">
           <sidebar></sidebar>
         </el-aside>
         <el-main>
@@ -27,7 +27,7 @@ import { commonStore } from '@/store';
 })
 export default class Layout extends Vue {
   get bgColor() {
-    return commonStore.isDarkMode ? '#222933' : 'white';
+    return commonStore.bgColor;
   }
 }
 </script>
@@ -48,6 +48,7 @@ export default class Layout extends Vue {
   .el-main {
     padding-top: 80px;
     padding-left: 240px;
+    height: 100vh;
   }
 
   .el-aside {
@@ -58,6 +59,7 @@ export default class Layout extends Vue {
     bottom: 0;
     overflow: hidden;
     height: 100%;
+    z-index: 100;
   }
 }
 </style>

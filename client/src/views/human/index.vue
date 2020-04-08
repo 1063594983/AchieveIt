@@ -1,25 +1,16 @@
 <template>
   <div>
     <el-button @click="dialogVisible = true">添加新的工时记录</el-button>
-    <work-time-create-dialog :visible="dialogVisible" :on-close="closeDialog"></work-time-create-dialog>
-    <el-table ref="filterTable" border :data="tableData" style="width: 100%; margin-top: 20px">
-      <el-table-column
-        prop="date"
-        label="日期"
-        sortable
-        width="180"
-        column-key="date"
-        :filters="[
-          { text: '2016-05-01', value: '2016-05-01' },
-          { text: '2016-05-02', value: '2016-05-02' },
-          { text: '2016-05-03', value: '2016-05-03' },
-          { text: '2016-05-04', value: '2016-05-04' },
-        ]"
-        :filter-method="filterHandler"
-      >
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="detail" label="工作内容" :formatter="formatter"> </el-table-column>
+    <work-time-create-dialog
+      :visible="dialogVisible"
+      :on-close="closeDialog"
+      :on-create="newRecord"
+    ></work-time-create-dialog>
+    <el-table border :data="computedRecords" class="mt2">
+      <el-table-column prop="project_id" label="项目ID"> </el-table-column>
+      <el-table-column prop="start_time" label="开始时间" width="180"> </el-table-column>
+      <el-table-column prop="end_time" label="结束时间" width="180"> </el-table-column>
+      <el-table-column prop="activity_content" label="工作内容"> </el-table-column>
       <el-table-column
         prop="tag"
         label="处理状态"
@@ -28,13 +19,10 @@
           { text: '审批中', value: '审批中' },
           { text: '已完成', value: '已完成' },
         ]"
-        :filter-method="filterTag"
         filter-placement="bottom-end"
       >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.tag === '审批中' ? 'primary' : 'success'" disable-transitions>{{
-            scope.row.tag
-          }}</el-tag>
+          <el-tag :type="scope.row.tag === '审批中' ? 'primary' : 'success'">{{ scope.row.tag }}</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -43,56 +31,44 @@
 
 <script>
 import WorkTimeCreateDialog from '@/components/WorkTimeCreateDialog';
+import agent from '../../agent';
+import { userStore } from '../../store';
+import dayjs from 'dayjs';
 export default {
   components: { WorkTimeCreateDialog },
   data() {
     return {
       dialogVisible: false,
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          detail: '开发一个什么山额么',
-          tag: '审批中',
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          detail: '开发一个什么山额么',
-          tag: '审批中',
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          detail: '开发一个什么山额么',
-          tag: '已完成',
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          detail: '开发一个什么山额么',
-          tag: '已完成',
-        },
-      ],
+      records: [],
     };
+  },
+  computed: {
+    computedRecords() {
+      return this.records.map((i) => ({
+        ...i,
+        start_time: dayjs(i.start_time).format('YYYY年MM月DD日 HH:mm:ss'),
+        end_time: dayjs(i.end_time).format('YYYY年MM月DD日 HH:mm:ss'),
+        tag: '已完成',
+      }));
+    },
   },
   methods: {
     closeDialog() {
       this.dialogVisible = false;
     },
-    clearFilter() {
-      this.$refs.filterTable.clearFilter();
+    async newRecord(record) {
+      try {
+        await agent.workTime.insert(userStore.currentUser.member_id, record);
+        this.records = [record, ...this.records];
+        return true;
+      } catch (e) {
+        return false;
+      }
     },
-    formatter(row, column) {
-      return row.detail;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
-    },
+  },
+  async mounted() {
+    const result = await agent.workTime.ofMember(userStore.currentUser.member_id);
+    this.records = result.work_time_list;
   },
 };
 </script>

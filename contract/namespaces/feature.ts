@@ -1,14 +1,14 @@
 import { ResultCommon, Authorization } from "../common";
 
-interface Feature {
+export interface Feature {
   /**
-   * layer = 1 --> function_id = `${project_id}_${function_name}`  
+   * layer = 1 --> function_id = `${project_id}_${function_name}`
    * layer = 2 --> function_id = `${project_id}_${parent.function_name}_${function_name}`
    * 因此project_id和function_name中不能有下划线
-   * 
+   *
    * 只有子功能有parent
    */
-  function_id: string;  // 
+  function_id: string;  //
   function_name: string;
   project_id: string;
   layer: 1 | 2; // 2是子功能,

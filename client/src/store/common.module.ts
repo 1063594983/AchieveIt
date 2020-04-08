@@ -1,4 +1,5 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { commonStore } from "@/store/index";
 
 @Module({ name: 'common' })
 export default class CommonModule extends VuexModule {
@@ -12,5 +13,9 @@ export default class CommonModule extends VuexModule {
   @Mutation
   setShowHello(showHello: boolean) {
     this.showHello = showHello;
+  }
+
+  get bgColor() {
+    return this.isDarkMode ? '#222933' : 'white';
   }
 }

@@ -28,7 +28,7 @@
       </el-card>
     </div>
     <div class="px3">
-      <el-card shadow="never">
+      <el-card shadow="never" style="min-width: 960px">
         <h3 slot="header" class="m0">
           最近登录
         </h3>

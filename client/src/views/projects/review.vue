@@ -51,7 +51,9 @@ export default {
   computed: {
     filteredList() {
       if (!this.query) return this.projects;
-      return this.projects.filter((i) => fuzzysearch(this.query, i.project_name + i.status));
+      return this.projects.filter((i) =>
+        fuzzysearch(this.query.toLowerCase(), (i.project_name + i.status).toLowerCase())
+      );
     },
   },
   mounted() {
