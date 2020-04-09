@@ -5,11 +5,11 @@ import {
   DevicePutBody,
   GetAllDeviceResult,
   GetDeviceResult,
+  Device,
 } from 'achieve-it-contract';
 import { createCRUD } from '@/agent/utils';
 import { axiosGet } from '@/agent/utils';
-import { reactive, toRefs } from '@vue/composition-api';
-import { Device } from 'achieve-it-contract/namespaces/device';
+import { reactive } from '@vue/composition-api';
 
 const deviceAPI = {
   ...createCRUD<DeviceGetBody, DeviceDeleteBody, DevicePutBody, DevicePostBody, GetDeviceResult>('device'),

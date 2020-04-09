@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h1>风险管理 </h1>
+    <div class="flex items-center justify-between">
+      <h1>风险管理</h1>
+      <el-select value="123">
+        <el-option value="123" label="测试"></el-option>
+        <el-option value="1234" label="测试2"></el-option>
+        <el-option value="1235" label="测试3"></el-option>
+      </el-select>
+    </div>
     <el-table :data="riskList">
       <el-table-column label="ID" prop="risk_id" width="100px"></el-table-column>
       <el-table-column label="项目名称" prop="project_id"></el-table-column>
@@ -20,7 +27,6 @@ export default class Risks extends Vue {
   async mounted() {
     const list = await agent.risk.ofProject(123);
     this.riskList = list.risk_list;
-
   }
 }
 </script>

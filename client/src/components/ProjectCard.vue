@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="hover" class="mt2">
+  <el-card shadow="hover" class="mt2" v-if="project">
     <div class="flex justify-between items-center mb2">
       <div class="bold h3">{{ project.project_name }}</div>
       <div class="h6 opacity">ID: {{ project.project_id }}</div>

@@ -12,6 +12,7 @@
   "main": "src/main.ts",
   "dependencies": {
     "@vue/composition-api": "0.5.0",
+    "achieve-it-contract": "0.0.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "dayjs": "^1.8.23",
@@ -52,7 +53,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "lint-staged": "^9.5.0",
-    "prettier": "^2.0.2",
+    "prettier": "^2.0.4",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.2",
     "serve": "^11.3.0",
