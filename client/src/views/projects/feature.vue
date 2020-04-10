@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>项目功能</h1>
     <el-card shadow="hover" class="mt2" v-for="project in projects" :key="project.project_id">
       <div class="flex justify-between items-center mb2">
         <div class="bold h3">{{ project.project_name }}</div>

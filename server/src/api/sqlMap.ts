@@ -175,5 +175,21 @@ export default {
       table_name: 'feature',
       key_name: 'project_id'
     })
+  },
+  defect: {
+    getProjectDefectList: pattern.selectPattern({
+      table_name: 'defect',
+      key_name: 'project_id'
+    }),
+    getAllDefect: "select * from defect",
+    insertDefect: pattern.insertPattern({
+      table_name: 'defect',
+      select_col: 'defect_content, project_id, status'
+    }),
+    updateDefect: pattern.updatePattern({
+      table_name: 'defect',
+      select_col: 'status',
+      key_name: 'defect_id'
+    })
   }
 };
