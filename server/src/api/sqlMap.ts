@@ -165,5 +165,11 @@ export default {
       table_name: 'work_time',
       select_col: 'member_id, function_id, activity_content, project_id, start_time, end_time'
     })
+  },
+  feature: {
+    insertFeatureExcel: pattern.insertPattern({
+      table_name: 'feature',
+      select_col: 'project_id, excel_id'
+    })
   }
 };

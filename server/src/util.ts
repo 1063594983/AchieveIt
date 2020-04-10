@@ -46,3 +46,7 @@ export const commonDeleteHandler = (res: Response<ResultCommon>, err) => {
     successHandler(res, 'delete success');
   }
 };
+
+export const excelTool = {
+  
+}

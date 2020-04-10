@@ -1,13 +1,14 @@
 import { ResultCommon, Authorization } from "../common";
 
 export interface Feature {
-  /**
-   * layer = 1 --> function_id = `${project_id}_${function_name}`
-   * layer = 2 --> function_id = `${project_id}_${parent.function_name}_${function_name}`
-   * 因此project_id和function_name中不能有下划线
-   *
-   * 只有子功能有parent
-   */
+  // /**
+  //  请忽略
+  //  * layer = 1 --> function_id = `${project_id}_${function_name}`
+  //  * layer = 2 --> function_id = `${project_id}_${parent.function_name}_${function_name}`
+  //  * 因此project_id和function_name中不能有下划线
+  //  *
+  //  * 只有子功能有parent
+  //  */
   function_id: string;  //
   function_name: string;
   project_id: string;
@@ -52,11 +53,12 @@ export interface AddFunctionToProject extends Authorization {
 
 /**
  * api: post /function/importFunctionExcelToProject/:project_id
+ * 上传excel文件
  */
 
 // request
 export interface ImportFunctionExcelToProject extends Authorization {
-  function_excel: FunctionExcelItem []
+  
 }
 
 

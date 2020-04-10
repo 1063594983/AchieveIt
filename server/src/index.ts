@@ -1,8 +1,10 @@
 import express, { Response, Request } from 'express';
 import bodyParser from 'body-parser';
 import expressJwt from 'express-jwt';
-import config from './config';
 import cors from 'cors';
+
+
+import config from './config';
 import userApi from "./api/userApi";
 import demoApi from "./api/demoApi";
 import memberApi from "./api/memberApi";
@@ -19,6 +21,7 @@ import { ResultCommon } from 'achieve-it-contract';
 
 const app = express();
 const port = 3000;
+
 
 // 解决json数据传输问题
 app.use(bodyParser.json());

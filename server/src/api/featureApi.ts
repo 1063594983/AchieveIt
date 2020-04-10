@@ -4,8 +4,13 @@ import $sql from './sqlMap';
 import { GetProjectFeatureListResult, ResultCommon } from 'achieve-it-contract';
 import { conn } from '../mysqlPool';
 import { mysqlErrorHandler, commomInsertHandler, successHandler } from '../util';
+import multer from 'multer';
 
 const router = express.Router();
+
+const upload = multer({
+  dest: 'upload/feature/'
+})
 
 // get /function/getProjectFunctionList/:project_id
 
@@ -26,7 +31,7 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
   });
 });
 
-// /function/addFunctionToProject/:project_id
+// post /function/addFunctionToProject/:project_id
 // 增加功能
 router.post('/addFunction', (req, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
@@ -40,30 +45,47 @@ router.post('/addFunction', (req, res: Response<ResultCommon>) => {
   );
 });
 
+
 // post /function/importFunctionExcelToProject/:project_id
-router.post('/importFunctionExcelToProject/:project_id', (req, res: Response<ResultCommon>) => {
+
+router.post('/importFunctionExcelToProject/:project_id', upload.single('function'), (req: any, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
-  const function_excel = req.body.function_excel;
-  for (const item of function_excel) {
-    const parent = item.parent;
-    conn.query("insert into \`function\` (project_id, function_id, function_name, layer) values (?, ?, ?, ?)", [project_id, `${project_id}_${parent.function_name}`, parent.function_name, 1], (err) => {
-      if (err) {
-        console.log(`[myssql] ${err}`)
-      } else {
-        const children = item.children;
-        for (const child of children) {
-          conn.query("insert into \`function\` (project_id, function_id, function_name, layer, parent) values (?, ?, ?, ?, ?)", [project_id, 
-            `${project_id}_${parent.function_name}_${child.function_name}`, child.function_name, 2, `${project_id}_${parent.function_name}`], (err2) => {
-            if (err) {
-              console.log(`[myssql] ${err2}`)
-            }
-          })
-        }
-      }
+  if (!req.file) {
+    res.json({
+      status: config.status.ERROR,
+      msg: '上传文件不能为空'
     })
   }
-  successHandler(res);
+  const fileName = req.file.filename;
+  conn.query($sql.feature.insertFeatureExcel, [project_id, fileName], err => {
+    commomInsertHandler(res, err);
+  })
+  
 })
+
+// router.post('/importFunctionExcelToProject/:project_id', upload.single('function'), (req, res: Response<ResultCommon>) => {
+//   const project_id = req.params.project_id;
+//   const function_excel = req.body.function_excel;
+//   for (const item of function_excel) {
+//     const parent = item.parent;
+//     conn.query("insert into \`function\` (project_id, function_id, function_name, layer) values (?, ?, ?, ?)", [project_id, `${project_id}_${parent.function_name}`, parent.function_name, 1], (err) => {
+//       if (err) {
+//         console.log(`[myssql] ${err}`)
+//       } else {
+//         const children = item.children;
+//         for (const child of children) {
+//           conn.query("insert into \`function\` (project_id, function_id, function_name, layer, parent) values (?, ?, ?, ?, ?)", [project_id, 
+//             `${project_id}_${parent.function_name}_${child.function_name}`, child.function_name, 2, `${project_id}_${parent.function_name}`], (err2) => {
+//             if (err) {
+//               console.log(`[myssql] ${err2}`)
+//             }
+//           })
+//         }
+//       }
+//     })
+//   }
+//   successHandler(res);
+// })
 
 // /function/setFunctionRelation
 // 设置功能上下级关系
