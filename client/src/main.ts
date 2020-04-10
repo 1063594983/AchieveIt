@@ -19,6 +19,9 @@ const loadTheme = async () => {
   }
 };
 
+// 改为false，则若用户没有对应权限就看不到部分页面了
+export const showAllPageWithoutAuth = true;
+
 Vue.use(VueCompositionApi);
 
 loadTheme().then(() => {

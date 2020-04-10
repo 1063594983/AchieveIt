@@ -28,7 +28,7 @@
       </el-card>
     </div>
     <div class="px3">
-      <el-card shadow="never" style="min-width: 960px">
+      <el-card shadow="never" style="min-width: 960px;">
         <h3 slot="header" class="m0">
           最近登录
         </h3>
@@ -50,8 +50,8 @@ import dayjs from 'dayjs';
 export default class Main extends Vue {
   logs = [
     {
-      date: dayjs(Date.now()).format("YYYY年MM月DD日 HH:mm:ss"),
-      browser: navigator.appVersion
+      date: dayjs(Date.now()).format('YYYY年MM月DD日 HH:mm:ss'),
+      browser: navigator.appVersion,
     },
   ];
   get member() {
@@ -69,9 +69,6 @@ export default class Main extends Vue {
     phone: '手机',
     job: '职位',
   };
-  mounted() {
-    userStore.loadMember();
-  }
 }
 </script>
 
