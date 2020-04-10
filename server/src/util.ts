@@ -1,6 +1,8 @@
 import { ResultCommon } from 'achieve-it-contract';
 import { Response } from 'express';
 import config from './config';
+import xlsx from 'node-xlsx';
+import path from 'path'
 
 export const mysqlErrorHandler = (res: Response<ResultCommon>, err) => {
   res.json({
@@ -48,5 +50,8 @@ export const commonDeleteHandler = (res: Response<ResultCommon>, err) => {
 };
 
 export const excelTool = {
-  
+  readExcel: (filePath) => {
+    const file = xlsx.parse(filePath);
+    return file;
+  }
 }

@@ -2,7 +2,7 @@ import express, { Response, Request } from 'express';
 import bodyParser from 'body-parser';
 import expressJwt from 'express-jwt';
 import cors from 'cors';
-
+import path from 'path';
 
 import config from './config';
 import userApi from "./api/userApi";
@@ -47,6 +47,9 @@ app.use(cors());
 //     path: ["/user/login"]
 // }))
 
+// 文件服务器
+app.use(express.static(path.resolve('upload')))
+// console.log(path.resolve('upload'))
 
 app.use('/demo', demoApi);
 app.use('/user', userApi);

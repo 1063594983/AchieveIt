@@ -3,13 +3,24 @@ import express, { Response } from 'express';
 import $sql from './sqlMap';
 import { GetProjectFeatureListResult, ResultCommon } from 'achieve-it-contract';
 import { conn } from '../mysqlPool';
-import { mysqlErrorHandler, commomInsertHandler, successHandler } from '../util';
+import { mysqlErrorHandler, commomInsertHandler, successHandler, excelTool } from '../util';
 import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
 const router = express.Router();
 
+const storage = multer.diskStorage({
+  destination: (req, res, cb) => {
+    cb(null, 'upload/feature/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.params.project_id + ".xls");
+  }
+})
+
 const upload = multer({
-  dest: 'upload/feature/'
+  storage: storage
 })
 
 // get /function/getProjectFunctionList/:project_id
@@ -21,6 +32,7 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
     if (err) {
       mysqlErrorHandler(res, err);
     } else {
+      
       res.json({
         feature_list: result,
         project_id,
@@ -29,6 +41,44 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
       });
     }
   });
+});
+
+// post /function/getProjectFunctionExcel/:project_id
+
+// 获取项目功能列表
+router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
+  const project_id = req.params.project_id;
+  const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
+  if (fs.existsSync(filePath)) {
+    res.json({
+      status: config.status.SUCCESS,
+      msg: 'success'
+    })
+  } else {
+    res.json({
+      status: config.status.ERROR,
+      msg: '未上传功能列表'
+    })
+  }
+  // conn.query($sql.feature.getFeatureExcel, [project_id], (err, result) => {
+  //   if (err) {
+  //     mysqlErrorHandler(res, err);
+  //   } else {
+  //     if (result.length == 0) {
+        
+  //     } else {
+  //       const fileName = result[0];
+  //       const filePath = path.resolve(`./upload/feature/${result[0].excel_id}`);
+  //       if (fs.exists(filePath)) {
+
+  //       }
+  //       // const fileData = excelTool.readExcel(filePath);
+  //       // console.log(fileData)
+  //       // res.download(filePath);
+        
+  //     }
+  //   }
+  // });
 });
 
 // post /function/addFunctionToProject/:project_id
@@ -57,9 +107,13 @@ router.post('/importFunctionExcelToProject/:project_id', upload.single('function
     })
   }
   const fileName = req.file.filename;
-  conn.query($sql.feature.insertFeatureExcel, [project_id, fileName], err => {
-    commomInsertHandler(res, err);
+  res.json({
+    status: config.status.SUCCESS,
+    msg: '上传成功'
   })
+  // conn.query($sql.feature.insertFeatureExcel, [project_id, fileName], err => {
+  //   commomInsertHandler(res, err);
+  // })
   
 })
 

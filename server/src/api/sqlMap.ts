@@ -170,6 +170,10 @@ export default {
     insertFeatureExcel: pattern.insertPattern({
       table_name: 'feature',
       select_col: 'project_id, excel_id'
+    }),
+    getFeatureExcel: pattern.selectPattern({
+      table_name: 'feature',
+      key_name: 'project_id'
     })
   }
 };
