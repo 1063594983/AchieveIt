@@ -35,8 +35,8 @@ export interface GetProjectFunctionListGetBody extends Authorization {}
 
 // result
 export interface GetProjectFeatureListResult extends ResultCommon {
-  feature_list: Feature[];
-  project_id: string
+  feature_list?: Feature[];
+  project_id?: string
 }
 
 

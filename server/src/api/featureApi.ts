@@ -23,24 +23,27 @@ const upload = multer({
   storage: storage
 })
 
+
 // get /function/getProjectFunctionList/:project_id
 
 // 获取项目功能
 router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProjectFeatureListResult>) => {
   const project_id = req.params.project_id;
-  conn.query($sql.function.getFunctionByProjectId, [project_id], (err, result) => {
-    if (err) {
-      mysqlErrorHandler(res, err);
-    } else {
-      
-      res.json({
-        feature_list: result,
-        project_id,
-        status: config.status.SUCCESS,
-        msg: 'success'
-      });
-    }
-  });
+  const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
+  if (fs.existsSync(filePath)) {
+    const file = excelTool.readExcel(filePath);
+    res.json({
+      project_id,
+      feature_list: file,
+      status: config.status.SUCCESS,
+      msg: 'success'
+    })
+  } else {
+    res.json({
+      status: config.status.ERROR,
+      msg: '未上传功能excel表'
+    })
+  }
 });
 
 // post /function/getProjectFunctionExcel/:project_id

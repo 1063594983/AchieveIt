@@ -117,9 +117,17 @@ export default {
    */
   activity: {
     getActivityById: 'select * from activity where activity_id = ?',
+    getProjectActivityList: pattern.selectPattern({
+      table_name: 'activity',
+      key_name: 'project_id'
+    }),
+    getAllActivitys: "select * from activity",
     deleteActivityById: 'delete from activity where activity_id = ?',
     updateActivityById: 'update activity set activity_name = ?, activity_content = ? where activity_id = ?',
-    insertActivity: 'insert into activity (activity_name, activity_content) values (?, ?)'
+    insertActivity: pattern.insertPattern({
+      table_name: 'activity',
+      select_col: 'project_id, activity_name, activity_content'
+    })
   },
   /**
    * @author: zou

@@ -5,10 +5,23 @@ import {
   ActivityPutBody,
   GetActivityResult
 } from "achieve-it-contract";
-import { createCRUD } from "@/agent/utils";
+import { createCRUD, baseURL } from "@/agent/utils";
+import axios from 'axios';
 
-const activityAPI = createCRUD<ActivityGetBody, ActivityDeleteBody, ActivityPutBody, ActivityPostBody, GetActivityResult>(
+const activityCRUD = createCRUD<ActivityGetBody, ActivityDeleteBody, ActivityPutBody, ActivityPostBody, GetActivityResult>(
   'activity'
 );
+
+const activityAPI = {
+  ...activityCRUD,
+  ofProject: async (project_id: string) => {
+    const result = await axios.get(`${baseURL}/activity/getProjectActivityList/${project_id}`);
+    return result;
+  },
+  getAll: async () => {
+    const result = await axios.get(`${baseURL}/activity/getAllActivitys`);
+    return result;
+  }
+}
 
 export default activityAPI;

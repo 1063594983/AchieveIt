@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-button icon="el-icon-document-add" @click="defectFormVisible = true">添加缺陷</el-button>
+    
+    <h1>缺陷管理</h1>
     <div class="flex items-center justify-between">
-      <h1>缺陷管理</h1>
+      <el-button icon="el-icon-document-add" @click="defectFormVisible = true">添加缺陷</el-button>
       <el-autocomplete
       class="inline-input"
       v-model="selectedProject"
       :fetch-suggestions="querySearch"
       placeholder="请输入项目ID"
       @select="handleSelect"
-      @blur="handleChange"
     ></el-autocomplete>
     </div>
     <el-card shadow="hover" class="mt2" v-for="defect in filterDefects" :key="defect.defect_id">
@@ -61,9 +61,9 @@ import { Notify } from '../../theme';
 export default class Defects extends Vue {
   filterDefects: Defect [] = [];
   defects: Defect [] = [];
-  projects: Project [] = [];
+  projects: {value: string} [] = [];
   selectedProject = "";
-  defectFormVisible = false;
+  defectFormVisible = false; 
   form = {
     project_id: ""
   };
@@ -71,7 +71,7 @@ export default class Defects extends Vue {
     const result = await agent.defect.getAll();
     const result2 = await agent.project.getAll();
     this.filterDefects = this.defects = result.data.defect_list;
-    this.projects = result2.project_list.map((x) => {return {value: x.project_id}});
+    this.projects = result2.project_list.map((x) => {return {value: x.project_id.toString()}});
   }
   mounted() {
     this.refresh();
@@ -86,12 +86,6 @@ export default class Defects extends Vue {
         const results = queryString ? projects.filter(this.createFilter(queryString)) : projects;
         // 调用 callback 返回建议列表的数据
         cb(results);
-      }
-      handleChange(value) {
-        console.log(value)
-        if (value == "") {
-          this.filterDefects = this.defects;
-        }
       }
       async solveDefect(defect_id) {
         const result = await agent.defect.solve(defect_id);

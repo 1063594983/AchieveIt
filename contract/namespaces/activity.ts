@@ -5,10 +5,11 @@
 
 import { ResultCommon, Authorization } from "../common";
 
-interface Activity {
+export interface Activity {
   activity_id: number;
   activity_name: string;
   activity_content: string;
+  project_id: string
 }
 /**
  * activity_name
@@ -45,6 +46,30 @@ export interface GetActivityResult extends ResultCommon {
   activity: Activity;
 }
 
+/**
+ * api: get /activity/getProjectActivityList/:activity_id
+ */
+
+//  request
+export interface ProjectActivityListGetBody extends Authorization {}
+
+// result
+export interface GetProjectActivityListResult extends ResultCommon {
+  activity_list?: Activity [];
+}
+
+/**
+ * api: get /activity/getAllActivitys
+ */
+
+//  request
+export interface AllActivitysGetBody extends Authorization {}
+
+// result
+export interface GetAllActivitysResult extends ResultCommon {
+  activity_list?: Activity [];
+}
+
 
 /**
  * api: post /activity
@@ -54,6 +79,7 @@ export interface GetActivityResult extends ResultCommon {
 export interface ActivityPostBody extends Authorization {
   activity_name: string; // 0-0 --> 工程活动-需求开发
   activity_content?: string;
+  project_id: string
 }
 
 
