@@ -171,7 +171,7 @@ export default {
     }),
     insertWorkTime: pattern.insertPattern({
       table_name: 'work_time',
-      select_col: 'member_id, function_id, activity_content, project_id, start_time, end_time'
+      select_col: 'member_id, feature_name, activity_content, project_id, start_time, end_time'
     })
   },
   feature: {

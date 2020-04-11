@@ -17,18 +17,25 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="活动名称">
-        <el-select v-model="form.feature_id" placeholder="请选择">
-          <el-option
+      <el-form-item label="功能名称">
+          <!-- <el-option
             v-for="item in features"
             :key="item.function_id"
             :label="item.function_name"
             :value="item.function_id"
-          ></el-option>
-        </el-select>
+          ></el-option> -->
+          <el-cascader
+            v-model="form.feature_name"
+            :options="features"
+            placeholder="功能 / 子功能"
+          ></el-cascader>
       </el-form-item>
-      <el-form-item label="工作详情">
-        <el-input type="textarea" v-model="form.activity_content" placeholder="输入工作详情"></el-input>
+      <el-form-item label="活动名称">
+        <el-cascader
+            v-model="form.activity_content"
+            :options="activitys"
+            placeholder="请选择活动"
+          ></el-cascader>
       </el-form-item>
       <el-form-item label="开始时间">
         <el-time-picker placeholder="输入开始时间" v-model="form.start_time"></el-time-picker>
@@ -51,21 +58,72 @@ import { Subtract } from 'utility-types';
 import agent, { authBody } from '@/agent';
 import { userStore } from '@/store';
 
-type WorkTimeDraft = Subtract<WorkTimePostBody, authBody>;
+
+
+// type WorkTimeDraft = Subtract<WorkTimePostBody, authBody>;
+
+function initForm() {
+  return {
+    activity_content: null,
+    end_time: '',
+    feature_name: null,
+    member_id: +userStore.currentUser.member_id,
+    project_id: '',
+    start_time: '',
+  };
+}
+
 @Component
 export default class ProjectCreateDialog extends Vue {
   @Prop({ required: true }) visible!: boolean;
   @Prop({ required: true }) onClose!: () => void;
-  @Prop({ required: true }) onCreate!: (record: WorkTimeDraft) => Promise<boolean>;
+  @Prop({ required: true }) onCreate!: (record) => Promise<boolean>;
 
   projects: Project[] = [];
-  features: Feature[] = [];
+  features = null;
+  activitys = null;
 
   @Watch('form.project_id')
   async onProjectSelected() {
+    this.form.activity_content = null;
+    this.form.feature_name = null;
     const result = await agent.feature.getFeatureList(this.form.project_id);
-    console.log(result);
-    this.features = result.feature_list;
+
+    if (result.data.status == 'error') {
+      
+      this.features = null;
+    } else {
+      const features = result.data.feature_list;
+      this.features = features.map((feature) => {
+        return {
+          value: feature.name,
+          label: feature.name,
+          children: feature.data[0].map((child) => {
+            return {
+              value: child,
+              label: child
+            }
+          })
+        }
+      })
+    }
+
+    const activity = await agent.activity.ofProject(this.form.project_id);
+    if (activity.data.status == 'error') {
+      
+      this.activitys = null;
+    } else {
+      const activitys = activity.data.activity_list;
+      this.activitys = activitys.map((a) => {
+        return {
+          value: `${a.activity_name}(${a.activity_content})`,
+          label: `${a.activity_name}(${a.activity_content})`
+        }
+      })
+    }
+
+    
+    
   }
 
   mounted() {
@@ -74,16 +132,11 @@ export default class ProjectCreateDialog extends Vue {
     });
   }
 
-  form: WorkTimeDraft = {
-    activity_content: '',
-    end_time: '',
-    feature_id: null,
-    member_id: +userStore.currentUser.member_id,
-    project_id: '',
-    start_time: '',
-  };
+  form = initForm();
 
   async createWorkTime() {
+    this.form.activity_content = this.form.activity_content[0];
+    this.form.feature_name = `${this.form.feature_name[0]}-${this.form.feature_name[1]}`;
     const result = await this.onCreate(this.form);
     if (result) {
       this.onClose();

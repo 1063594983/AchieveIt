@@ -8,7 +8,7 @@ import { ResultCommon, Authorization } from "../common";
 interface WorkTime {
   work_time_id: number;
   member_id: number;
-  feature_id: number;
+  feature_name: string;
   activity_content: string;
   project_id: string;
   start_time: string;
@@ -46,7 +46,7 @@ export interface GetWorkTimeResult extends ResultCommon {
 // request
 export interface WorkTimePostBody extends Authorization {
   member_id: number;
-  feature_id: number;
+  feature_name: string;
   activity_content: string;
   project_id: string;
   start_time: string;

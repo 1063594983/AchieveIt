@@ -2,13 +2,16 @@
   <div>
     <div class="flex items-center justify-between">
       <h1>风险管理</h1>
-      <el-select value="123">
-        <el-option value="123" label="测试"></el-option>
-        <el-option value="1234" label="测试2"></el-option>
-        <el-option value="1235" label="测试3"></el-option>
+      <el-select v-model="selectedProjectId" filterable>
+        <el-option
+          v-for="i of projects"
+          :key="i.project_id"
+          :value="i.project_id"
+          :label="`${i.project_name}(${i.project_id})`"
+        ></el-option>
       </el-select>
     </div>
-    <el-table :data="riskList">
+    <el-table :data="riskList" v-loading="isLoading">
       <el-table-column label="ID" prop="risk_id" width="100px"></el-table-column>
       <el-table-column label="项目名称" prop="project_id"></el-table-column>
       <el-table-column label="内容" prop="detail"></el-table-column>
@@ -17,16 +20,33 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import agent from '@/agent';
-import { Risk } from 'achieve-it-contract';
+  import { Component, Vue, Watch } from "vue-property-decorator";
+  import agent from "@/agent";
+  import { Project, Risk } from "achieve-it-contract";
 
-@Component
+  @Component
 export default class Risks extends Vue {
   riskList: Risk[] = [];
+  projects: Project[] = [];
+  selectedProjectId = null;
+  isLoading = false;
+
+  refresh() {
+    this.isLoading = true;
+    agent.risk.ofProject(this.selectedProjectId).then(result => {
+      this.riskList = result.risk_list;
+      this.isLoading = false;
+    })
+  }
+
+  @Watch('selectedProjectId')
+  onProjectChanges() {
+    this.refresh();
+  }
+
   async mounted() {
-    const list = await agent.risk.ofProject(123);
-    this.riskList = list.risk_list;
+    const result = await agent.project.getAll();
+    this.projects = result.project_list;
   }
 }
 </script>

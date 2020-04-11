@@ -11,7 +11,7 @@
       @select="handleSelect"
     ></el-autocomplete>
     </div>
-    <el-card shadow="hover" class="mt2" v-for="a in activitys" :key="a.activity_id">
+    <el-card shadow="hover" class="mt2" v-for="a in filterActivitys" :key="a.activity_id">
       <div class="flex justify-between items-center mb2">
         <div class="bold h3">项目ID: {{ a.project_id }}</div>
         <div class="h6 opacity">ID: {{ a.activity_id }}</div>
@@ -107,6 +107,7 @@ function initForm() {
 }
 @Component
 export default class Activitys extends Vue {
+  filterActivitys: Activity [] = [];
   activitys: Activity [] = [];
   activityFormVisible = false;
   projects: { value: string }[] = [];
@@ -124,8 +125,7 @@ export default class Activitys extends Vue {
       return { value: x.project_id.toString() };
     });
     const activitys = await agent.activity.getAll();
-    this.activitys = activitys.data.activity_list;
-    // console.log(activitys);
+    this.filterActivitys = this.activitys = activitys.data.activity_list;
   }
 
   async mounted() {
@@ -159,8 +159,10 @@ export default class Activitys extends Vue {
   handleChange(value) {
     console.log(value);
   }
-  handleSelect(value) {
-
+  handleSelect(e) {
+    this.filterActivitys = this.activitys.filter((a) => {
+      return a.project_id == e.value;
+    })
   }
 }
 </script>
