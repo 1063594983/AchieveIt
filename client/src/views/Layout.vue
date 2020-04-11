@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <el-container>
-      <el-header>
+      <el-header v-once :style="`background-color: ${bgColor}`">
         <navbar></navbar>
       </el-header>
       <el-container>
-        <el-aside width="220px">
+        <el-aside width="220px" v-once :style="`background-color: ${bgColor}`">
           <sidebar></sidebar>
         </el-aside>
         <el-main>
@@ -20,31 +20,46 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Navbar from '@/components/Navbar.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import { commonStore } from '@/store';
 
 @Component({
-  components: { Sidebar, Navbar }
+  components: { Sidebar, Navbar },
 })
-export default class Layout extends Vue {}
+export default class Layout extends Vue {
+  get bgColor() {
+    return commonStore.bgColor;
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .wrapper {
-  width: 100vw;
-  height: 100vh;
   min-width: 700px;
+  height: 100vh;
 
-  & > .el-container {
+  .el-header {
+    padding: 0;
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    right: 0;
+  }
+
+  .el-main {
+    padding-top: 80px;
+    padding-left: 240px;
     height: 100vh;
-    overflow: hidden;
   }
 
   .el-aside {
     border-right: 1px solid rgba(128, 128, 128, 0.06);
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    height: 100%;
+    z-index: 100;
   }
-}
-
-.el-header {
-  padding: 0;
-  z-index: 1000;
 }
 </style>

@@ -21,8 +21,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { flatMenu } from '@/router';
+import { getFlatMenu } from '@/router';
 import fuzzysearch from 'fuzzysearch';
+import { userStore } from '@/store';
 
 interface SearchItem {
   title: string;
@@ -34,14 +35,16 @@ interface SearchItem {
 @Component
 export default class extends Vue {
   searchInput = '';
+
   handleSelect(item: SearchItem) {
     this.$router.push({ name: item.name });
   }
   querySearch(queryString: string, cb: (menu: SearchItem[]) => void) {
+    const flatMenu = getFlatMenu();
     if (!queryString) {
       cb(flatMenu);
     } else {
-      cb(flatMenu.filter(i => fuzzysearch(queryString, i.fatherTitle + i.title)));
+      cb(flatMenu.filter((i) => fuzzysearch(queryString, i.fatherTitle + i.title)));
     }
   }
 }

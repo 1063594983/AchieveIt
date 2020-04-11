@@ -2,8 +2,21 @@ import express, { Response } from 'express';
 import { DemoResult, ResultCommon } from 'achieve-it-contract';
 import config from '../config';
 import email from '../email';
+import multer from 'multer';
+import path from 'path';
 
 const router = express.Router();
+const upload = multer({
+  dest: 'upload/'
+})
+// post /demo/file
+router.post('/file', upload.single('file'), (req: any, res, next) => {
+  const file = req.file;
+  console.log(path.resolve(file.path));
+  res.json({
+    msg: 'ok'
+  })
+})
 
 // post /demo/sendEmail
 router.post('/sendEmail', (req, res: Response<ResultCommon>) => {

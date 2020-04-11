@@ -10,8 +10,8 @@ export default {
   methods: {
     handleBack() {
       this.$router.back();
-    }
-  }
+    },
+  },
 };
 </script>
 

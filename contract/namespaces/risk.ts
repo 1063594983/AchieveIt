@@ -18,7 +18,7 @@ interface RiskDetail {
   risk_stakeholder?: number[]; //member_id[]
 }
 
-interface Risk {
+export interface Risk {
   risk_id: number;
   project_id: string;
   detail: RiskDetail;

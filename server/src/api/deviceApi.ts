@@ -1,7 +1,7 @@
 import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
-import { ResultCommon, GetDeviceResult, GetProjectDeviceListResult } from 'achieve-it-contract';
+import { ResultCommon, GetDeviceResult, GetProjectDeviceListResult, GetAllDeviceResult } from 'achieve-it-contract';
 import {
   mysqlErrorHandler,
   notFoundErrorHandler,
@@ -11,6 +11,21 @@ import {
 } from '../util';
 import { conn } from '../mysqlPool';
 const router = express.Router();
+
+// get /device/getAllDevices
+router.get('/getAllDevices', (req, res: Response<GetAllDeviceResult>) => {
+  conn.query($sql.device.getAllDevices, [], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      res.json({
+        device_list: result,
+        status: config.status.SUCCESS,
+        msg: 'get success'
+      })
+    }
+  })
+})
 
 // get /device/:device_id
 // getDevice

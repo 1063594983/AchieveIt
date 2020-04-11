@@ -12,11 +12,11 @@
   "devDependencies": {
     "lerna": "^3.20.2",
     "concurrently": "^5.1.0",
-    "prettier": "^1.19.1"
+    "prettier": "^2.0.4"
   },
   "scripts": {
     "dev:client": "cd client && yarn start",
     "dev:server": "cd server && yarn start",
-    "start": "concurrently \"yarn dev:server\" \"yarn dev:client"
+    "start": "concurrently \"yarn dev:server\" \"yarn dev:client\""
   }
 }

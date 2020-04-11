@@ -1,9 +1,21 @@
 import { ResultCommon, Authorization } from "../common";
 
-interface Device {
+export interface Device {
   device_id: number;
   device_name: string;
   device_status: string; // ['可用', '不可用']
+}
+
+/**
+ * api: get /device/getAllDevices
+ */
+
+// request
+export interface AllDevicesGetBody extends Authorization {}
+
+// result
+export interface GetAllDeviceResult extends ResultCommon {
+  device_list: Device [];
 }
 
 /**

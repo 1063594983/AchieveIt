@@ -4,6 +4,7 @@ import Layout from '@/views/Layout.vue';
 import store, { commonStore, userStore } from '@/store';
 import NProgress from 'nprogress';
 import _ from 'lodash';
+import { showAllPageWithoutAuth } from '@/main';
 
 Vue.use(VueRouter);
 
@@ -55,6 +56,7 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'receiving',
           title: '项目审核',
+          auth: '项目上级', // 只有当前用户job为项目上级时，才能看到该页面
         },
       },
       {
@@ -69,10 +71,28 @@ const menu: RouteConfig[] = [
       {
         name: 'projects.devices',
         path: 'devices',
-        component: () => import('@/views/projects/devices.vue'),
+        component: () => import('@/views/projects/devices.tsx'),
         meta: {
           icon: 'mobile-phone',
           title: '设备管理',
+        },
+      },
+      {
+        name: 'projects.feature',
+        path: 'feature',
+        component: () => import('@/views/projects/feature.vue'),
+        meta: {
+          icon: 'magic-stick',
+          title: '项目功能',
+        },
+      },
+      {
+        name: 'projects.config',
+        path: 'config',
+        component: () => import('@/views/projects/config.vue'),
+        meta: {
+          icon: 'reading',
+          title: '配置管理',
         },
       },
       {
@@ -158,6 +178,14 @@ const routes: RouteConfig[] = [
   },
   ...menu,
   {
+    path: '/403',
+    name: 'NoAuth',
+    meta: {
+      noAuth: true,
+    },
+    component: () => import('@/views/403.vue'),
+  },
+  {
     path: '*',
     name: '404',
     meta: {
@@ -173,6 +201,8 @@ const router = new VueRouter({
   routes,
 });
 
+const isAuthed = (i) => showAllPageWithoutAuth || !i.meta?.auth || i.meta?.auth?.includes(userStore.member.job);
+
 router.beforeEach(async (to, from, next) => {
   // 与vuex-persist兼容使用，保证状态已经完全存储了
   // @ts-ignore
@@ -183,10 +213,14 @@ router.beforeEach(async (to, from, next) => {
     next({ name: 'home' });
   }
 
-  // 若用户已经登录，则均可以访问
+  // 若用户已经登录，则除了权限不足的页面均可以访问
   if (userStore.isAuth) {
-    NProgress.start();
-    next();
+    if (to.matched.some((page) => !isAuthed(page))) {
+      next({ name: 'NoAuth' });
+    } else {
+      NProgress.start();
+      next();
+    }
   }
 
   // 若用户未登录，则除了部分页面，都会跳转到Login
@@ -203,14 +237,21 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-const flatMenu = _.flatMap(menu, (i) =>
-  i.children!.map((child) => ({
-    title: child.meta.title!,
-    icon: child.meta.icon!,
-    fatherTitle: i.meta.title!,
-    name: child.name!,
-  }))
-);
+export function filterMenu(menu) {
+  return menu.filter(isAuthed);
+}
 
-export { menu, flatMenu };
+function getFlatMenu() {
+  return _.flatMap(menu, (i) =>
+    i.children.filter(isAuthed).map((child) => ({
+      title: child.meta.title!,
+      icon: child.meta.icon!,
+      fatherTitle: i.meta.title!,
+      name: child.name!,
+      auth: child.meta.auth,
+    }))
+  );
+}
+
+export { menu, getFlatMenu };
 export default router;

@@ -96,7 +96,7 @@ router.get('/getProjectRiskList/:project_id', (req, res: Response<GetProjectRisk
       res.json({
         project_id,
         risk_list: result,
-        status: config.status.ERROR,
+        status: config.status.SUCCESS,
         msg: 'success'
       });
     }

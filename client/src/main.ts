@@ -7,7 +7,8 @@ import './assets/css/main.scss';
 import 'nprogress/nprogress.css';
 import 'vue-class-component/hooks'; // import hooks type to enable auto-complete
 import './theme/element-ui';
-import '../vendor/basscss.css'
+import '../vendor/basscss.css';
+import VueCompositionApi from '@vue/composition-api';
 
 const loadTheme = async () => {
   if (commonStore.isDarkMode) {
@@ -17,6 +18,11 @@ const loadTheme = async () => {
     await import('./assets/css/darkMode.scss');
   }
 };
+
+// 改为false，则若用户没有对应权限就看不到部分页面了
+export const showAllPageWithoutAuth = true;
+
+Vue.use(VueCompositionApi);
 
 loadTheme().then(() => {
   new Vue({

@@ -10,13 +10,12 @@
     <div class="flex items-center">
       <navbar-search></navbar-search>
       <el-dropdown @command="handleCommand" trigger="click">
-        <span class="flex items-center">
+        <span class="flex items-center cursor">
           <img src="../assets/img/profile.jpg" alt="avatar" class="rounded avatar" />
           <el-icon name="arrow-down" class="ml1"></el-icon>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>偏好设置</el-dropdown-item>
+          <el-dropdown-item command="setting">个人设置</el-dropdown-item>
           <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -29,6 +28,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { commonStore, userStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import NavbarSearch from '@/components/NavbarSearch.vue';
+import { Form } from '@/theme';
 
 @Component({
   components: { NavbarSearch, Breadcrumb },

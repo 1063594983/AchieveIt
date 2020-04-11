@@ -54,6 +54,7 @@ export default {
     deleteUser: 'delete from user where member_id = ?'
   },
   member: {
+    getAllMembers: "select * from member",
     getMemberById: pattern.selectPattern({
       table_name: 'member',
       key_name: 'member_id'
@@ -104,6 +105,7 @@ export default {
    */
   device: {
     getDeviceById: 'select * from device where device_id = ?',
+    getAllDevices: 'select * from device',
     updateDeviceById: 'update device set device_name = ?, device_status = ? where device_id = ?',
     insertDevice: 'insert into device (device_name, device_status) values (?, ?)',
     deleteDeviceById: 'delete from device where device_id = ?',
@@ -162,6 +164,32 @@ export default {
     insertWorkTime: pattern.insertPattern({
       table_name: 'work_time',
       select_col: 'member_id, function_id, activity_content, project_id, start_time, end_time'
+    })
+  },
+  feature: {
+    insertFeatureExcel: pattern.insertPattern({
+      table_name: 'feature',
+      select_col: 'project_id, excel_id'
+    }),
+    getFeatureExcel: pattern.selectPattern({
+      table_name: 'feature',
+      key_name: 'project_id'
+    })
+  },
+  defect: {
+    getProjectDefectList: pattern.selectPattern({
+      table_name: 'defect',
+      key_name: 'project_id'
+    }),
+    getAllDefect: "select * from defect",
+    insertDefect: pattern.insertPattern({
+      table_name: 'defect',
+      select_col: 'defect_content, project_id, status'
+    }),
+    updateDefect: pattern.updatePattern({
+      table_name: 'defect',
+      select_col: 'status',
+      key_name: 'defect_id'
     })
   }
 };

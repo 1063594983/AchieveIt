@@ -9,7 +9,7 @@
   >
     <el-form :model="form" label-position="left" label-width="5rem">
       <el-form-item label="项目ID">
-        <el-input v-model="form.project_id" placeholder="输入项目名称"></el-input>
+        <el-input v-model="form.project_id" placeholder="输入项目ID"></el-input>
       </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="form.project_name" placeholder="输入项目名称"></el-input>
@@ -40,7 +40,7 @@
         />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <div slot="footer">
       <el-button @click="onClose">取消</el-button>
       <el-button type="info" @click="addDraft">保存到草稿箱</el-button>
       <el-button type="primary" @click="createProject">创建</el-button>
@@ -52,6 +52,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ProjectDraft } from '@/store/project.module';
 import { projectStore } from '@/store';
+import { DevelopingStack, BusinessType } from '@/static';
 
 const formInit = () => ({
   project_id: '',
@@ -60,7 +61,7 @@ const formInit = () => ({
   start_time: '',
   end_time: '',
   technology: [],
-  business: []
+  business: [],
 });
 
 @Component
@@ -70,10 +71,8 @@ export default class ProjectCreateDialog extends Vue {
   @Prop({ required: true }) onAddDraft!: (form: ProjectDraft) => void;
   @Prop({ required: true }) onCreateProject!: (form: ProjectDraft) => boolean;
 
-  businessType = ['企业内部管理', '技术框架开发', '面向客户软件'].map(i => ({ label: i, value: i }));
-  developingStack = ['node.js', 'Vue.js', 'React.js', 'Java', 'Golang'].map(i => ({ label: i, value: i }));
-
-  form: ProjectDraft = formInit();
+  businessType = BusinessType.map((i) => ({ label: i, value: i }));
+  developingStack = DevelopingStack.map((i) => ({ label: i, value: i }));
   treeParams = {
     clickParent: false,
     filterable: false,
@@ -81,9 +80,11 @@ export default class ProjectCreateDialog extends Vue {
       children: 'children',
       label: 'label',
       value: 'value',
-      disabled: 'disabled'
-    }
+      disabled: 'disabled',
+    },
   };
+
+  form: ProjectDraft = formInit();
 
   @Watch('visible')
   onOpen() {
@@ -97,8 +98,8 @@ export default class ProjectCreateDialog extends Vue {
     this.onClose();
     this.onAddDraft(this.form);
   }
-  createProject(form: ProjectDraft) {
-    const result = this.onCreateProject(form);
+  createProject() {
+    const result = this.onCreateProject(this.form);
     if (result) {
       this.onClose();
     }

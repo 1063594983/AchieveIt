@@ -13,6 +13,19 @@ export interface Project {
   status: string; //  ['申请立项', '已立项', '立刻驳回', '进行中', '已交付', '结束', '已归档']
 }
 
+/**
+ * api: get /project/getAllProjects
+ */
+
+// request
+export interface ProjectListGetBodyy extends Authorization{}
+
+// response
+export interface ProjectList extends ResultCommon {
+  project_list: Project []
+}
+
+
 
 /**
  * api: get /project/:project_id
@@ -59,7 +72,7 @@ export interface ProjectPutBBody extends Authorization {
   manager?: number;
   important_events?: Array<string>;
   technology?: Array<string>;
-  business?: string;
+  business?: string[];
   status?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
@@ -71,12 +84,3 @@ export interface ProjectPutBBody extends Authorization {
 // request
 export interface ProjectDeleteBody extends Authorization {}
 
-/**
- * api: delete /project/getAllProjects
- */
-// request 
-export interface ProjectListGetBodyy extends Authorization{}
-// response
-export interface ProjectList extends ResultCommon {
-  project_list: string[]
-}

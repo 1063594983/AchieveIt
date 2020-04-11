@@ -46,6 +46,7 @@ export default class Login extends Vue {
     try {
       await userStore.login(this.form);
       Notify.success('登陆成功', `欢迎回来 ${userStore.currentUser?.username}！`);
+      await userStore.loadMember();
       await this.$router.push('/home');
     } catch (e) {
       Notify.error(e?.raw?.msg ?? '服务器发生错误啦');
