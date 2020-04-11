@@ -170,6 +170,26 @@ export default {
     insertFeatureExcel: pattern.insertPattern({
       table_name: 'feature',
       select_col: 'project_id, excel_id'
+    }),
+    getFeatureExcel: pattern.selectPattern({
+      table_name: 'feature',
+      key_name: 'project_id'
+    })
+  },
+  defect: {
+    getProjectDefectList: pattern.selectPattern({
+      table_name: 'defect',
+      key_name: 'project_id'
+    }),
+    getAllDefect: "select * from defect",
+    insertDefect: pattern.insertPattern({
+      table_name: 'defect',
+      select_col: 'defect_content, project_id, status'
+    }),
+    updateDefect: pattern.updatePattern({
+      table_name: 'defect',
+      select_col: 'status',
+      key_name: 'defect_id'
     })
   }
 };

@@ -1,15 +1,130 @@
 <template>
   <div>
-    <h1>缺陷管理</h1>
-    <pre>TODO</pre>
-  </div>
+    <el-button icon="el-icon-document-add" @click="defectFormVisible = true">添加缺陷</el-button>
+    <div class="flex items-center justify-between">
+      <h1>缺陷管理</h1>
+      <el-autocomplete
+      class="inline-input"
+      v-model="selectedProject"
+      :fetch-suggestions="querySearch"
+      placeholder="请输入项目ID"
+      @select="handleSelect"
+      @blur="handleChange"
+    ></el-autocomplete>
+    </div>
+    <el-card shadow="hover" class="mt2" v-for="defect in filterDefects" :key="defect.defect_id">
+      <div class="flex justify-between items-center mb2">
+        <div class="bold h3">项目ID: {{ defect.project_id }}</div>
+        <div class="h6 opacity">ID: {{ defect.defect_id }}</div>
+      </div>
+      <div class="my1 h5">
+        <b class="opacity">内容</b>
+        {{ defect.defect_content }}
+      </div>
+      <div class="my1 h5">
+        <b class="opacity">状态</b>
+        {{ defect.status }}
+      </div>
+      
+      
+      
+      <div class="flex justify-between items-center mt2">
+        <div class="flex items-center" v-if="defect.status == '未解决'">
+          <el-button @click="solveDefect(defect.defect_id)">解决</el-button>
+        </div>
+      </div>
+    </el-card>
+    <el-dialog title="添加缺陷" :visible.sync="defectFormVisible">
+      <el-form :model="form" label-position="left" label-width="5rem">
+      <el-form-item label="项目ID">
+        <el-autocomplete class="inline-input" v-model="form.project_id" :fetch-suggestions="querySearch" placeholder="请输入项目ID"></el-autocomplete>
+      </el-form-item>
+      <el-form-item label="缺陷内容">
+        <el-input placeholder="请输入缺陷内容" type="textarea" v-model="form.defect_content"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer">
+      <el-button @click="onClose">取消</el-button>
+      <el-button type="primary" @click="createDefect">创建</el-button>
+    </div>
+    </el-dialog>
+      </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Defect, Project } from 'achieve-it-contract';
+import agent from '@/agent';
+import { Notify } from '../../theme';
 
 @Component
-export default class Defects extends Vue {}
+export default class Defects extends Vue {
+  filterDefects: Defect [] = [];
+  defects: Defect [] = [];
+  projects: Project [] = [];
+  selectedProject = "";
+  defectFormVisible = false;
+  form = {
+    project_id: ""
+  };
+  async refresh() {
+    const result = await agent.defect.getAll();
+    const result2 = await agent.project.getAll();
+    this.filterDefects = this.defects = result.data.defect_list;
+    this.projects = result2.project_list.map((x) => {return {value: x.project_id}});
+  }
+  mounted() {
+    this.refresh();
+  }
+  createFilter(queryString) {
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      }
+  async querySearch(queryString, cb) {
+        const projects = this.projects;
+        const results = queryString ? projects.filter(this.createFilter(queryString)) : projects;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      }
+      handleChange(value) {
+        console.log(value)
+        if (value == "") {
+          this.filterDefects = this.defects;
+        }
+      }
+      async solveDefect(defect_id) {
+        const result = await agent.defect.solve(defect_id);
+        this.refresh();
+      }
+      handleSelect(item) {
+        this.selectedProject = item.value;
+        this.filterDefects = this.defects.filter(defect => {
+          return defect.project_id == this.selectedProject;
+        })
+      }
+      FormInit() {
+        return {
+          project_id: "",
+          defect_content: ""
+        }
+      }
+      onClose() {
+        this.form = this.FormInit();
+        this.defectFormVisible = false;
+      }
+      async createDefect() {
+        const result = await agent.defect.postDefect(this.form);
+        if (result.data.status == 'ok') {
+          Notify.success('成功', '添加缺陷成功');
+        } else {
+          Notify.error('失败', `项目${this.form.project_id}添加缺陷失败`);
+        }
+        this.refresh();
+        this.defectFormVisible = false;
+        // console.log(result);
+      }
+}
 </script>
 
 <style scoped></style>

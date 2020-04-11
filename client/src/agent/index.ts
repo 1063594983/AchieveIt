@@ -11,6 +11,7 @@ import activityAPI from '@/agent/activity';
 import workTimeAPI from '@/agent/worktime';
 import featureAPI from '@/agent/feature';
 import configAPI from '@/agent/config';
+import defectApi from '@/agent/defect';
 
 export function wrapToken(body: {}) {
   if ('token' in body) return body;
@@ -29,6 +30,7 @@ const agent = {
   workTime: workTimeAPI,
   feature: featureAPI,
   config: configAPI,
+  defect: defectApi
 };
 
 export default agent;
