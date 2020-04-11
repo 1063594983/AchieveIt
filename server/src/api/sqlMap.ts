@@ -77,7 +77,7 @@ export default {
     addMemberToProject: pattern.insertPattern({
       table_name: 'member_project',
       select_col: "project_id, member_id, role, authority"
-    })
+    }),
   },
   function: {
     getFunctionByProjectId: pattern.selectPattern({ table_name: '`function`', key_name: 'function_id' }),
