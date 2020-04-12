@@ -62,9 +62,12 @@ export default class Feature extends Vue {
   async refresh() {
     const result = await agent.project.getAll();
     this.projects = result.project_list;
+    const result2 = await agent.feature.getFeatureList("20200329A");
+    console.log(result2);
   }
   mounted() {
     this.refresh();
+    
   }
   async onSubmit() {
     const formData = new FormData();

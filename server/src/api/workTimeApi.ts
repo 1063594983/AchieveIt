@@ -32,7 +32,7 @@ router.get("/getMemberWorkTimeList/:member_id", (req, res: Response<GetMemberWor
 router.post("/:member_id", (req, res: Response<ResultCommon>) => {
     const member_id = req.params.member_id;
     const details = req.body;
-    conn.query($sql.workTime.insertWorkTime, [member_id, details.function_id, details.activity_content, details.project_id, details.start_time, details.end_time], (err) => {
+    conn.query($sql.workTime.insertWorkTime, [member_id, details.feature_name, details.activity_content, details.project_id, details.start_time, details.end_time], (err) => {
         commomInsertHandler(res, err);
     })
 })

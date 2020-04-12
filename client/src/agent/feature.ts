@@ -3,8 +3,11 @@ import { axiosGet } from "@/agent/utils";
 import axios from 'axios';
 
 const featureAPI = {
-  getFeatureList: (projectId: string) =>
-    axiosGet<GetProjectFeatureListResult>('function', `getProjectFunctionList/${projectId}`),
+  getFeatureList: async (projectId: string) => {
+    const result = await axios.get(`http://localhost:3000/function/getProjectFunctionList/${projectId}`);
+    return result;
+  },
+    // axiosGet('function', `getProjectFunctionList/${projectId}`),
   // addFeature: (projectId: string, feature: ) => axiosPost('function', "addFunction")
   uploadFeatureExcel: async (projectId: string, fileData) => {
     const result = await axios.post(`http://localhost:3000/function/importFunctionExcelToProject/${projectId}`, fileData, {
@@ -12,7 +15,7 @@ const featureAPI = {
         'Content-Type': 'multipart/form-data'
       }
     })
-    return result;
+    return result.data;
   },
   downloadFeatureExcel: async (projectId: string) => {
     // const result = await axios.get(`http://localhost:3000/function/getProjectFunctionExcel/${projectId}`);

@@ -1,6 +1,16 @@
 <template>
   <div>
+    <h1>工时管理</h1>
+    <div class="flex items-center justify-between">
     <el-button @click="dialogVisible = true">添加新的工时记录</el-button>
+    <!-- <el-autocomplete
+      class="inline-input"
+      v-model="selectedProject"
+      :fetch-suggestions="querySearch"
+      placeholder="请输入项目ID"
+      @select="handleSelect"
+    ></el-autocomplete> -->
+    </div>
     <work-time-create-dialog
       :visible="dialogVisible"
       :on-close="closeDialog"
@@ -10,6 +20,7 @@
       <el-table-column prop="project_id" label="项目ID"> </el-table-column>
       <el-table-column prop="start_time" label="开始时间" width="180"> </el-table-column>
       <el-table-column prop="end_time" label="结束时间" width="180"> </el-table-column>
+      <el-table-column prop="feature_name" label="项目功能"> </el-table-column>
       <el-table-column prop="activity_content" label="工作内容"> </el-table-column>
       <el-table-column
         prop="tag"
@@ -40,6 +51,8 @@ export default {
     return {
       dialogVisible: false,
       records: [],
+      activitys: [],
+      selectedProject: ""
     };
   },
   computed: {
@@ -53,6 +66,9 @@ export default {
     },
   },
   methods: {
+    refresh() {
+
+    },
     closeDialog() {
       this.dialogVisible = false;
     },
