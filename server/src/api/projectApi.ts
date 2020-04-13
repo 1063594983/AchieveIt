@@ -131,6 +131,8 @@ router.post('/', (req, res: Response<ResultCommon>) => {
       msg: '项目id不能为空'
     });
   }
+  project_details.start_time = new Date(project_details.start_time).toLocaleDateString();
+  project_details.end_time = new Date(project_details.end_time).toLocaleDateString();
   conn.query(
     $sql.project.insertProject,
     [
