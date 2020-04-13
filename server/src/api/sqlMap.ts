@@ -159,7 +159,8 @@ export default {
     deleteConfigByProjectId: pattern.deletePattern({
       table_name: "config",
       key_name: "project_id"
-    })
+    }),
+    getAllConfigs: 'select * from config',
   },
   /**
    * @author: zou

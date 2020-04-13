@@ -6,11 +6,28 @@
 import config from "../config";
 import express, { Response, response } from "express";
 import $sql from './sqlMap'
-import { ResultCommon, GetConfigResult } from "achieve-it-contract";
+import { ResultCommon, GetConfigResult, ConfigList } from "achieve-it-contract";
 import { mysqlErrorHandler, notFoundErrorHandler, commonDeleteHandler, commomInsertHandler, commomUpdateHandler } from "../util";
 import { conn } from '../mysqlPool';
 import email from "../email";
 const router = express.Router();
+
+
+  // get /config/getAllConfigs
+  // 获取所有配置的列表
+  router.get('/getAllConfigs', (req, res: Response<ConfigList>) => {
+    conn.query($sql.config.getAllConfigs, [], (err, result) => {
+      if(err) {
+        mysqlErrorHandler(res, err);
+      } else {
+        res.json({
+          config_list: result,
+          msg: 'success',
+          status: config.status.SUCCESS
+        })
+      }
+    })
+  })
 
 // get /config/:project_id
 router.get('/:project_id', (req, res: Response<GetConfigResult>) => {
@@ -57,6 +74,10 @@ router.post("/", (req, res: Response<ResultCommon>) => {
                             }
                         })
                     }
+                    res.json({
+                      status: config.status.SUCCESS,
+                      msg: 'post success'
+                    });
                 }
             })
         }

@@ -26,8 +26,6 @@
         {{ defect.status }}
       </div>
       
-      
-      
       <div class="flex justify-between items-center mt2">
         <div class="flex items-center" v-if="defect.status == '未解决'">
           <el-button @click="solveDefect(defect.defect_id)">解决</el-button>

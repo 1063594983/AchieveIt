@@ -15,6 +15,18 @@ export interface Config {
 
 
 /**
+ * api: get /config/getAllConfigs
+ */
+
+// request
+export interface ConfigListGetBody extends Authorization{}
+
+// response
+export interface ConfigList extends ResultCommon {
+  config_list: Config []
+}
+
+/**
  * api: get /config/:project_id
  */
 
