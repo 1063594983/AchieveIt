@@ -2,9 +2,9 @@
   <div>
     <div v-if="userStore.member.job == '项目经理'">
       <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
-    <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
+      <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
     </div>
-    
+
     <project-card
       :project="item"
       v-for="item in projects"
@@ -18,13 +18,52 @@
       :on-create-project="onCreateProject"
       :on-add-draft="onAddDraft"
     />
-    <project-edit-dialog
+    <!-- <project-edit-dialog
       :visible="!!dialogEditForm"
       :on-close="onCloseEditDialog"
       :on-edit="onEditProject"
       :project="dialogEditForm"
     >
-    </project-edit-dialog>
+    </project-edit-dialog>-->
+
+    <el-dialog :visible.sync="editFormVisible" title>
+      <div v-if="userStore.member.job == 'EPG Leader'">
+        <h1>分配EPG</h1>
+        <el-table :data="joinMembers" @selection-change="handleSelectionChange" max-height="250">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column width="100" property="member_id" label="ID"></el-table-column>
+          <el-table-column width="100" property="member_name" label="姓名"></el-table-column>
+
+          <el-table-column width="300" property="role.length!=0?role:'无'" label="项目中角色">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{ scope.row.role }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
+          <el-table-column width="100" property="authority.length!=0?authority:'无'" label="项目中权限"></el-table-column>
+        </el-table>
+        <el-button @click="addEPGToPro">添加</el-button>
+      </div>
+      <div v-else-if="userStore.member.job == 'QA Manager'">
+        <h1>分配QA</h1>
+        <el-table :data="joinMembers" @selection-change="handleSelectionChange" max-height="250">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column width="100" property="member_id" label="ID"></el-table-column>
+          <el-table-column width="100" property="member_name" label="姓名"></el-table-column>
+
+          <el-table-column width="300" property="role.length!=0?role:'无'" label="项目中角色">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{ scope.row.role }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
+          <el-table-column width="100" property="authority.length!=0?authority:'无'" label="项目中权限"></el-table-column>
+        </el-table>
+        <el-button @click="addQAToPro">添加</el-button>
+      </div>
+      <div v-else-if="userStore.member.job == '项目经理'">hello</div>
+    </el-dialog>
+
     <project-draft-box
       :visible="draftBoxVisible"
       :on-close="onCloseDraft"
@@ -46,6 +85,7 @@ import { Notify } from '@/theme';
 import ProjectCard from '@/components/ProjectCard.vue';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
 import { userStore } from '@/store';
+const memberRole = ['开发 Leader', '测试 Leader', '开发人员', '测试人员', '配置管理人员', 'QA', 'EPG'];
 
 @Component({
   components: { ProjectEditDialog, ProjectCard, ProjectDraftBox, ProjectCreateDialog },
@@ -57,17 +97,63 @@ export default class Projects extends Vue {
   dialogEditForm = null;
   memberJob: -1;
   userStore = userStore;
-
+  editFormVisible = false;
+  joinMembers = [];
+  selectedMembers = [];
+  selectedProject = null;
+  isFinished = false;
   async refresh() {
     const result = await agent.project.getAll();
-    this.projects = result.project_list;
+    if (userStore.member.job == 'EPG Leader' || userStore.member.job == 'QA Manager') {
+      this.projects = result.project_list.filter((p) => {
+        return p.status == '已立项';
+      });
+    } else {
+      this.projects = result.project_list;
+    }
   }
   mounted() {
-    const member_id = 
     this.refresh();
   }
-  onOpenEditDialog(project) {
-    this.dialogEditForm = project;
+  async onOpenEditDialog(project, isFinished) {
+    this.selectedProject = project;
+    this.editFormVisible = true;
+    const members = await agent.member.ofProject(project.project_id);
+    this.joinMembers = members.member_list.filter((m) => m.job == '普通员工');
+    this.isFinished = isFinished;
+  }
+  async addEPGToPro() {
+    for (let m of this.selectedMembers) {
+      if (m.role.indexOf('EPG') == -1) {
+        m.role.push(6);
+      }
+      await agent.member.changeProjectRole(this.selectedProject.project_id, {
+        member_id: m.member_id,
+        role: m.role.map((x) => {
+          return memberRole.indexOf(x);
+        }),
+        authority: m.authority,
+      });
+    }
+    this.editFormVisible = false;
+  }
+  async addQAToPro() {
+    for (let m of this.selectedMembers) {
+      if (m.role.indexOf('EPG') == -1) {
+        m.role.push(5);
+      }
+      await agent.member.changeProjectRole(this.selectedProject.project_id, {
+        member_id: m.member_id,
+        role: m.role.map((x) => {
+          return memberRole.indexOf(x);
+        }),
+        authority: m.authority,
+      });
+    }
+    this.editFormVisible = false;
+  }
+  handleSelectionChange(val) {
+    this.selectedMembers = val;
   }
   onCloseEditDialog() {
     this.dialogEditForm = null;

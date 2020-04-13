@@ -70,6 +70,15 @@ const menu: RouteConfig[] = [
         },
       },
       {
+        name: 'projects.people',
+        path: 'people',
+        component: () => import('@/views/projects/people.vue'),
+        meta: {
+          icon: 'user',
+          title: '人员管理'
+        }
+      },
+      {
         name: 'projects.devices',
         path: 'devices',
         component: () => import('@/views/projects/devices.tsx'),
@@ -85,6 +94,7 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'magic-stick',
           title: '项目功能',
+          auth: '项目经理'
         },
       },
       {

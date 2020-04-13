@@ -73,6 +73,44 @@ router.get("/getJoinProjects/:member_id", (req, res: Response<GetJoinProjectsRes
   })
 })
 
+// get /project/hasEPG/:project_id
+router.get('/hasEPG/:project_id', (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  conn.query("SELECT * FROM member_project where role like '%6%' and project_id = ?", [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      if (result.length != 0) {
+        res.json({
+          status: config.status.SUCCESS,
+          msg: 'success'
+        })
+      } else {
+        notFoundErrorHandler(res);
+      }
+    }
+  })
+})
+
+// get /project/hasQA/:project_id
+router.get('/hasQA/:project_id', (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  conn.query("SELECT * FROM member_project where role like '%5%' and project_id = ?", [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      if (result.length != 0) {
+        res.json({
+          status: config.status.SUCCESS,
+          msg: 'success'
+        })
+      } else {
+        notFoundErrorHandler(res);
+      }
+    }
+  })
+})
+
 // delete /project/:project_id
 // deleteProject
 

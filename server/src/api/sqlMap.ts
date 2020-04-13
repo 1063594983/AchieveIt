@@ -59,6 +59,7 @@ export default {
       table_name: 'member',
       key_name: 'member_id'
     }),
+    getProjectMemberList: "SELECT b.member_id, a.role, a.authority, b.member_name, b.email, b.phone, b.job FROM member_project a inner join member b on a.member_id = b.member_id where a.project_id = ?",
     // updateMemberById: "update member set member_name = ?, email = ?, department = ?, leader_email = ?, phone = ?, job = ? where member_id = ?",
     updateMemberById: pattern.updatePattern({
       table_name: 'member',
@@ -78,7 +79,7 @@ export default {
     addMemberToProject: pattern.insertPattern({
       table_name: 'member_project',
       select_col: "project_id, member_id, role, authority"
-    }),
+    })
   },
   function: {
     getFunctionByProjectId: pattern.selectPattern({ table_name: '`function`', key_name: 'function_id' }),
@@ -163,8 +164,7 @@ export default {
     deleteConfigByProjectId: pattern.deletePattern({
       table_name: "config",
       key_name: "project_id"
-    }),
-    getAllConfigs: 'select * from config',
+    })
   },
   /**
    * @author: zou

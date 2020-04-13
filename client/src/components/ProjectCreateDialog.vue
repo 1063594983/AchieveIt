@@ -29,8 +29,7 @@
         <el-button
           type="primary"
           round
-          @click="businessTags.push(newBusinessTag);newBusinessTag=``"
-        >+</el-button>
+          @click="addBusiness">+</el-button>
 
         <!-- <el-tree-select
           :styles="{ width: '300px' }"
@@ -42,7 +41,7 @@
       <el-form-item label="技术框架">
         <el-input placeholder="技术框架" v-model="newTechTag"></el-input>
         <el-tag v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
-        <el-button type="primary" round @click="technologyTags.push(newTechTag);newTechTag=``">+</el-button>
+        <el-button type="primary" round @click="addTech">+</el-button>
       </el-form-item>
       <el-form-item label="成员选择">
         <el-select
@@ -130,7 +129,18 @@ export default class ProjectCreateDialog extends Vue {
   handleSelectionChange(val) {
     this.form.member_list = val.map(a=>a.member_id);
   }
-
+  addBusiness() {
+    if(this.newBusinessTag != '') {
+      this.businessTags.push(this.newBusinessTag);
+      this.newBusinessTag=``
+    }
+  }
+  addTech() {
+    if(this.newTechTag != '') {
+      this.technologyTags.push(this.newTechTag);
+      this.newTechTag=``
+    }
+  }
   addDraft() {
     this.onClose();
     this.onAddDraft(this.form);

@@ -1,7 +1,7 @@
 import config from '../config';
 import express, { Response } from 'express';
 import $sql from './sqlMap';
-import { GetMemberResult, ResultCommon, GetMemberRoleResult, GetAllMembersResult } from 'achieve-it-contract';
+import { GetMemberResult, ResultCommon, GetMemberRoleResult, GetAllMembersResult, getProjectMemberListResult } from 'achieve-it-contract';
 import {
   commonDeleteHandler,
   commomInsertHandler,
@@ -29,6 +29,30 @@ router.get('/getAllMembers', (req, res: Response<GetAllMembersResult>) => {
   })
 })
 
+// get /member/getProjectMemberList/:project_id
+
+router.get('/getProjectMemberList/:project_id', (req, res: Response<getProjectMemberListResult>) =>  {
+  const project_id = req.params.project_id;
+  conn.query($sql.member.getProjectMemberList, [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      for (let pro of result) {
+        pro.role = JSON.parse(pro.role).map((x) => {
+          return config.numberMap.projectRole[x];
+        });
+        pro.authority = JSON.parse(pro.authority);
+        pro.job = config.numberMap.memberJob[pro.job];
+      }
+      res.json({
+        member_list: result,
+        status: config.status.SUCCESS,
+        msg: 'success'
+      })
+    }
+  })
+})
+
 // get /member/:member_id
 // getMember
 
@@ -50,6 +74,29 @@ router.get('/:member_id', (req, res: Response<GetMemberResult>) => {
     }
   });
 });
+
+// get /member/getMemberRoleInProject/:projec_id
+router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberRoleResult>) => {
+  const projec_id = req.params.project_id;
+  const member_id = req.query.member_id;
+  conn.query($sql.member.getMemberRole, [projec_id, member_id], (err, result) => {
+      if (err) {
+          mysqlErrorHandler(res, err);
+      } else if (result.length == 1) {
+          result[0].role = JSON.parse(result[0].role).map((x) => {
+            return config.numberMap.projectRole[x];
+          });
+          result[0].authority = JSON.parse(result[0].authority);
+          res.json({
+              member_role: result[0],
+              status: config.status.SUCCESS,
+              msg: 'get success'
+          })
+      } else {
+          notFoundErrorHandler(res);
+      }
+  })
+})
 
 // put /member/:member_id
 // updateMember
@@ -130,28 +177,7 @@ router.delete('/:member_id', (req, res: Response<ResultCommon>) => {
   });
 });
 
-// get /member/getMemberRoleInProject/:projec_id
-router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberRoleResult>) => {
-  const projec_id = req.params.project_id;
-  const member_id = req.query.member_id;
-  conn.query($sql.member.getMemberRole, [projec_id, member_id], (err, result) => {
-      if (err) {
-          mysqlErrorHandler(res, err);
-      } else if (result.length == 1) {
-          result[0].role = JSON.parse(result[0].role).map((x) => {
-            return config.numberMap.projectRole[x];
-          });
-          result[0].authority = JSON.parse(result[0].authority);
-          res.json({
-              member_role: result[0],
-              status: config.status.SUCCESS,
-              msg: 'get success'
-          })
-      } else {
-          notFoundErrorHandler(res);
-      }
-  })
-})
+
 
 // post /member/addMemberToProject/:project_id
 // 添加成功后会向该员工发送通知邮件
@@ -187,6 +213,16 @@ router.post("/addMemberToProject/:project_id", (req, res: Response<ResultCommon>
     }
   })
 
+})
+
+// put /member/changeMemberRole/:project_id
+router.put('/changeMemberRole/:project_id', (req, res: Response<ResultCommon>) => {
+  const project_id = req.params.project_id;
+  const details = req.body;
+  console.log(req.body);
+  conn.query($sql.member.changeMemberRole, [JSON.stringify(details.role.sort()), JSON.stringify(details.authority), project_id, Number(details.member_id)], err => {
+    commomUpdateHandler(res, err);
+  })
 })
 
 
