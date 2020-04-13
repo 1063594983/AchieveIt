@@ -63,7 +63,7 @@ router.put('/:risk_id', (req, res: Response<ResultCommon>) => {
       const old_risk = result[0];
       console.log(JSON.parse(old_risk.detail))
       console.log(risk_details.detail)
-      const new_detail = Object.assign(JSON.parse(old_risk.detail), risk_details.detail);
+      const new_detail = risk_details.detail ?? old_risk.detail;
       conn.query($sql.risk.updateRiskById, [JSON.stringify(new_detail), risk_details.solve_status, risk_id], err2 => {
         commomUpdateHandler(res, err2);
       });

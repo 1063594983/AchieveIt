@@ -14,7 +14,7 @@ import { wrapToken } from "@/agent/index";
 const riskCRUD = createCRUD<RiskGetBody, RiskDeleteBody, RiskPutBody, RiskPostBody, GetRiskResult>('risk');
 const riskAPI = {
   ...riskCRUD,
-  ofProject: (projectId: number) =>
+  ofProject: (projectId: string) =>
     axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, wrapToken({})),
 };
 export default riskAPI;
