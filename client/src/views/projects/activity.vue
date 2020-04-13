@@ -11,7 +11,14 @@
       @select="handleSelect"
     ></el-autocomplete>
     </div>
-    <el-card shadow="hover" class="mt2" v-for="a in filterActivitys" :key="a.activity_id">
+    <div v-if="projects.length == 0">
+      当前无参与项目
+    </div>
+    <div v-else-if="activitys.length == 0">
+      当前参与项目无活动提交
+    </div>
+    <div v-else-if="filterActivitys.length != 0">
+      <el-card shadow="hover" class="mt2" v-for="a in filterActivitys" :key="a.activity_id">
       <div class="flex justify-between items-center mb2">
         <div class="bold h3">项目ID: {{ a.project_id }}</div>
         <div class="h6 opacity">ID: {{ a.activity_id }}</div>
@@ -25,6 +32,10 @@
         {{ a.activity_content }}
       </div>
     </el-card>
+    </div>
+    <div v-else>
+      当前所选项目无活动
+    </div>
     <el-dialog title="添加活动" :visible.sync="activityFormVisible">
       <el-form :model="form" label-position="left" label-width="5rem">
         <el-form-item label="项目ID">
@@ -120,12 +131,14 @@ export default class Activitys extends Vue {
   } = initForm();
 
   async refresh() {
-    const result = await agent.project.getAll();
-    this.projects = result.project_list.map((x) => {
+    const result = await agent.project.getJoinProjects(userStore.currentUser.member_id);
+    this.projects = result.project_list.map((x) => { 
       return { value: x.project_id.toString() };
     });
     const activitys = await agent.activity.getAll();
-    this.filterActivitys = this.activitys = activitys.data.activity_list;
+    this.filterActivitys = this.activitys = activitys.data.activity_list.filter((activity) => {
+      return this.projects.map(a=>a.value).indexOf(activity.project_id) != -1
+    });
   }
 
   async mounted() {

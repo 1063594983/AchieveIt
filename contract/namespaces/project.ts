@@ -1,7 +1,7 @@
 import { ResultCommon, Authorization } from "../common";
 
 export interface Project {
-  project_id: number;
+  project_id: string;
   project_name: string;
   client_info: string;
   start_time: string;
@@ -37,6 +37,17 @@ export interface ProjectGetBody extends Authorization {}
 // result
 export interface GetProjectResult extends ResultCommon {
   project: Project;
+}
+
+/**
+ * api: get /project/getJoinProjects/:member_id
+ */
+// request
+export interface JoinProjectsGetBody extends Authorization {}
+
+// result
+export interface GetJoinProjectsResult extends ResultCommon {
+  project_list?: Project [];
 }
 
 

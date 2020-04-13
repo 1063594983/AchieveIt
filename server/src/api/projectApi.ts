@@ -1,35 +1,35 @@
 import config from '../config';
 import express, { Response, response } from 'express';
 import $sql from './sqlMap';
-import { ResultCommon, GetProjectResult, ProjectList } from 'achieve-it-contract';
-import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler } from '../util';
+import { ResultCommon, GetProjectResult, ProjectList, GetJoinProjectsResult } from 'achieve-it-contract';
+import { commonDeleteHandler, notFoundErrorHandler, mysqlErrorHandler, commomUpdateHandler, commomInsertHandler } from '../util';
 import { conn } from '../mysqlPool';
 import email from '../email';
 
 const router = express.Router();
 
 
-  // get /project/getAllProjects
-  // 获取所有项目的列表
-  router.get('/getAllProjects', (req, res: Response<ProjectList>) => {
-    conn.query($sql.project.getAllProjects, [], (err, result) => {
-      if(err) {
-        mysqlErrorHandler(res, err);
-      } else {
-        for(let i in result) {
-          result[i].status = config.numberMap.projectStatus[result[i].status];
-          result[i].important_events = JSON.parse(result[i].important_events);
-          result[i].technology = JSON.parse(result[i].technology);
-          result[i].business = JSON.parse(result[i].business);
-        }
-        res.json({
-          project_list: result,
-          msg: 'success',
-          status: config.status.SUCCESS
-        })
+// get /project/getAllProjects
+// 获取所有项目的列表
+router.get('/getAllProjects', (req, res: Response<ProjectList>) => {
+  conn.query($sql.project.getAllProjects, [], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      for (let i in result) {
+        result[i].status = config.numberMap.projectStatus[result[i].status];
+        result[i].important_events = JSON.parse(result[i].important_events);
+        result[i].technology = JSON.parse(result[i].technology);
+        result[i].business = JSON.parse(result[i].business);
       }
-    })
+      res.json({
+        project_list: result,
+        msg: 'success',
+        status: config.status.SUCCESS
+      })
+    }
   })
+})
 
 
 // get /project/:project_id
@@ -56,6 +56,22 @@ router.get('/:project_id', (req, res: Response<GetProjectResult>) => {
     }
   });
 });
+
+// get /project/getJoinProjects/:member_id
+router.get("/getJoinProjects/:member_id", (req, res: Response<GetJoinProjectsResult>) => {
+  const member_id = req.params.member_id;
+  conn.query($sql.project.getJoinProject, [member_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      res.json({
+        project_list: result,
+        status: config.status.SUCCESS,
+        msg: 'success'
+      })
+    }
+  })
+})
 
 // delete /project/:project_id
 // deleteProject
@@ -95,27 +111,41 @@ router.post('/', (req, res: Response<ResultCommon>) => {
       if (err) {
         mysqlErrorHandler(res, err);
       } else {
+
         // 向相关者发送邮件(1-项目上级，3-EPGLeader，4-QA Manager，2-配置管理员)
         conn.query("select job, email from member where job = ? or job = ? or job = ? or job = ?", [1, 2, 3, 4], (err, result) => {
           if (err) {
             mysqlErrorHandler(res, err);
           } else {
+            const member_list = project_details.member_list;
+            conn.query("insert into member_project (project_id, member_id, role, authority) values (?, ?, ?, ?)", [project_details.project_id, 1, '[]', '[]'], err2 => {
+              if (err2) {
+                console.log(err2);
+              }
+            })
+            for (let member of member_list) {
+              conn.query("insert into member_project (project_id, member_id, role, authority) values (?, ?, ?, ?)", [project_details.project_id, member, '[]', '[]'], err2 => {
+                if (err2) {
+                  console.log(err2);
+                }
+              })
+            }
             const emailList = result;
             for (const e of emailList) {
-              const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`; 
-              
+              const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`;
+
               switch (e.job) {
                 case 1:
-                  email.sendEmail({
-                    to: e.email,
-                    subject,
-                    html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3000/project/acceptProject/${project_details.project_id}">批准立项</a>
-                    &nbsp;&nbsp;<a href="http://localhost:3000/project/refuseProject/${project_details.project_id}">不批准立项</a>`
-                  }, (err, info) => {
-                    if (err) {
-                      console.log('send to 项目上级 failed')
-                    }
-                  })
+                  // email.sendEmail({
+                  //   to: e.email,
+                  //   subject,
+                  //   html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3000/project/acceptProject/${project_details.project_id}">批准立项</a>
+                  //   &nbsp;&nbsp;<a href="http://localhost:3000/project/refuseProject/${project_details.project_id}">不批准立项</a>`
+                  // }, (err, info) => {
+                  //   if (err) {
+                  //     console.log('send to 项目上级 failed')
+                  //   }
+                  // })
                   break;
                 case 2:
                   // email.sendEmail({
@@ -158,7 +188,7 @@ router.post('/', (req, res: Response<ResultCommon>) => {
               //   html: e.job == 1 ? JSON.stringify(project_details) + "<br/><a href=''>批准立项</a>&nbsp;&nbsp;<a href=''>不批准立项</a>" : ""
               // }, () => {})
             }
-            console.log(emailList);
+            // console.log(emailList);
             res.json({
               status: config.status.SUCCESS,
               msg: 'success'

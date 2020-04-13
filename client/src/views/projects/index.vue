@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
+    <div v-if="userStore.member.job == '项目经理'">
+      <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
     <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
+    </div>
+    
     <project-card
       :project="item"
       v-for="item in projects"
@@ -42,6 +45,7 @@ import { Project, ResultCommon } from 'achieve-it-contract';
 import { Notify } from '@/theme';
 import ProjectCard from '@/components/ProjectCard.vue';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
+import { userStore } from '@/store';
 
 @Component({
   components: { ProjectEditDialog, ProjectCard, ProjectDraftBox, ProjectCreateDialog },
@@ -51,12 +55,15 @@ export default class Projects extends Vue {
   dialogFormVisible = false;
   draftBoxVisible = false;
   dialogEditForm = null;
+  memberJob: -1;
+  userStore = userStore;
 
   async refresh() {
     const result = await agent.project.getAll();
     this.projects = result.project_list;
   }
   mounted() {
+    const member_id = 
     this.refresh();
   }
   onOpenEditDialog(project) {

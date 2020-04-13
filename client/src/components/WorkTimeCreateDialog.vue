@@ -12,7 +12,7 @@
           <el-option
             v-for="item in projects"
             :key="item.project_id"
-            :label="`${item.project_name} (${item.project_id})`"
+            :label="`${item.project_id}`"
             :value="item.project_id"
           ></el-option>
         </el-select>
@@ -127,7 +127,7 @@ export default class ProjectCreateDialog extends Vue {
   }
 
   mounted() {
-    agent.project.getAll().then((result) => {
+    agent.project.getJoinProjects(userStore.currentUser.member_id).then((result) => {
       this.projects = result.project_list;
     });
   }
