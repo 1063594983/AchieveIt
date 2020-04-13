@@ -23,21 +23,43 @@
       <el-form-item label="项目终止">
         <el-date-picker type="date" placeholder="终止日期" v-model="form.end_time"></el-date-picker>
       </el-form-item>
-      <el-form-item label="项目类型">
-        <el-tree-select
+      <el-form-item label="业务领域">
+        <el-input placeholder="业务领域" v-model="newBusinessTag"></el-input>
+        <el-tag v-for="tag in businessTags" :key="tag">{{ tag }}</el-tag>
+        <el-button
+          type="primary"
+          round
+          @click="businessTags.push(newBusinessTag);newBusinessTag=``"
+        >+</el-button>
+
+        <!-- <el-tree-select
           :styles="{ width: '300px' }"
           v-model="form.business"
-          :selectParams="{ placeholder: '请选择项目类型', multiple: true }"
+          :selectParams="{ placeholder: 'f', multiple: true }"
           :treeParams="{ ...treeParams, data: businessType }"
-        />
+        /><el-button>添加</el-button>-->
       </el-form-item>
       <el-form-item label="技术框架">
-        <el-tree-select
-          :styles="{ width: '300px' }"
-          v-model="form.technology"
-          :selectParams="{ placeholder: '请选择基于的技术', multiple: true }"
-          :treeParams="{ ...treeParams, data: developingStack }"
-        />
+        <el-input placeholder="技术框架" v-model="newTechTag"></el-input>
+        <el-tag v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
+        <el-button type="primary" round @click="technologyTags.push(newTechTag);newTechTag=``">+</el-button>
+      </el-form-item>
+      <el-form-item label="成员选择">
+        <el-select
+          v-model="form.member_list"
+          multiple
+          placeholder="请选择"
+          collapse-tags
+        ></el-select>
+        <el-popover placement="top" width="600" trigger="click">
+          <el-table :data="members" @selection-change="handleSelectionChange" max-height="250">
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column width="100" property="member_id" label="ID"></el-table-column>
+            <el-table-column width="100" property="member_name" label="姓名"></el-table-column>
+            <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
+          </el-table>
+          <el-button slot="reference">选择成员</el-button>
+        </el-popover>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -53,6 +75,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ProjectDraft } from '@/store/project.module';
 import { projectStore } from '@/store';
 import { DevelopingStack, BusinessType } from '@/static';
+import agent from '../agent';
 
 const formInit = () => ({
   project_id: '',
@@ -62,6 +85,7 @@ const formInit = () => ({
   end_time: '',
   technology: [],
   business: [],
+  member_list: [],
 });
 
 @Component
@@ -70,9 +94,14 @@ export default class ProjectCreateDialog extends Vue {
   @Prop({ required: true }) onClose!: () => void;
   @Prop({ required: true }) onAddDraft!: (form: ProjectDraft) => void;
   @Prop({ required: true }) onCreateProject!: (form: ProjectDraft) => boolean;
-
-  businessType = BusinessType.map((i) => ({ label: i, value: i }));
-  developingStack = DevelopingStack.map((i) => ({ label: i, value: i }));
+  businessTags = [];
+  newBusinessTag = '';
+  technologyTags = [];
+  newTechTag = '';
+  members = [];
+  memberListVisible = false;
+  // businessType = BusinessType.map((i) => ({ label: i, value: i }));
+  // developingStack = DevelopingStack.map((i) => ({ label: i, value: i }));
   treeParams = {
     clickParent: false,
     filterable: false,
@@ -84,14 +113,22 @@ export default class ProjectCreateDialog extends Vue {
     },
   };
 
-  form: ProjectDraft = formInit();
-
+  form = formInit();
+  async mounted() {
+    const members = await agent.member.getAll();
+    this.members = members.member_list.filter(a => {
+      return a.job == 5;
+    });
+  }
   @Watch('visible')
   onOpen() {
     if (this.visible) {
-      this.form = projectStore.currentDraft ?? formInit();
+      this.form = formInit();
     }
     projectStore.setCurrentDraft(null);
+  }
+  handleSelectionChange(val) {
+    this.form.member_list = val.map(a=>a.member_id);
   }
 
   addDraft() {
@@ -99,6 +136,8 @@ export default class ProjectCreateDialog extends Vue {
     this.onAddDraft(this.form);
   }
   createProject() {
+    this.form.business = this.businessTags;
+    this.form.technology = this.technologyTags;
     const result = this.onCreateProject(this.form);
     if (result) {
       this.onClose();

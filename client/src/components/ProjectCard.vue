@@ -5,7 +5,10 @@
       <div class="h6 opacity">ID: {{ project.project_id }}</div>
     </div>
     <div class="my1 h5"><b class="opacity">项目经理 </b>{{ project.manager }}</div>
-    <div class="my1 h5"><b class="opacity">项目状态 </b>{{ project.status }}</div>
+    <div class="my1 h5"><b class="opacity">项目状态 </b>{{ project.status }}
+     <div v-if="project.status=='已立项'">({{ config?"配置库已建立":"配置库未建立" }};&nbsp;&nbsp;{{ EPG?"EPG 已分配":"EPG 未分配" }};&nbsp;&nbsp;{{ QA?"QA 已分配":"QA 未分配" }})</div>
+     
+     </div>
     <div class="my1 h5"><b class="opacity">启止时间 </b>{{ startTime }} - {{ endTime }}</div>
     <div class="flex justify-between items-center mt2">
       <div>
@@ -31,6 +34,9 @@ import { Project } from 'achieve-it-contract';
 import dayjs from 'dayjs';
 import { Confirm } from '@/theme';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
+import agent from '../agent';
+import axios from 'axios';
+
 @Component({
   components: { ProjectEditDialog },
 })
@@ -39,6 +45,17 @@ export default class ProjectCard extends Vue {
   @Prop() removeProject!: Function;
   @Prop() openEdit!: Function;
 
+  config = false;
+  EPG = false;
+  QA = false;
+  async mounted() {
+    const result = await agent.config.get(this.project.project_id);
+    if (result.status == 'error') {
+      this.config = false;
+    } else {
+      this.config = true;
+    }
+  }
   get startTime() {
     return dayjs(this.project.start_time).format('YYYY年M月D日');
   }

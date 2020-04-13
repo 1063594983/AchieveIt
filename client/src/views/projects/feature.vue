@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>项目功能</h1>
+    <div v-if="projects.length != 0">
     <el-card shadow="hover" class="mt2" v-for="project in projects" :key="project.project_id">
       <div class="flex justify-between items-center mb2">
         <div class="bold h3">{{ project.project_name }}</div>
@@ -16,7 +17,7 @@
       </div>
       <div class="my1 h5">
         <b class="opacity">启止时间</b>
-        {{ project.startTime }} - {{ project.endTime }}
+        {{ dayjs(project.start_time).format('YYYY年M月D日') }} - {{ dayjs(project.end_time).format('YYYY年M月D日') }}
       </div>
       <div class="flex justify-between items-center mt2">
         <div>
@@ -29,6 +30,10 @@
         </div>
       </div>
     </el-card>
+    </div>
+    <div v-else>
+      当前无参与项目
+    </div>
     <el-dialog title="上传功能excel表" :visible.sync="uploadVisible">
       <input type="file" name="feature" accept=".xls" @change="changeFile" />
       <br />
@@ -48,6 +53,8 @@ import { Project, ResultCommon } from 'achieve-it-contract';
 import { Notify } from '@/theme';
 import ProjectCard from '@/components/ProjectCard.vue';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
+import { userStore } from '../../store';
+import dayjs from 'dayjs';
 
 @Component({
   components: { ProjectEditDialog, ProjectCard, ProjectDraftBox, ProjectCreateDialog },
@@ -58,16 +65,20 @@ export default class Feature extends Vue {
   selectedProject = null;
   uploadVisible = false;
   dialogEditForm = null;
-
+  joinProjects = [];
   async refresh() {
     const result = await agent.project.getAll();
-    this.projects = result.project_list;
-    const result2 = await agent.feature.getFeatureList("20200329A");
-    console.log(result2);
+    const joinProjects = await agent.project.getJoinProjects(userStore.currentUser.member_id);
+    this.projects = result.project_list.filter((pro) => {
+      return joinProjects.project_list.map((a)=>a.project_id).indexOf(pro.project_id) != -1
+    });
   }
   mounted() {
     this.refresh();
     
+  }
+  dayjs(time) {
+    return dayjs(time)
   }
   async onSubmit() {
     const formData = new FormData();

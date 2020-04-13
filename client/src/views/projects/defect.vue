@@ -12,6 +12,7 @@
       @select="handleSelect"
     ></el-autocomplete>
     </div>
+    <div v-if="defects.length != 0">
     <el-card shadow="hover" class="mt2" v-for="defect in filterDefects" :key="defect.defect_id">
       <div class="flex justify-between items-center mb2">
         <div class="bold h3">项目ID: {{ defect.project_id }}</div>
@@ -32,6 +33,13 @@
         </div>
       </div>
     </el-card>
+    </div>
+    <div v-else-if="projects.length == 0">
+      当前无参与项目
+    </div>
+    <div v-else-if="defects.length == 0">
+      当前参与项目无缺陷提交
+    </div>
     <el-dialog title="添加缺陷" :visible.sync="defectFormVisible">
       <el-form :model="form" label-position="left" label-width="5rem">
       <el-form-item label="项目ID">
@@ -54,6 +62,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Defect, Project } from 'achieve-it-contract';
 import agent from '@/agent';
 import { Notify } from '../../theme';
+import { userStore } from '../../store';
 
 @Component
 export default class Defects extends Vue {
@@ -67,9 +76,13 @@ export default class Defects extends Vue {
   };
   async refresh() {
     const result = await agent.defect.getAll();
-    const result2 = await agent.project.getAll();
-    this.filterDefects = this.defects = result.data.defect_list;
-    this.projects = result2.project_list.map((x) => {return {value: x.project_id.toString()}});
+    const joinProjects = await agent.project.getJoinProjects(Number(userStore.currentUser.member_id));
+    this.projects = joinProjects.project_list.map((x) => {return {value: x.project_id.toString()}});
+    this.filterDefects = this.defects = result.data.defect_list.filter((defect) => {
+      return this.projects.map((a) => a.value).indexOf(defect.project_id) != -1
+    });
+    console.log(this.projects)
+    
   }
   mounted() {
     this.refresh();
