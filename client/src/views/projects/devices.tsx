@@ -66,7 +66,6 @@ const DevicePage = defineComponent({
     return () => (
       <div>
         <h1>设备管理</h1>
-        <div class="my1">后端未实现，当ID=0已有的时候，就无法继续插入</div>
         <div>
           <el-button onClick={openCreateDialog}>登记新的设备</el-button>
         </div>

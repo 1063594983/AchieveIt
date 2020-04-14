@@ -32,6 +32,7 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
   const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
   if (fs.existsSync(filePath)) {
     const file = excelTool.readExcel(filePath);
+    console.log(project_id)
     res.json({
       project_id,
       feature_list: file,
@@ -49,20 +50,20 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
 // post /function/getProjectFunctionExcel/:project_id
 
 // 获取项目功能列表
-router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
-  const project_id = req.params.project_id;
-  const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
-  if (fs.existsSync(filePath)) {
-    res.json({
-      status: config.status.SUCCESS,
-      msg: 'success'
-    })
-  } else {
-    res.json({
-      status: config.status.ERROR,
-      msg: '未上传功能列表'
-    })
-  }
+// router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
+//   const project_id = req.params.project_id;
+//   const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
+//   if (fs.existsSync(filePath)) {
+//     res.json({
+//       status: config.status.SUCCESS,
+//       msg: 'success'
+//     })
+//   } else {
+//     res.json({
+//       status: config.status.ERROR,
+//       msg: '未上传功能列表'
+//     })
+//   }
   // conn.query($sql.feature.getFeatureExcel, [project_id], (err, result) => {
   //   if (err) {
   //     mysqlErrorHandler(res, err);
@@ -82,7 +83,7 @@ router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
   //     }
   //   }
   // });
-});
+// });
 
 // post /function/addFunctionToProject/:project_id
 // 增加功能

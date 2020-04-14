@@ -80,52 +80,21 @@ router.get("/getJoinProjects/:member_id", (req, res: Response<GetJoinProjectsRes
     if (err) {
       mysqlErrorHandler(res, err);
     } else {
-      for (let pro of result) {
-        pro.status = config.numberMap.projectStatus[pro.status]
+      for (let i in result) {
+        result[i].status = config.numberMap.projectStatus[result[i].status];
+        result[i].important_events = JSON.parse(result[i].important_events);
+        result[i].technology = JSON.parse(result[i].technology);
+        result[i].business = JSON.parse(result[i].business);
+        result[i].role = JSON.parse(result[i].role).map((x) => {
+          return config.numberMap.projectRole[x];
+        });
+        result[i].authority = JSON.parse(result[i].authority);
       }
       res.json({
         project_list: result,
         status: config.status.SUCCESS,
         msg: 'success'
       })
-    }
-  })
-})
-
-// get /project/hasEPG/:project_id
-router.get('/hasEPG/:project_id', (req, res: Response<ResultCommon>) => {
-  const project_id = req.params.project_id;
-  conn.query("SELECT * FROM member_project where role like '%6%' and project_id = ?", [project_id], (err, result) => {
-    if (err) {
-      mysqlErrorHandler(res, err);
-    } else {
-      if (result.length != 0) {
-        res.json({
-          status: config.status.SUCCESS,
-          msg: 'success'
-        })
-      } else {
-        notFoundErrorHandler(res);
-      }
-    }
-  })
-})
-
-// get /project/hasQA/:project_id
-router.get('/hasQA/:project_id', (req, res: Response<ResultCommon>) => {
-  const project_id = req.params.project_id;
-  conn.query("SELECT * FROM member_project where role like '%5%' and project_id = ?", [project_id], (err, result) => {
-    if (err) {
-      mysqlErrorHandler(res, err);
-    } else {
-      if (result.length != 0) {
-        res.json({
-          status: config.status.SUCCESS,
-          msg: 'success'
-        })
-      } else {
-        notFoundErrorHandler(res);
-      }
     }
   })
 })

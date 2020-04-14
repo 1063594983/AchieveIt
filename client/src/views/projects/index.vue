@@ -4,7 +4,7 @@
       <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
       <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
     </div>
-
+    <!-- 项目列表 -->
     <project-card
       :project="item"
       v-for="item in projects"
@@ -12,21 +12,17 @@
       :remove-project="onRemoveProject(item)"
       :open-edit="onOpenEditDialog"
     ></project-card>
+
+    <!-- 项目创建窗口 -->
     <project-create-dialog
       :visible="dialogFormVisible"
       :on-close="onCloseDialog"
       :on-create-project="onCreateProject"
       :on-add-draft="onAddDraft"
     />
-    <!-- <project-edit-dialog
-      :visible="!!dialogEditForm"
-      :on-close="onCloseEditDialog"
-      :on-edit="onEditProject"
-      :project="dialogEditForm"
-    >
-    </project-edit-dialog>-->
-
+    <!-- 项目编辑窗口 -->
     <el-dialog :visible.sync="editFormVisible" title>
+      <!-- EPG分配窗口 -->
       <div v-if="userStore.member.job == 'EPG Leader'">
         <h1>分配EPG</h1>
         <el-table :data="joinMembers" @selection-change="handleSelectionChange" max-height="250">
@@ -44,6 +40,7 @@
         </el-table>
         <el-button @click="addEPGToPro">添加</el-button>
       </div>
+      <!-- QA 分配窗口 -->
       <div v-else-if="userStore.member.job == 'QA Manager'">
         <h1>分配QA</h1>
         <el-table :data="joinMembers" @selection-change="handleSelectionChange" max-height="250">
@@ -61,9 +58,15 @@
         </el-table>
         <el-button @click="addQAToPro">添加</el-button>
       </div>
-      <div v-else-if="userStore.member.job == '项目经理'">hello</div>
     </el-dialog>
 
+    <!-- 项目导入窗口
+    <el-dialog :visible.sync="fileFormVisible" title="项目导入">
+      <el-input type="file" v-model="file"></el-input>
+      <br />
+      <el-button @click="importProject">提交</el-button>
+      <el-button @click="fileFormVisible = false">取消</el-button>
+    </el-dialog> -->
     <project-draft-box
       :visible="draftBoxVisible"
       :on-close="onCloseDraft"
@@ -75,7 +78,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { projectStore } from '@/store';
+import { projectStore, userStore } from '@/store';
 import agent from '@/agent';
 import ProjectCreateDialog from '@/components/ProjectCreateDialog.vue';
 import ProjectDraftBox from '@/components/ProjectDraftBox.vue';
@@ -84,7 +87,8 @@ import { Project, ResultCommon } from 'achieve-it-contract';
 import { Notify } from '@/theme';
 import ProjectCard from '@/components/ProjectCard.vue';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
-import { userStore } from '@/store';
+
+
 const memberRole = ['开发 Leader', '测试 Leader', '开发人员', '测试人员', '配置管理人员', 'QA', 'EPG'];
 
 @Component({
@@ -102,6 +106,8 @@ export default class Projects extends Vue {
   selectedMembers = [];
   selectedProject = null;
   isFinished = false;
+  fileFormVisible = false;
+  file = null;
   async refresh() {
     const result = await agent.project.getAll();
     if (userStore.member.job == 'EPG Leader' || userStore.member.job == 'QA Manager') {

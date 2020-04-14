@@ -63,7 +63,7 @@ function initForm() {
     feature_name: null,
     member_id: +userStore.currentUser.member_id,
     project_id: '',
-    start_time: '',
+    start_time: ''
   };
 }
 
@@ -83,11 +83,11 @@ export default class ProjectCreateDialog extends Vue {
     this.form.feature_name = null;
     const result = await agent.feature.getFeatureList(this.form.project_id);
 
-    if (result.data.status == 'error') {
+    if (result.status == 'error') {
       
       this.features = null;
     } else {
-      const features = result.data.feature_list;
+      const features = result.feature_list;
       this.features = features.map((feature) => {
         return {
           value: feature.name,

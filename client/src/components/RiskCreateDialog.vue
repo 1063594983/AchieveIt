@@ -20,7 +20,7 @@
             <el-form-item label="风险描述">
                 <el-input type="textarea" v-model="form.detail" placeholder="输入风险描述"></el-input>
             </el-form-item>
-            <el-form-item label="状态选择">
+            <!-- <el-form-item label="状态选择">
                 <el-select v-model="form.solve_status" placeholder="请选择">
                     <el-option
                             v-for="i in [{
@@ -38,7 +38,7 @@
                             :value="i.index"
                     ></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="onClose">取消</el-button>
@@ -74,7 +74,7 @@ import { userStore } from '../store';
     form: RiskDraft = {
       detail : null,
       project_id: '',
-      solve_status: 0,
+      solve_status: 0
     };
 
     async createRisk() {

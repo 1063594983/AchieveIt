@@ -51,6 +51,16 @@ const menu: RouteConfig[] = [
         },
       },
       {
+        name: 'projects.myProject',
+        path: 'myProject',
+        component: () => import('@/views/projects/myProject.vue'),
+        meta: {
+          icon: 'file',
+          title: '我的项目',
+          auth: '普通员工'
+        },
+      },
+      {
         name: 'projects.review',
         path: 'review',
         component: () => import('@/views/projects/review.vue'),
@@ -75,7 +85,8 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/people.vue'),
         meta: {
           icon: 'user',
-          title: '人员管理'
+          title: '人员管理',
+          auth: '项目经理'
         }
       },
       {

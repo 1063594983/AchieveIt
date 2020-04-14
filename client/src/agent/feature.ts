@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const featureAPI = {
   getFeatureList: async (projectId: string) => {
-    const result = await axios.post(`http://localhost:3000/function/getProjectFunctionExcel/${projectId}`);
+    const result = await axios.get(`http://localhost:3000/function/getProjectFunctionList/${projectId}`);
     return result.data;
   },
     // axiosGet('function', `getProjectFunctionList/${projectId}`),
