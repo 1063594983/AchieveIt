@@ -81,7 +81,6 @@ export default class Defects extends Vue {
     this.filterDefects = this.defects = result.data.defect_list.filter((defect) => {
       return this.projects.map((a) => a.value).indexOf(defect.project_id) != -1
     });
-    console.log(this.projects)
     
   }
   mounted() {

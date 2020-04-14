@@ -9,6 +9,22 @@ import email from '../email';
 const router = express.Router();
 
 
+// get /project/getStatus/:project_id
+router.get('/getStatus/:project_id', (req, res) => {
+  const project_id = req.params.project_id;
+  conn.query('select * from project_status where project_id = ?', [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else {
+      res.json({
+        pro_status: result[0],
+        status: config.status.SUCCESS,
+        msg: 'success'
+      })
+    }
+  })
+})
+
 // get /project/getAllProjects
 // 获取所有项目的列表
 router.get('/getAllProjects', (req, res: Response<ProjectList>) => {
@@ -64,6 +80,9 @@ router.get("/getJoinProjects/:member_id", (req, res: Response<GetJoinProjectsRes
     if (err) {
       mysqlErrorHandler(res, err);
     } else {
+      for (let pro of result) {
+        pro.status = config.numberMap.projectStatus[pro.status]
+      }
       res.json({
         project_list: result,
         status: config.status.SUCCESS,
@@ -157,23 +176,14 @@ router.post('/', (req, res: Response<ResultCommon>) => {
           if (err) {
             mysqlErrorHandler(res, err);
           } else {
-            const member_list = project_details.member_list;
-            conn.query("insert into member_project (project_id, member_id, role, authority) values (?, ?, ?, ?)", [project_details.project_id, 1, '[]', '[]'], err2 => {
-              if (err2) {
-                console.log(err2);
-              }
-            })
-            for (let member of member_list) {
-              conn.query("insert into member_project (project_id, member_id, role, authority) values (?, ?, ?, ?)", [project_details.project_id, member, '[]', '[]'], err2 => {
-                if (err2) {
-                  console.log(err2);
-                }
-              })
-            }
             const emailList = result;
             for (const e of emailList) {
               const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`;
-
+              conn.query('insert into project_status (project_id) values (?)', [project_details.project_id], err => {
+                if (err) {
+                  console.log(err);
+                }
+              })
               switch (e.job) {
                 case 1:
                   // email.sendEmail({
@@ -240,6 +250,15 @@ router.post('/', (req, res: Response<ResultCommon>) => {
   );
 });
 
+
+// post /project/projectStatus/:project_id
+// router.post('/projectStatus/:project_id', (req, res: Response<ResultCommon>) => {
+//   const project_id = req.params.project_id;
+//   conn.query('insert into project_status (project_id) values (?)', [project_id], err => {
+//     commomInsertHandler(res, err);
+//   })
+// })
+
 // put /project/:project_id
 // updateProject
 router.put('/:project_id', (req, res: Response<ResultCommon>) => {
@@ -274,6 +293,32 @@ router.put('/:project_id', (req, res: Response<ResultCommon>) => {
     }
   });
 });
+
+// put /project/changeStatus/:project_id
+router.put('/changeStatus/:project_id', (req, res) => {
+  const project_id = req.params.project_id;
+  const details = req.body;
+  conn.query('select * from project_status where project_id = ?', [project_id], (err, result) => {
+    if (err) {
+      mysqlErrorHandler(res, err);
+    } else if (result.length == 1) {
+      const old = result[0];
+      conn.query('update project_status set is_epg = ?, is_qa = ?, is_people = ?, is_config = ?, is_feature = ? where project_id = ?', [
+        details.is_epg || old.is_epg,
+        details.is_qa || old.is_qa,
+        details.is_people || old.is_people,
+        details.is_config || old.is_config,
+        details.is_feature || old.is_feature,
+        project_id
+      ], err => {
+        commomUpdateHandler(res, err);
+      })
+    } else {
+      console.log(result)
+      notFoundErrorHandler(res);
+    }
+  })
+})
 
 // get /project/acceptProject/:project_id
 // 批准立项

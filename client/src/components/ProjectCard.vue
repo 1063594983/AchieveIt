@@ -4,20 +4,37 @@
       <div class="bold h3">{{ project.project_name }}</div>
       <div class="h6 opacity">ID: {{ project.project_id }}</div>
     </div>
-    <div class="my1 h5"><b class="opacity">项目经理 </b>{{ project.manager }}</div>
-    <div class="my1 h5"><b class="opacity">项目状态 </b>{{ project.status }}</div>
-    <div class="my1 h5" v-show="project.status == '已立项'"><b class="opacity">当前状态 </b>
-    {{ config?"配置库已建立":"配置库未建立" }};&nbsp;&nbsp;{{ EPG?"EPG 已分配":"EPG 未分配" }};&nbsp;&nbsp;{{ QA?"QA 已分配":"QA 未分配" }}
-    ;&nbsp;&nbsp;{{ feature?"已上传功能列表":"未上传功能列表" }}
-    </div> 
-    <div class="my1 h5"><b class="opacity">启止时间 </b>{{ startTime }} - {{ endTime }}</div>
-    <div class="my1 h5"><b class="opacity">项目领域 </b><el-tag class="mr1" v-for="i of project.business" type="primary" :key="i">{{ i }}</el-tag></div>
-    <div class="my1 h5"><b class="opacity">所用技术 </b><el-tag class="mr1" v-for="i of project.technology" type="info" :key="i">{{ i }}</el-tag></div>
-    <div class="my1 h5"><b class="opacity">tips </b>
-      <div class="tip">{{ config?"":"待配置管理员建立配置库" }}</div>
+    <div class="my1 h5">
+      <b class="opacity">项目经理</b>
+      {{ project.manager }}
+    </div>
+    <div class="my1 h5">
+      <b class="opacity">项目状态</b>
+      {{ project.status }}
+    </div>
+    <div class="my1 h5" v-show="project.status == '已立项'">
+      <b class="opacity">当前状态</b>
+      {{ config?"配置库已建立":"配置库未建立" }};&nbsp;&nbsp;{{ EPG?"EPG 已分配":"EPG 未分配" }};&nbsp;&nbsp;{{ QA?"QA 已分配":"QA 未分配" }}
+      ;&nbsp;&nbsp;{{ feature?"已上传功能列表":"未上传功能列表" }};&nbsp;&nbsp;{{ people?"已设置人员权限":"未设置人员权限" }}
+    </div>
+    <div class="my1 h5">
+      <b class="opacity">启止时间</b>
+      {{ startTime }} - {{ endTime }}
+    </div>
+    <div class="my1 h5">
+      <b class="opacity">项目领域</b>
+      <el-tag class="mr1" v-for="i of project.business" type="primary" :key="i">{{ i }}</el-tag>
+    </div>
+    <div class="my1 h5">
+      <b class="opacity">所用技术</b>
+      <el-tag class="mr1" v-for="i of project.technology" type="info" :key="i">{{ i }}</el-tag>
+    </div>
+    <div class="my1 h5" v-show="project.status == '已立项'">
+      <b class="opacity">tips</b>
       <div class="tip">{{ EPG?"":"待EPG Leader分配EPG" }}</div>
+      <div class="tip">{{ config?(people?"":"待项目经理设置人员权限"):"待配置管理员建立配置库" }}</div>
       <div class="tip">{{ QA?"":"待QA经理分配QA" }}</div>
-      <div class="tip">{{ QA?"":"待项目经理上传功能列表" }}</div>
+      <div class="tip">{{ feature?"":"待项目经理上传功能列表" }}</div>
     </div>
     <div class="flex justify-between items-center mt2">
       <div class="flex items-right" v-if="openEdit">
@@ -41,6 +58,8 @@ import { Confirm } from '@/theme';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
 import agent from '../agent';
 import axios from 'axios';
+import { userStore } from '../store';
+import { computed } from '@vue/composition-api';
 
 @Component({
   components: { ProjectEditDialog },
@@ -54,29 +73,27 @@ export default class ProjectCard extends Vue {
   EPG = false;
   QA = false;
   feature = false;
+  people = false;
+
+  async refresh() {
+    if (this.project.status == '已立项') {
+      const status = await agent.project.getStatus(this.project.project_id);
+      this.config = status.is_config == 1;
+      this.feature = status.is_feature == 1;
+      this.EPG = status.is_epg == 1;
+      this.QA = status.is_qa == 1;
+      this.people = status.is_people == 1;
+      if (this.config && this.EPG && this.QA && this.feature && this.people && this.project.status == '已立项') {
+        await agent.project.update(this.project.project_id, {
+          status: 3,
+        });
+        this.project.status = '进行中';
+    }
+    }
+  }
+
   async mounted() {
-    const result = await agent.config.get(this.project.project_id);
-    if (result.status == 'error') {
-      this.config = false;
-    } else {
-      this.config = true;
-    }
-    const feature = await agent.feature.getFeatureList(this.project.project_id);
-    if (feature.statue == 'ok') {
-      this.feature = true;
-    } else {
-      this.feature = false;
-    }
-
-    this.EPG = await agent.project.isEPG(this.project.project_id);
-    this.QA = await agent.project.isQA(this.project.project_id);
-
-    if (this.config && this.EPG && this.QA && this.project.status == '已立项') {
-      await agent.project.update(this.project.project_id, {
-        status: 3
-      })
-      this.mounted();
-    }
+    this.refresh();
   }
   get startTime() {
     return dayjs(this.project.start_time).format('YYYY年M月D日');
@@ -86,7 +103,7 @@ export default class ProjectCard extends Vue {
   }
   handleCommand(command) {
     if (command === 'edit') {
-      this.openEdit(this.project, this.config&&this.EPG&&this.QA);
+      this.openEdit(this.project);
     } else {
       Confirm.warning('提示', '此操作将永久删除该项目, 是否继续?')
         .then(() => this.removeProject())
@@ -103,7 +120,7 @@ export default class ProjectCard extends Vue {
 }
 
 .tip {
-  color: #E6A23C;
+  color: #e6a23c;
   font-size: 1rem;
   line-height: 1.5rem;
 }

@@ -96,6 +96,7 @@ export default class Configs extends Vue {
 
   async refresh() {
     const result = await agent.config.getAll();
+
     const result2 = await agent.project.getAll();
     this.configs = result.data.config_list;
     this.projects = result2.project_list.map((x) => {
@@ -125,6 +126,10 @@ export default class Configs extends Vue {
     } else {
       const result = await agent.config.postConfig(this.form);
       if(result.data.status == 'ok') {
+        // 修改项目状态为已建立配置库
+        await agent.project.setStatus(this.form.project_id, {
+          is_config: 1
+        });
         Notify.success('成功', '配置项目成功');
       } else {
         Notify.error('失败', `项目${this.form.project_id}配置失败`);

@@ -145,10 +145,17 @@ export default class ProjectCreateDialog extends Vue {
     this.onClose();
     this.onAddDraft(this.form);
   }
-  createProject() {
+  async createProject() {
     this.form.business = this.businessTags;
     this.form.technology = this.technologyTags;
     const result = this.onCreateProject(this.form);
+    for (let m of this.form.member_list) {
+      await agent.member.addToProject(this.form.project_id, {
+        member_id: m,
+        role: [],
+        authority: []
+      });
+    }
     if (result) {
       this.onClose();
     }

@@ -93,8 +93,7 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/feature.vue'),
         meta: {
           icon: 'magic-stick',
-          title: '项目功能',
-          auth: '项目经理'
+          title: '项目功能'
         },
       },
       {

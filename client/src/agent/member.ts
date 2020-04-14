@@ -15,15 +15,11 @@ const memberAPI = {
         return result.data;
     },
     addToProject: async (project_id, details) => {
-        const result = await axios.post(`${baseURL}/member/addMemberToProject/${project_id}`, {
-            member_id: details.member_id,
-            role: details.role,
-            authority: details.authority
-        })
+        const result = await axios.post(`${baseURL}/member/addMemberToProject/${project_id}`, details);
         return result.data;
     },
     changeProjectRole: async (project_id, details) => {
-        console.log(details);
+        // console.log(details);
         const result = await axios.put(`${baseURL}/member/changeMemberRole/${project_id}`, {
             ...details
         })

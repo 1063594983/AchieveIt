@@ -2,38 +2,38 @@
   <div>
     <h1>项目功能</h1>
     <div v-if="projects.length != 0">
-    <el-card shadow="hover" class="mt2" v-for="project in projects" :key="project.project_id">
-      <div class="flex justify-between items-center mb2">
-        <div class="bold h3">{{ project.project_name }}</div>
-        <div class="h6 opacity">ID: {{ project.project_id }}</div>
-      </div>
-      <div class="my1 h5">
-        <b class="opacity">项目经理</b>
-        {{ project.manager }}
-      </div>
-      <div class="my1 h5">
-        <b class="opacity">项目状态</b>
-        {{ project.status }}
-      </div>
-      <div class="my1 h5">
-        <b class="opacity">启止时间</b>
-        {{ dayjs(project.start_time).format('YYYY年M月D日') }} - {{ dayjs(project.end_time).format('YYYY年M月D日') }}
-      </div>
-      <div class="flex justify-between items-center mt2">
-        <div>
-          <el-tag class="mr1" v-for="i of project.business" type="primary" :key="i">{{ i }}</el-tag>
-          <el-tag class="mr1" v-for="i of project.technology" type="info" :key="i">{{ i }}</el-tag>
+      <el-card shadow="hover" class="mt2" v-for="project in projects" :key="project.project_id">
+        <div class="flex justify-between items-center mb2">
+          <div class="bold h3">{{ project.project_name }}</div>
+          <div class="h6 opacity">ID: {{ project.project_id }}</div>
         </div>
-        <div class="flex items-center">
-          <el-button @click="uploadVisible = true;selectedProject=project.project_id">上传功能excel表</el-button>
-          <el-button @click="downloadExcel(project.project_id)">下载功能excel表</el-button>
+        <div class="my1 h5">
+          <b class="opacity">项目经理</b>
+          {{ project.manager }}
         </div>
-      </div>
-    </el-card>
+        <div class="my1 h5">
+          <b class="opacity">项目状态</b>
+          {{ project.status }}
+        </div>
+        <div class="my1 h5">
+          <b class="opacity">启止时间</b>
+          {{ dayjs(project.start_time).format('YYYY年M月D日') }} - {{ dayjs(project.end_time).format('YYYY年M月D日') }}
+        </div>
+        <div class="my1 h5">
+          <b class="opacity">tips:</b>
+          <div class="tip">{{ isFeatureMap[project.project_id] == true?"功能列已上传":"功能列表未上传" }}</div>
+        </div>
+        <div class="flex justify-between items-center mt2">
+          <div class="flex items-center">
+            <div v-show="userStore.member.job == '项目经理'">
+              <el-button @click="uploadVisible = true;selectedProject=project.project_id">上传功能excel表</el-button>
+              </div>
+            <el-button @click="downloadExcel(project.project_id)">下载功能excel表</el-button>
+          </div>
+        </div>
+      </el-card>
     </div>
-    <div v-else>
-      当前无参与项目
-    </div>
+    <div v-else>当前无参与项目</div>
     <el-dialog title="上传功能excel表" :visible.sync="uploadVisible">
       <input type="file" name="feature" accept=".xls" @change="changeFile" />
       <br />
@@ -66,25 +66,44 @@ export default class Feature extends Vue {
   uploadVisible = false;
   dialogEditForm = null;
   joinProjects = [];
+  isFeatureMap = {};
+  userStore = userStore;
   async refresh() {
-    const result = await agent.project.getAll();
-    const joinProjects = await agent.project.getJoinProjects(userStore.currentUser.member_id);
-    this.projects = result.project_list.filter((pro) => {
-      return joinProjects.project_list.map((a)=>a.project_id).indexOf(pro.project_id) != -1
-    });
+    let projects = null;
+    // 如果是项目经理
+    if (userStore.member.job == '项目经理') {
+      // 获得所有项目
+      const result = await agent.project.getAll();
+      projects = result.project_list;
+    } else {  //  其他用户
+      // 获得用户当前参与的项目
+      const joinProjects = await agent.project.getJoinProjects(userStore.currentUser.member_id);
+      console.log(joinProjects);
+      projects = joinProjects.project_list;
+    }
+    for (let pro of projects) {
+        const r = await agent.project.getStatus(pro.project_id);
+        this.isFeatureMap[pro.project_id] = r.is_feature == 1;
+      }
+    // 保留已立项项目
+    this.projects = projects.filter(x=>x.status == '已立项');
   }
   mounted() {
     this.refresh();
-    
   }
   dayjs(time) {
-    return dayjs(time)
+    return dayjs(time);
   }
   async onSubmit() {
     const formData = new FormData();
     formData.append('function', this.file);
     this.uploadVisible = false;
     const result = await agent.feature.uploadFeatureExcel(this.selectedProject, formData);
+    // 修改项目状态为已上传功能列表
+    await agent.project.setStatus(this.selectedProject, {
+      is_feature: 1,
+    });
+    this.refresh();
   }
   changeFile(e) {
     this.file = e.target.files[0];
@@ -92,10 +111,19 @@ export default class Feature extends Vue {
   async downloadExcel(project_id) {
     const result = await agent.feature.downloadFeatureExcel(project_id);
     if (result.data.status == 'ok') {
-      Notify.success('成功', `下载${project_id}功能列表成功`)
+      Notify.success('成功', `下载${project_id}功能列表成功`);
     } else {
       Notify.error('失败', result.data.msg);
     }
   }
 }
 </script>
+
+<style scoped>
+.tip {
+  color: #e6a23c;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+</style>>
+  

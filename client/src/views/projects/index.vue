@@ -115,17 +115,16 @@ export default class Projects extends Vue {
   mounted() {
     this.refresh();
   }
-  async onOpenEditDialog(project, isFinished) {
+  async onOpenEditDialog(project) {
     this.selectedProject = project;
     this.editFormVisible = true;
     const members = await agent.member.ofProject(project.project_id);
     this.joinMembers = members.member_list.filter((m) => m.job == '普通员工');
-    this.isFinished = isFinished;
   }
   async addEPGToPro() {
     for (let m of this.selectedMembers) {
       if (m.role.indexOf('EPG') == -1) {
-        m.role.push(6);
+        m.role.push('EPG');
       }
       await agent.member.changeProjectRole(this.selectedProject.project_id, {
         member_id: m.member_id,
@@ -135,12 +134,17 @@ export default class Projects extends Vue {
         authority: m.authority,
       });
     }
+    // 修改项目状态为已设置EPG
+    await agent.project.setStatus(this.selectedProject.project_id, {
+      is_epg: 1
+    });
+    this.refresh();
     this.editFormVisible = false;
   }
   async addQAToPro() {
     for (let m of this.selectedMembers) {
-      if (m.role.indexOf('EPG') == -1) {
-        m.role.push(5);
+      if (m.role.indexOf('QA') == -1) {
+        m.role.push('QA');
       }
       await agent.member.changeProjectRole(this.selectedProject.project_id, {
         member_id: m.member_id,
@@ -150,6 +154,11 @@ export default class Projects extends Vue {
         authority: m.authority,
       });
     }
+    // 改变项目状态为已设置QA
+    await agent.project.setStatus(this.selectedProject.project_id, {
+      is_qa: 1
+    });
+    this.refresh();
     this.editFormVisible = false;
   }
   handleSelectionChange(val) {
@@ -191,6 +200,7 @@ export default class Projects extends Vue {
     try {
       result = await agent.project.insert({ ...form, status: 0 });
       Notify.success('创建项目《' + form.project_name + '》成功');
+      
       return true;
     } catch (e) {
       Notify.error('创建项目《' + form.project_name + '》失败', result?.msg);

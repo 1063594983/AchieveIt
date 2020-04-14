@@ -18,21 +18,15 @@ const projectAPI = {
     const result = await axios.get(`${baseURL}/project/getJoinProjects/${member_id}`);
     return result.data;
   },
-  isEPG: async (project_id) => {
-    const result = await axios.get(`${baseURL}/project/hasEPG/${project_id}`);
-    if (result.data.status == 'ok') {
-      return true;
-    } else {
-      return false;
-    }
+  getStatus: async (project_id) => {
+    const result = await axios.get(`${baseURL}/project/getStatus/${project_id}`);
+    return result.data.pro_status;
   },
-  isQA: async (project_id) => {
-    const result = await axios.get(`${baseURL}/project/hasQA/${project_id}`);
-    if (result.data.status == 'ok') {
-      return true;
-    } else {
-      return false;
-    }
+  setStatus: async (project_id, details) => {
+    const result = await axios.put(`${baseURL}/project/changeStatus/${project_id}`, {
+      ...details
+    })
+    return result;
   },
   update: async (project_id, details) => {
     const result = await axios.put(`${baseURL}/project/${project_id}`, {

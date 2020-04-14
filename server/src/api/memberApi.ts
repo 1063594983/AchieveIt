@@ -220,7 +220,7 @@ router.put('/changeMemberRole/:project_id', (req, res: Response<ResultCommon>) =
   const project_id = req.params.project_id;
   const details = req.body;
   console.log(req.body);
-  conn.query($sql.member.changeMemberRole, [JSON.stringify(details.role.sort()), JSON.stringify(details.authority), project_id, Number(details.member_id)], err => {
+  conn.query($sql.member.changeMemberRole, [JSON.stringify(details.role.sort()), JSON.stringify(details.authority), project_id, details.member_id], err => {
     commomUpdateHandler(res, err);
   })
 })

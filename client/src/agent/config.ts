@@ -10,6 +10,10 @@ const configAPI = {
         const result = await axios.get(`${baseURL}/config/getAllConfigs`);
         return result;
     },
+    ofProject: async (project_id) => {
+      const result = await axios.get(`${baseURL}/config/${project_id}`);
+      return result.data;
+    },
     postConfig: async (form) => {
         const result = await axios.post(`${baseURL}/config`, {
           project_id: form.project_id,

@@ -4,6 +4,7 @@ import config from '../config';
 import email from '../email';
 import multer from 'multer';
 import path from 'path';
+import { conn } from '../mysqlPool';
 
 const router = express.Router();
 const upload = multer({
@@ -15,6 +16,20 @@ router.post('/file', upload.single('file'), (req: any, res, next) => {
   console.log(path.resolve(file.path));
   res.json({
     msg: 'ok'
+  })
+})
+
+// get /demo/addData
+router.get('/addData', (req, res)=> {
+  conn.query('select project_id from project', [], (err, result) => {
+    for (let pro of result) {
+      conn.query('insert into project_status (project_id) value (?)', [pro.project_id], (err)=> {
+
+      })
+    }
+    res.json({
+      status: '1'
+    })
   })
 })
 

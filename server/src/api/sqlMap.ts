@@ -90,10 +90,11 @@ export default {
   project: {
     getProjectById: 'select * from project where project_id = ?',
     deleteProjectById: 'delete from project where project_id = ?',
-    getJoinProject: pattern.selectPattern({
-      table_name: "member_project",
-      key_name: "member_id"
-    }),
+    // getJoinProject: pattern.selectPattern({
+    //   table_name: "member_project",
+    //   key_name: "member_id"
+    // }),
+    getJoinProject: 'select * from member_project a inner join project b on a.project_id = b.project_id where a.member_id = ?',
     insertProject:
       'insert into project (project_id, project_name, client_info, start_time, end_time, manager, important_events, technology, business, status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     updateProjectById: `update project set project_name = ?, client_info = ?, start_time = ?, end_time = ?, manager = ?, important_events = ?, technology = ?,
@@ -152,6 +153,7 @@ export default {
       table_name: "config",
       key_name: "project_id"
     }),
+    getAllConfigs: 'select * from config',
     insertConfig: pattern.insertPattern({
       table_name: "config",
       select_col: "git_address, server_menu, vm_space, project_id"
