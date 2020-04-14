@@ -18,6 +18,10 @@ const memberAPI = {
         const result = await axios.post(`${baseURL}/member/addMemberToProject/${project_id}`, details);
         return result.data;
     },
+    deleteFromProject: async (project_id, member_id) => {
+        const result = await axios.delete(`${baseURL}/member/deleteFromProject/${project_id}/${member_id}`);
+        return result;
+    },
     changeProjectRole: async (project_id, details) => {
         // console.log(details);
         const result = await axios.put(`${baseURL}/member/changeMemberRole/${project_id}`, {

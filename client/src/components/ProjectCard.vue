@@ -41,8 +41,10 @@
         <el-dropdown @command="handleCommand" trigger="click">
           <el-icon name="more" class="py1 opacity cursor"></el-icon>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
-            <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item>
+            <el-dropdown-item command="edit">
+              <div v-if="userStore.member.job == 'QA Manager'">分配QA</div>
+            </el-dropdown-item>
+            <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -74,6 +76,7 @@ export default class ProjectCard extends Vue {
   QA = false;
   feature = false;
   people = false;
+  userStore = userStore;
 
   async refresh() {
     if (this.project.status == '已立项') {

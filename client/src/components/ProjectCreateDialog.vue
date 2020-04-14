@@ -43,23 +43,6 @@
         <el-tag v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
         <el-button type="primary" round @click="addTech">+</el-button>
       </el-form-item>
-      <el-form-item label="成员选择">
-        <el-select
-          v-model="form.member_list"
-          multiple
-          placeholder="请选择"
-          collapse-tags
-        ></el-select>
-        <el-popover placement="top" width="600" trigger="click">
-          <el-table :data="members" @selection-change="handleSelectionChange" max-height="250">
-            <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column width="100" property="member_id" label="ID"></el-table-column>
-            <el-table-column width="100" property="member_name" label="姓名"></el-table-column>
-            <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
-          </el-table>
-          <el-button slot="reference">选择成员</el-button>
-        </el-popover>
-      </el-form-item>
     </el-form>
     <div slot="footer">
       <el-button @click="onClose">取消</el-button>
@@ -149,13 +132,6 @@ export default class ProjectCreateDialog extends Vue {
     this.form.business = this.businessTags;
     this.form.technology = this.technologyTags;
     const result = this.onCreateProject(this.form);
-    for (let m of this.form.member_list) {
-      await agent.member.addToProject(this.form.project_id, {
-        member_id: m,
-        role: [],
-        authority: []
-      });
-    }
     if (result) {
       this.onClose();
     }

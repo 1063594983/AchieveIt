@@ -178,7 +178,8 @@ export default class Risks extends Vue {
     this.isLoading = true;
     const result = await agent.project.getAll();
     this.isLoading = false;
-    this.projects = result.project_list;
+    // 筛选进行中的项目
+    this.projects = result.project_list.filter(x=>x.status=='进行中');
   }
 }
 </script>

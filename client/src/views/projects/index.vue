@@ -147,7 +147,7 @@ export default class Projects extends Vue {
         m.role.push('QA');
       }
       await agent.member.changeProjectRole(this.selectedProject.project_id, {
-        member_id: m.member_id,
+        member_id: m.member_id, 
         role: m.role.map((x) => {
           return memberRole.indexOf(x);
         }),

@@ -24,6 +24,10 @@ import {
         const result = await axios.get(`${baseURL}/defect/getAllDefect`);
         return result;
     },
+    getAllOfMember: async (member_id) => {
+      const result = await axios.get(`${baseURL}/defect/getAllOfMember/${member_id}`);
+      return result.data;
+    },
     postDefect: async (form) => {
       const result = await axios.post(`${baseURL}/defect`, {
         project_id: form.project_id,

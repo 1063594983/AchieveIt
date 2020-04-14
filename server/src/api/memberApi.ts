@@ -75,11 +75,11 @@ router.get('/:member_id', (req, res: Response<GetMemberResult>) => {
   });
 });
 
-// get /member/getMemberRoleInProject/:projec_id
+// get /member/getMemberRoleInProject/:project_id
 router.get("/getMemberRoleInProject/:project_id", (req, res: Response<GetMemberRoleResult>) => {
-  const projec_id = req.params.project_id;
+  const project_id = req.params.project_id;
   const member_id = req.query.member_id;
-  conn.query($sql.member.getMemberRole, [projec_id, member_id], (err, result) => {
+  conn.query($sql.member.getMemberRole, [project_id, member_id], (err, result) => {
       if (err) {
           mysqlErrorHandler(res, err);
       } else if (result.length == 1) {
@@ -176,6 +176,16 @@ router.delete('/:member_id', (req, res: Response<ResultCommon>) => {
     }
   });
 });
+
+// delete /member/deleteFromProject/:project_id/:member_id
+
+router.delete('/deleteFromProject/:project_id/:member_id', (req, res) => {
+  const project_id = req.params.project_id;
+  const member_id = req.params.member_id;
+  conn.query('delete from member_project where project_id = ? and member_id = ?', [project_id, member_id], err => {
+    commonDeleteHandler(res, err);
+  })
+})
 
 
 

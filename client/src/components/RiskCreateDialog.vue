@@ -23,10 +23,19 @@
             <el-form-item label="状态选择">
                 <el-select v-model="form.solve_status" placeholder="请选择">
                     <el-option
-                            v-for="i in [0,1,2]"
-                            :key="i"
-                            :label="i"
-                            :value="i"
+                            v-for="i in [{
+                              label: '未处理',
+                              value: 0
+                            }, {
+                              label: '正在跟进',
+                              value: 1
+                            }, {
+                              label: '已解决',
+                              value: 2
+                            }]"
+                            :key="i.value"
+                            :label="i.label"
+                            :value="i.index"
                     ></el-option>
                 </el-select>
             </el-form-item>
@@ -43,6 +52,7 @@
   import { Project, RiskPostBody } from 'achieve-it-contract';
   import { Subtract } from 'utility-types';
   import agent, { authBody } from '@/agent';
+import { userStore } from '../store';
 
   type RiskDraft = Subtract<RiskPostBody, authBody>;
   @Component
@@ -54,8 +64,10 @@
     projects: Project[] = [];
 
     mounted() {
-      agent.project.getAll().then((result) => {
-        this.projects = result.project_list;
+      // 获得用户参与的项目
+      agent.project.getJoinProjects(userStore.currentUser.member_id).then((result) => {
+        // 筛选进行中的项目
+        this.projects = result.project_list.filter(x=>x.status=='进行中');
       });
     }
 

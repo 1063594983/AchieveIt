@@ -12,18 +12,12 @@
           <el-option
             v-for="item in projects"
             :key="item.project_id"
-            :label="`${item.project_id}`"
+            :label="`${item.project_id}(${item.project_name})`"
             :value="item.project_id"
           ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="功能名称">
-          <!-- <el-option
-            v-for="item in features"
-            :key="item.function_id"
-            :label="item.function_name"
-            :value="item.function_id"
-          ></el-option> -->
           <el-cascader
             v-model="form.feature_name"
             :options="features"
@@ -128,7 +122,8 @@ export default class ProjectCreateDialog extends Vue {
 
   mounted() {
     agent.project.getJoinProjects(userStore.currentUser.member_id).then((result) => {
-      this.projects = result.project_list;
+      // 筛选进行中的项目
+      this.projects = result.project_list.filter(x=>x.status=='进行中');
     });
   }
 
