@@ -25,7 +25,6 @@ export interface Risk {
   solve_status: string; // ['未处理', '正在跟进', '已解决']
 }
 
-
 /**
  * api: get /risk/:risk_id
  */
@@ -37,7 +36,6 @@ export interface RiskGetBody extends Authorization {}
 export interface GetRiskResult extends ResultCommon {
   risk: Risk;
 }
-
 
 /**
  * api: get /risk/getProjectRiskList/:project_id
@@ -52,7 +50,6 @@ export interface GetProjectRiskListResult extends ResultCommon {
   project_id?: string;
 }
 
-
 /**
  * api: post /risk
  */
@@ -64,17 +61,15 @@ export interface RiskPostBody extends Authorization {
   solve_status?: 0 | 1 | 2;
 }
 
-
 /**
  * api: put /risk/:risk_id
  */
 
 // request
 export interface RiskPutBody extends Authorization {
-  detail: RiskDetail;
+  detail?: RiskDetail;
   solve_status?: 0 | 1 | 2;
 }
-
 
 /**
  * api: delete /risk/:risk_id
@@ -82,4 +77,3 @@ export interface RiskPutBody extends Authorization {
 
 // request
 export interface RiskDeleteBody extends Authorization {}
-

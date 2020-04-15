@@ -32,8 +32,8 @@ export default class Login extends Vue {
     return commonStore.showHello;
   }
   form = {
-    username: '3',
-    password: '3',
+    username: '',
+    password: '',
   };
   isLoggingIn = false;
 
