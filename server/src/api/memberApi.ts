@@ -204,20 +204,23 @@ router.post("/addMemberToProject/:project_id", (req, res: Response<ResultCommon>
         if (err2) {
           mysqlErrorHandler(res, err2);
         } else {
-          const member = result[0];
-          email.sendEmail({
-            to: member.email,
-            subject: `[${project_id}]项目邀请`,
-            text: `你已被邀请加入${project_id}项目,你的角色为[${details.role.map((x) => config.numberMap.projectRole[x])}],你的权限为[${details.authority}]`
-          }, (err, info) => {
-            if (err) {
-              console.log(`send to member ${details.member_id} failed`);
-            }
-          })
-          res.json({
-            status: config.status.SUCCESS,
-            msg: 'success'
-          })
+          let member = result[0];
+          if (member !== undefined) {
+            member.email = '111';
+            email.sendEmail({
+              to: member.email,
+              subject: `[${project_id}]项目邀请`,
+              text: `你已被邀请加入${project_id}项目,你的角色为[${details.role.map((x) => config.numberMap.projectRole[x])}],你的权限为[${details.authority}]`
+            }, (err, info) => {
+              if (err) {
+                console.log(`send to member ${details.member_id} failed`);
+              }
+            })
+            res.json({
+              status: config.status.SUCCESS,
+              msg: 'success'
+            })
+          }
         }
       })
     }
