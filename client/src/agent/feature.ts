@@ -4,13 +4,13 @@ import axios from 'axios';
 
 const featureAPI = {
   getFeatureList: async (projectId: string) => {
-    const result = await axios.get(`http://localhost:3000/function/getProjectFunctionList/${projectId}`);
+    const result = await axios.get(`http://localhost:3001/function/getProjectFunctionList/${projectId}`);
     return result.data;
   },
     // axiosGet('function', `getProjectFunctionList/${projectId}`),
   // addFeature: (projectId: string, feature: ) => axiosPost('function', "addFunction")
   uploadFeatureExcel: async (projectId: string, fileData) => {
-    const result = await axios.post(`http://localhost:3000/function/importFunctionExcelToProject/${projectId}`, fileData, {
+    const result = await axios.post(`http://localhost:3001/function/importFunctionExcelToProject/${projectId}`, fileData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -18,15 +18,15 @@ const featureAPI = {
     return result.data;
   },
   downloadFeatureExcel: async (projectId: string) => {
-    // const result = await axios.get(`http://localhost:3000/function/getProjectFunctionExcel/${projectId}`);
+    // const result = await axios.get(`http://localhost:3001/function/getProjectFunctionExcel/${projectId}`);
     // return result;
-    const result = await axios.post(`http://localhost:3000/function/getProjectFunctionExcel/${projectId}`, {
+    const result = await axios.post(`http://localhost:3001/function/getProjectFunctionExcel/${projectId}`, {
       responseType: 'blob'
     })
     if (result.data.status == 'error') {
       return result;
     }
-    const fileUrl = `http://localhost:3000/feature/${projectId}.xls`;
+    const fileUrl = `http://localhost:3001/feature/${projectId}.xls`;
 
     // let blob = new Blob([fileData], { type: "application/vnd.ms-excel;charset=utf8"});
     let downloadElement = document.createElement("a");

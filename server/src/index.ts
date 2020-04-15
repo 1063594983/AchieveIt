@@ -20,7 +20,7 @@ import defectApi from "./api/defectApi";
 import { ResultCommon } from 'achieve-it-contract';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 
 // 解决json数据传输问题

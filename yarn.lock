@@ -14976,8 +14976,13 @@ windows-release@^3.1.0:
 
 wmf@~1.0.1:
   version "1.0.2"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/wmf/download/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
   integrity sha1-fRnWIQcaCMK9xrfmiKnENSmMwto=
+=======
+  resolved "https://registry.yarnpkg.com/wmf/-/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
+  integrity sha512-/p9K7bEh0Dj6WbXg4JG0xvLQmIadrner1bi45VMJTfnbVHsc7yIajZyoSoK60/dtVBs12Fm6WkUI5/3WAVsNMw==
+>>>>>>> a10e2554ff12b671a6894c420e456ada496f4bf9
 
 word-wrap@~1.2.3:
   version "1.2.3"
@@ -15143,8 +15148,13 @@ xlsx@^0.14.1:
 
 xlsx@^0.15.6:
   version "0.15.6"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/xlsx/download/xlsx-0.15.6.tgz#461f841d6d9ea1a8375e2cd246bf23aece08a1d5"
   integrity sha1-Rh+EHW2eoag3XizSRr8jrs4IodU=
+=======
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.15.6.tgz#461f841d6d9ea1a8375e2cd246bf23aece08a1d5"
+  integrity sha512-7vD9eutyLs65iDjNFimVN+gk/oDkfkCgpQUjdE82QgzJCrBHC4bGPH7fzKVyy0UPp3gyFVQTQEFJaWaAvZCShQ==
+>>>>>>> a10e2554ff12b671a6894c420e456ada496f4bf9
   dependencies:
     adler-32 "~1.2.0"
     cfb "^1.1.4"
