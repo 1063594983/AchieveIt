@@ -12,6 +12,7 @@ const DevicePage = defineComponent({
     const { load, state: devices } = useDevice();
     const state = reactive({
       createDialogVisible: false,
+      rentVisible: false
     });
 
     function openCreateDialog() {
@@ -31,6 +32,16 @@ const DevicePage = defineComponent({
       } catch (e) {
         Notify.error('更改名字失败');
       }
+    }
+
+    async function openRentDialog(device) {
+      // const result = await Prompt.open('输入', '输入项目名称');
+      // agent.device.update(device.device_id, {
+      //   device_status: 1,
+      //   device_name: device.device_name
+      // });
+      // Notify.success('租用成功' + result + '成功');
+      this.state.rentVisible = true;
     }
 
     async function openDeleteDialog(id: string) {
@@ -82,6 +93,9 @@ const DevicePage = defineComponent({
           <el-table-column>
             {({ row }) => (
               <el-button-group>
+                <el-button size="mini" onClick={() => openRentDialog(row)}>
+                  租用
+                </el-button>
                 <el-button size="mini" onClick={() => openUpdateDialog(row.device_id)}>
                   修改
                 </el-button>
