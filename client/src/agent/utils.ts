@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { Authorization, ResultCommon } from "achieve-it-contract";
-import { Subtract } from "utility-types";
-import { authBody, wrapToken } from "@/agent/index";
+import { Authorization, ResultCommon } from 'achieve-it-contract';
+import { Subtract } from 'utility-types';
+import { authBody, wrapToken } from '@/agent/index';
 
-export const baseURL = 'http://localhost:3001';
+const isLocal = location.href.includes('localhost');
+export const baseURL = isLocal ? 'http://localhost:3001' : 'http://101.132.182.151:3001/';
 
 function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response?: {} }) {
   console.error(`${type} ${url} failed`);
@@ -59,7 +60,7 @@ export function createCRUD<
   PutBody extends Authorization,
   PostBody extends Authorization,
   GetResult extends ResultCommon
-  >(namespace: string) {
+>(namespace: string) {
   return {
     get: (id: string, body: Subtract<GetBody, authBody>) => axiosGet<GetResult>(namespace, id, wrapToken(body)),
     insert: (body: Subtract<PostBody, authBody>) => axiosPost(namespace, '', wrapToken(body)),
