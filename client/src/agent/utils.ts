@@ -4,7 +4,7 @@ import { Subtract } from 'utility-types';
 import { authBody, wrapToken } from '@/agent/index';
 
 const isLocal = location.href.includes('localhost');
-export const baseURL = isLocal ? 'http://localhost:3001' : 'http://101.132.182.151:3001/';
+export const baseURL = isLocal ? 'http://localhost:3001' : 'http://101.132.182.151:3001';
 
 function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response?: {} }) {
   console.error(`${type} ${url} failed`);
