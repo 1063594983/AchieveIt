@@ -18,7 +18,7 @@ const riskAPI = {
   ofProject: (projectId: string) =>
     axiosGet<GetProjectRiskListResult>('risk', `getProjectRiskList/${projectId}`, wrapToken({})),
   upload: async (project_id, fileData) => {
-    const result = await axios.post(`http://localhost:3000/risk/uploadRisk/${project_id}`, fileData, {
+    const result = await axios.post(`http://localhost:3001/risk/uploadRisk/${project_id}`, fileData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -26,7 +26,7 @@ const riskAPI = {
     return result.data;
   },
   add: async (details) => {
-    const result = await axios.post('http://localhost:3000/risk/', {
+    const result = await axios.post('http://localhost:3001/risk/', {
       ...details
     })
     return result.data;

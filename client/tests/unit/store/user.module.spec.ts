@@ -4,13 +4,13 @@ import axios from 'axios';
 
 describe('test user store', () => {
   const mock = new MockAdapter(axios);
-  mock.onPost('http://localhost:3000/user/login').reply(200, {
+  mock.onPost('http://localhost:3001/user/login').reply(200, {
     status: 'ok',
     msg: '登陆成功',
     token: 'mock_token',
     member_id: '1'
   });
-  mock.onPost('http://localhost:3000/user/login', { params: [{ password: 'wrong' }] }).reply(200, {
+  mock.onPost('http://localhost:3001/user/login', { params: [{ password: 'wrong' }] }).reply(200, {
     status: 'ok',
     msg: '登陆成功',
     token: 'mock_token',

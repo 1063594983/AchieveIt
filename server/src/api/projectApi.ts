@@ -158,8 +158,8 @@ router.post('/', (req, res: Response<ResultCommon>) => {
                   // email.sendEmail({
                   //   to: e.email,
                   //   subject,
-                  //   html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3000/project/acceptProject/${project_details.project_id}">批准立项</a>
-                  //   &nbsp;&nbsp;<a href="http://localhost:3000/project/refuseProject/${project_details.project_id}">不批准立项</a>`
+                  //   html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3001/project/acceptProject/${project_details.project_id}">批准立项</a>
+                  //   &nbsp;&nbsp;<a href="http://localhost:3001/project/refuseProject/${project_details.project_id}">不批准立项</a>`
                   // }, (err, info) => {
                   //   if (err) {
                   //     console.log('send to 项目上级 failed')
