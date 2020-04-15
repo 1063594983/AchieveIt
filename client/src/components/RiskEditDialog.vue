@@ -49,7 +49,7 @@
   export default class RiskEditDialog extends Vue {
     @Prop({ required: true }) visible!: boolean;
     @Prop({ required: true }) onClose!: () => void;
-    @Prop({ required: true }) onCreate!: ( record: RiskDraft) => Promise<boolean>;
+    @Prop({ required: true }) onCreate!: ( record) => Promise<boolean>;
 
     projects: Project[] = [];
 
@@ -60,7 +60,7 @@
       });
     }
 
-    form: RiskDraft = {
+    form = {
       detail : null,
       project_id: '',
       solve_status: 0,
