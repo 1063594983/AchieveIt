@@ -38,11 +38,28 @@
     </div>
     <div class="flex justify-between items-center mt2">
       <div class="flex items-right" v-if="openEdit">
-        <el-dropdown @command="handleCommand" trigger="click">
+        <el-dropdown @command="handleCommand" trigger="click"  v-if="userStore.member.job != '项目经理'">
           <el-icon name="more" class="py1 opacity cursor"></el-icon>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="edit">
               <div v-if="userStore.member.job == 'QA Manager'">分配QA</div>
+              <div v-else-if="userStore.member.job == 'EPG Leader'">分配EPG</div>
+              <div v-else-if="userStore.member.job == '项目经理' && project.status=='进行中'">申请结项</div>
+            </el-dropdown-item>
+            <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown @command="handleCommand2" trigger="click"  v-else>
+          <el-icon name="more" class="py1 opacity cursor"></el-icon>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="jiaofu" v-if="project.status=='进行中'">
+              <div>申请交付</div>
+            </el-dropdown-item>
+            <el-dropdown-item command="jieshu" v-if="project.status=='已交付'">
+              <div>申请结束</div>
+            </el-dropdown-item>
+            <el-dropdown-item command="guidang" v-if="project.status=='结束'">
+              <div>申请归档</div>
             </el-dropdown-item>
             <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
           </el-dropdown-menu>
@@ -70,7 +87,7 @@ export default class ProjectCard extends Vue {
   @Prop({ required: true }) project!: Project;
   @Prop() removeProject!: Function;
   @Prop() openEdit!: Function;
-
+  @Prop() update!: Function;
   config = false;
   EPG = false;
   QA = false;
@@ -111,6 +128,42 @@ export default class ProjectCard extends Vue {
       Confirm.warning('提示', '此操作将永久删除该项目, 是否继续?')
         .then(() => this.removeProject())
         .catch(() => {});
+    }
+  }
+  handleCommand2(command) {
+    if (command == 'jiaofu') {  //  交付
+      Confirm.warning('确定', "确定交付吗").then(()=>{
+        // 交付
+        agent.project.update(this.project.project_id, {
+          status: 4
+        }).then(res=>{
+          // this.refresh();
+          this.update();
+        });
+        
+      })
+
+    } else if (command == 'jieshu') {  //结束
+      Confirm.warning('确定', "确定结束项目吗").then(()=>{
+        // 交付
+        agent.project.update(this.project.project_id, {
+          status: 5
+        }).then(res=>{
+          // this.refresh();
+          this.update();
+        });
+      })
+    } else {  //  归档
+      Confirm.warning('确定', "确定申请归档吗").then(()=>{
+        // 交付
+        agent.project.update(this.project.project_id, {
+          status: 6
+        }).then(res=>{
+          // this.refresh();
+          this.update();
+        });
+      })
+
     }
   }
 }

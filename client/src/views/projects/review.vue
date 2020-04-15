@@ -53,7 +53,7 @@ export default {
       if (!this.query) return this.projects;
       return this.projects.filter((i) =>
         fuzzysearch(this.query.toLowerCase(), (i.project_name + i.status).toLowerCase())
-      );
+      )
     },
   },
   mounted() {
@@ -62,15 +62,17 @@ export default {
   methods: {
     async refresh() {
       const result = await agent.project.getAll();
-      this.projects = result.project_list;
+      this.projects = result.project_list.filter(x=>x.status=='申请立项');
     },
     async onApprove(project) {
       try {
         await agent.project.accept(project.project_id);
         Notify.success('通过审核', project.project_name);
         project.status = '已立项';
+        this.refresh();
       } catch (e) {
         Notify.error(e);
+        this.refresh();
       }
     },
 

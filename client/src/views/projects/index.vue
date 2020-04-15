@@ -2,7 +2,7 @@
   <div>
     <div v-if="userStore.member.job == '项目经理'">
       <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
-      <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
+      <!-- <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button> -->
     </div>
     <!-- 项目列表 -->
     <project-card
@@ -11,6 +11,7 @@
       :key="item.project_id"
       :remove-project="onRemoveProject(item)"
       :open-edit="onOpenEditDialog"
+      :update="refresh"
     ></project-card>
 
     <!-- 项目创建窗口 -->
@@ -58,6 +59,8 @@
         </el-table>
         <el-button @click="addQAToPro">添加</el-button>
       </div>
+      <!-- 项目经理 -->
+
     </el-dialog>
 
     <!-- 项目导入窗口
