@@ -3,7 +3,6 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Layout from '@/views/Layout.vue';
 import store, { commonStore, userStore } from '@/store';
 import NProgress from 'nprogress';
-import _ from 'lodash';
 import { showAllPageWithoutAuth } from '@/main';
 
 Vue.use(VueRouter);
@@ -47,7 +46,7 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'set-up',
           title: '项目管理',
-          auth: '项目经理, EPG Leader, QA Manager'
+          auth: '项目经理, EPG Leader, QA Manager',
         },
       },
       {
@@ -55,9 +54,9 @@ const menu: RouteConfig[] = [
         path: 'myProject',
         component: () => import('@/views/projects/myProject.vue'),
         meta: {
-          icon: 'file',
+          icon: 'files',
           title: '我的项目',
-          auth: '普通员工'
+          auth: '普通员工',
         },
       },
       {
@@ -86,8 +85,8 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'user',
           title: '人员管理',
-          auth: '项目经理'
-        }
+          auth: '项目经理',
+        },
       },
       {
         name: 'projects.devices',
@@ -104,7 +103,7 @@ const menu: RouteConfig[] = [
         component: () => import('@/views/projects/feature.vue'),
         meta: {
           icon: 'magic-stick',
-          title: '项目功能'
+          title: '项目功能',
         },
       },
       {
@@ -263,15 +262,18 @@ export function filterMenu(menu) {
 }
 
 function getFlatMenu() {
-  return _.flatMap(menu, (i) =>
-    i.children.filter(isAuthed).map((child) => ({
-      title: child.meta.title!,
-      icon: child.meta.icon!,
-      fatherTitle: i.meta.title!,
-      name: child.name!,
-      auth: child.meta.auth,
-    }))
-  );
+  return menu.reduce((prev, cur) => {
+    return [
+      ...prev,
+      ...cur.children.filter(isAuthed).map((child) => ({
+        title: child.meta.title!,
+        icon: child.meta.icon!,
+        fatherTitle: cur.meta.title!,
+        name: child.name!,
+        auth: child.meta.auth,
+      })),
+    ];
+  }, []);
 }
 
 export { menu, getFlatMenu };

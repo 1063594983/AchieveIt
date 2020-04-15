@@ -28,7 +28,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import { commonStore, userStore } from '@/store';
 import Breadcrumb from '@/components/Breadcrumb.vue';
 import NavbarSearch from '@/components/NavbarSearch.vue';
-import { Form } from '@/theme';
 
 @Component({
   components: { NavbarSearch, Breadcrumb },

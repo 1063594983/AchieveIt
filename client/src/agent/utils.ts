@@ -11,6 +11,7 @@ function sendErrorMsg(type: string, url: string, payload?: { body?: {}; response
 
   if (payload) {
     console.dir(payload);
+    throw payload;
   }
 }
 
@@ -19,7 +20,6 @@ export async function axiosPost<Response extends ResultCommon>(namespace: string
   const result = await axios.post<Response>(url, body);
   if (result.data.status === 'error') {
     sendErrorMsg('POST', url, { body, response: result.data });
-    throw new Error('error code');
   }
   return result.data;
 }
@@ -29,7 +29,6 @@ export async function axiosGet<Response extends ResultCommon>(namespace: string,
   const result = await axios.get<Response>(url, body);
   if (result.data.status === 'error') {
     sendErrorMsg('GET', url, { response: result.data });
-    throw new Error('error code');
   }
   return result.data;
 }
@@ -39,7 +38,6 @@ export async function axiosDelete<Response extends ResultCommon>(namespace: stri
   const result = await axios.delete<Response>(url, body);
   if (result.data.status === 'error') {
     sendErrorMsg('DELETE', url, { response: result.data });
-    throw new Error('error code');
   }
   return result.data;
 }
@@ -49,7 +47,6 @@ export async function axiosPut<Response extends ResultCommon>(namespace: string,
   const result = await axios.put<Response>(url, body);
   if (result.data.status === 'error') {
     sendErrorMsg('PUT', url, { body, response: result.data });
-    throw new Error('error code');
   }
   return result.data;
 }

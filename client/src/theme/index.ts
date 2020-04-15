@@ -1,26 +1,23 @@
-// @ts-ignore
-import Notification from 'element-ui/lib/notification';
-// @ts-ignore
-import MessageBox from 'element-ui/lib/message-box';
+import Vue from 'vue';
 
 // 右下角弹窗
 const Notify = {
   success(title: string, message?: string) {
-    Notification.success({
+    Vue.prototype.$notify.success({
       position: 'bottom-right',
       title,
       message,
     });
   },
   info(title: string, message?: string) {
-    Notification.info({
+    Vue.prototype.$notify.info({
       position: 'bottom-right',
       title,
       message,
     });
   },
   error(title: string, message?: string) {
-    Notification.error({
+    Vue.prototype.$notify.error({
       position: 'bottom-right',
       title,
       message,
@@ -32,7 +29,7 @@ const Notify = {
 const Confirm = {
   async warning(title: string, message?: string): Promise<boolean> {
     try {
-      await MessageBox.confirm(message, title, {
+      Vue.prototype.$msgbox.confirm(message, title, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -48,7 +45,7 @@ const Confirm = {
 const Prompt = {
   async open(title: string, message?: string): Promise<string> {
     try {
-      return await MessageBox.prompt(message, title, {
+      return await Vue.prototype.$prompt(message, title, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       });
@@ -58,11 +55,4 @@ const Prompt = {
   },
 };
 
-// 表单输入框
-const Form = {
-  async open<Result>(title: string, formRows: any[]): Promise<Result> {
-    return '' as any;
-  },
-};
-
-export { Notify, Confirm, Prompt, Form };
+export { Notify, Confirm, Prompt };

@@ -49,7 +49,7 @@ export default class Login extends Vue {
       await userStore.loadMember();
       await this.$router.push('/home');
     } catch (e) {
-      Notify.error(e?.raw?.msg ?? '服务器发生错误啦');
+      Notify.error(e.response?.msg ?? '服务器发生错误啦');
     }
     this.isLoggingIn = false;
   }
