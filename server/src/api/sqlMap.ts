@@ -112,7 +112,7 @@ export default {
   device: {
     getDeviceById: 'select * from device where device_id = ?',
     getAllDevices: 'select * from device',
-    updateDeviceById: 'update device set device_name = ?, device_status = ? where device_id = ?',
+    updateDeviceById: 'update device set device_name = ?, device_status = ?, project_id = ? where device_id = ?',
     insertDevice: 'insert into device (device_name, device_status) values (?, ?)',
     deleteDeviceById: 'delete from device where device_id = ?',
     getProjectDeviceList: 'SELECT a.device_id, a.member_id, a.return_time, b.device_name FROM project_device a inner join device b on a.device_id = b.device_id where a.project_id = ?',
@@ -140,7 +140,10 @@ export default {
    */
   risk: {
     getRiskById: 'select * from risk where risk_id = ?',
-    insertRisk: 'insert into risk (detail, project_id, solve_status) values (?, ?, ?)',
+    insertRisk: pattern.insertPattern({
+      table_name: 'risk',
+      select_col: 'project_id, detail, owner, stackholders, solve_status'
+    }),
     updateRiskById: 'update risk set detail = ?, solve_status = ? where risk_id = ?',
     deleteRiskById: 'delete from risk where risk_id = ?',
     getProjectRiskList: 'select * from risk where project_id = ?'

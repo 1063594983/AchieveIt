@@ -52,7 +52,7 @@ router.get('/:device_id', (req, res: Response<GetDeviceResult>) => {
 router.put('/:device_id', (req, res: Response<ResultCommon>) => {
   const device_details = req.body;
   const device_id = req.params.device_id;
-
+  console.log(device_details);
   conn.query($sql.device.getDeviceById, [device_id], (err, result) => {
     if (err) {
       mysqlErrorHandler(res, err);
@@ -63,7 +63,9 @@ router.put('/:device_id', (req, res: Response<ResultCommon>) => {
         [
           device_details.device_name || old_device.device_name,
           device_details.device_status || old_device.device_status,
+          device_details.project_id || old_device.project_id,
           device_id
+          
         ],
         err2 => {
           commomUpdateHandler(res, err2);

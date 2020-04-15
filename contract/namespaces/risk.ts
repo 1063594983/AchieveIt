@@ -22,6 +22,8 @@ export interface Risk {
   risk_id: number;
   project_id: string;
   detail: RiskDetail;
+  owner: number;
+  stackholders: number[];
   solve_status: string; // ['未处理', '正在跟进', '已解决']
 }
 
@@ -50,6 +52,8 @@ export interface ProjectRiskListGetBody extends Authorization {}
 export interface GetProjectRiskListResult extends ResultCommon {
   risk_list?: Risk[];
   project_id?: string;
+  owner: any,
+  stackholders: number[];
 }
 
 
@@ -61,6 +65,8 @@ export interface GetProjectRiskListResult extends ResultCommon {
 export interface RiskPostBody extends Authorization {
   detail: RiskDetail;
   project_id: string;
+  owner?: any,
+  stackholders?: number[];
   solve_status?: 0 | 1 | 2;
 }
 
@@ -71,8 +77,10 @@ export interface RiskPostBody extends Authorization {
 
 // request
 export interface RiskPutBody extends Authorization {
-  detail: RiskDetail;
+  detail?: RiskDetail;
   solve_status?: 0 | 1 | 2;
+  owner?: any,
+  stackholders?: number[];
 }
 
 
