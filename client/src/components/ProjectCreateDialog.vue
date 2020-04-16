@@ -29,6 +29,7 @@
         <el-button
           type="primary"
           round
+          size="mini"
           @click="addBusiness">+</el-button>
 
         <!-- <el-tree-select
@@ -41,7 +42,7 @@
       <el-form-item label="技术框架">
         <el-input placeholder="技术框架" v-model="newTechTag"></el-input>
         <el-tag v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
-        <el-button type="primary" round @click="addTech">+</el-button>
+        <el-button type="primary" size="mini" round @click="addTech">+</el-button>
       </el-form-item>
     </el-form>
     <div slot="footer">

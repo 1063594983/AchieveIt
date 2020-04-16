@@ -29,7 +29,7 @@ const Notify = {
 const Confirm = {
   async warning(title: string, message?: string): Promise<boolean> {
     try {
-      Vue.prototype.$msgbox.confirm(message, title, {
+      await Vue.prototype.$msgbox.confirm(message, title, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -45,10 +45,12 @@ const Confirm = {
 const Prompt = {
   async open(title: string, message?: string): Promise<string> {
     try {
-      return await Vue.prototype.$prompt(message, title, {
+      const result = await Vue.prototype.$prompt(message, title, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       });
+      if (result.action === 'confirm') return result.value;
+      return '';
     } catch (e) {
       return '';
     }

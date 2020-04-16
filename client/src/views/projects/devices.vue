@@ -10,20 +10,22 @@
       <el-table-column label="可用性">
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.device_status === 1 ? 'success' : 'info'"
-          >{{ scope.row.device_status === 1 ? '可用' : '不可用' }}</el-tag>
+            :type="scope.row.device_status === 0 ? 'success' : 'info'"
+          >{{ scope.row.device_status === 0 ? '可用' : '不可用' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button size="mini" @click="openRentDialog(scope.row.device_id)">租用</el-button>
+          <el-button size="mini" @click="scope.row.device_status === 0 ? openRentDialog(scope.row.device_id) : openUnRentMessage(scope.row.device_id)">
+            {{ scope.row.device_status === 0 ? '租用' : '取消租用' }}
+          </el-button>
           <el-button size="mini" @click="openUpdateDialog(scope.row.device_id)">修改</el-button>
           <el-button type="danger" size="mini" @click="openDeleteDialog(scope.row.device_id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 设备租用窗口 -->
-    <el-dialog :visible="state.rentVisible" title="设备租用">
+    <el-dialog :visible="state.rentVisible" title="设备租用" :before-close="() => state.rentVisible = false">
       <!-- 项目名 -->
       <el-form>
         <el-form-item label="项目选择">
@@ -74,12 +76,21 @@ export default class Devices extends Vue {
             return;
         }
         const result = await agent.device.update(this.selectedDeviceId, {
-            device_status: 1,
+            device_status: "1",
             project_id: this.project_id
         })
         Notify.success('成功', '设备租用成功');
         this.load();
         this.state.rentVisible = false;
+    }
+    async unRentDevice() {
+      const result = await agent.device.update(this.selectedDeviceId, {
+        device_status: "0",
+        project_id: null
+      })
+      console.log(result)
+      Notify.success('取消成功', '取消设备租用');
+      this.load();
     }
     openCreateDialog() {
       this.state.createDialogVisible = true;
@@ -91,7 +102,7 @@ export default class Devices extends Vue {
       const result = await Prompt.open('输入', '输入设备更新后的名字');
       if (!result) return;
       try {
-        await agent.device.update(id, { device_name: result, device_status: 0 });
+        await agent.device.update(id, { device_name: result });
         Notify.success('更改名字为' + result + '成功');
       } catch (e) {
         Notify.error('更改名字失败');
@@ -100,6 +111,12 @@ export default class Devices extends Vue {
     async openRentDialog(id) {
         this.selectedDeviceId = id;
         this.state.rentVisible = true;
+    }
+
+    async openUnRentMessage(id) {
+      this.selectedDeviceId = id;
+      const result = await Confirm.warning("警告", "确认取消设备绑定吗");
+      if (result) await this.unRentDevice();
     }
 
     async openDeleteDialog(id) {

@@ -24,7 +24,7 @@
     <!-- 项目编辑窗口 -->
     <el-dialog :visible.sync="editFormVisible" title>
       <!-- EPG分配窗口 -->
-      <div v-if="userStore.member.job == 'EPG Leader'">
+      <div v-if="userStore.member.job === 'EPG Leader'">
         <h1>分配EPG</h1>
         <el-table :data="joinMembers" @selection-change="handleSelectionChange" max-height="250">
           <el-table-column type="selection" width="55"></el-table-column>
@@ -33,11 +33,15 @@
 
           <el-table-column width="300" property="role.length!=0?role:'无'" label="项目中角色">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.role }}</span>
+              <span style="margin-left: 10px;">{{ scope.row.role }}</span>
             </template>
           </el-table-column>
           <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
-          <el-table-column width="100" property="authority.length!=0?authority:'无'" label="项目中权限"></el-table-column>
+          <el-table-column
+            width="100"
+            property="authority.length!=0?authority:'无'"
+            label="项目中权限"
+          ></el-table-column>
         </el-table>
         <el-button @click="addEPGToPro">添加</el-button>
       </div>
@@ -51,16 +55,19 @@
 
           <el-table-column width="300" property="role.length!=0?role:'无'" label="项目中角色">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.role }}</span>
+              <span style="margin-left: 10px;">{{ scope.row.role }}</span>
             </template>
           </el-table-column>
           <el-table-column width="200" property="email" label="邮件地址"></el-table-column>
-          <el-table-column width="100" property="authority.length!=0?authority:'无'" label="项目中权限"></el-table-column>
+          <el-table-column
+            width="100"
+            property="authority.length!=0?authority:'无'"
+            label="项目中权限"
+          ></el-table-column>
         </el-table>
         <el-button @click="addQAToPro">添加</el-button>
       </div>
       <!-- 项目经理 -->
-
     </el-dialog>
 
     <!-- 项目导入窗口
@@ -90,7 +97,6 @@ import { Project, ResultCommon } from 'achieve-it-contract';
 import { Notify } from '@/theme';
 import ProjectCard from '@/components/ProjectCard.vue';
 import ProjectEditDialog from '@/components/ProjectEditDialog.vue';
-
 
 const memberRole = ['开发 Leader', '测试 Leader', '开发人员', '测试人员', '配置管理人员', 'QA', 'EPG'];
 
@@ -145,7 +151,7 @@ export default class Projects extends Vue {
     }
     // 修改项目状态为已设置EPG
     await agent.project.setStatus(this.selectedProject.project_id, {
-      is_epg: 1
+      is_epg: 1,
     });
     this.refresh();
     this.editFormVisible = false;
@@ -156,7 +162,7 @@ export default class Projects extends Vue {
         m.role.push('QA');
       }
       await agent.member.changeProjectRole(this.selectedProject.project_id, {
-        member_id: m.member_id, 
+        member_id: m.member_id,
         role: m.role.map((x) => {
           return memberRole.indexOf(x);
         }),
@@ -165,7 +171,7 @@ export default class Projects extends Vue {
     }
     // 改变项目状态为已设置QA
     await agent.project.setStatus(this.selectedProject.project_id, {
-      is_qa: 1
+      is_qa: 1,
     });
     this.refresh();
     this.editFormVisible = false;
@@ -209,7 +215,7 @@ export default class Projects extends Vue {
     try {
       result = await agent.project.insert({ ...form, status: 0 });
       Notify.success('创建项目《' + form.project_name + '》成功');
-      
+
       return true;
     } catch (e) {
       Notify.error('创建项目《' + form.project_name + '》失败', result?.msg);
