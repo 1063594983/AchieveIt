@@ -3,16 +3,16 @@
     <div class="flex items-center justify-between">
       <h1>风险管理</h1>
       <div>
-        <el-button @click="uploadVisible=true">上传风险记录</el-button>
+        <el-button @click="uploadVisible=true" class="mr2">上传风险记录</el-button>
+        <el-select v-model="selectedProjectId" filterable>
+          <el-option
+                  v-for="i of projects"
+                  :key="i.project_id"
+                  :value="i.project_id"
+                  :label="`${i.project_name}(${i.project_id})`"
+          ></el-option>
+        </el-select>
       </div>
-      <el-select v-model="selectedProjectId" filterable>
-        <el-option
-          v-for="i of projects"
-          :key="i.project_id"
-          :value="i.project_id"
-          :label="`${i.project_name}(${i.project_id})`"
-        ></el-option>
-      </el-select>
     </div>
     <!-- 上传risk窗口 -->
     <el-dialog title="上传功能excel表" :visible.sync="uploadVisible">
