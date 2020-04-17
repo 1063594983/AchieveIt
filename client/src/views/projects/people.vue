@@ -136,7 +136,7 @@ export default class Feature extends Vue {
     const members = await agent.member.getAll();
     // 获得当前项目员工
     const proMembers = await agent.member.ofProject(row.project_id);
-    this.memberData = members.member_list.map(x=> {
+    this.memberData = members.member_list.filter(x=>x.job==5).map(x=> {
       return {
         key: x.member_id,
         label: `(${x.member_id}) ${x.member_name}`

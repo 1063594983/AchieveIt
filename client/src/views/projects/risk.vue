@@ -15,7 +15,7 @@
       </el-select>
     </div>
     <!-- 上传risk窗口 -->
-    <el-dialog title="上传功能excel表" :visible.sync="uploadVisible">
+    <el-dialog title="上传风险excel表" :visible.sync="uploadVisible">
       <el-form>
         <!-- 项目ID -->
         <el-form-item label="项目ID">
@@ -39,7 +39,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <!-- 上传分析excel表 -->
+        <!-- 上传风险excel表 -->
         <el-form-item label="风险excel表">
           <el-upload
             :on-change="handleChange"

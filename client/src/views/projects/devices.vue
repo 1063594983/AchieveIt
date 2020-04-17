@@ -14,6 +14,14 @@
           >{{ scope.row.device_status === 0 ? '可用' : '不可用' }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="租用项目">
+        <template slot-scope="scope">
+          <div v-if="scope.row.device_status == 0">无</div>
+          <div v-else>
+            {{ scope.row.project_id }}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
           <el-button size="mini" @click="scope.row.device_status === 0 ? openRentDialog(scope.row.device_id) : openUnRentMessage(scope.row.device_id)">
@@ -123,8 +131,9 @@ export default class Devices extends Vue {
       const result = await Confirm.warning('确认', `是否要删除设备(ID=${id})？`);
       if (!result) return;
       try {
-        await agent.device.delete(id, {});
-        this.devices.deviceList = this.devices.deviceList.filter((i) => i.device_id !== Number(id));
+        const result = await agent.device.delete(id, {});
+        // this.devices.deviceList = this.devices.deviceList.filter((i) => i.device_id !== Number(id));
+        this.load();
         Notify.success('删除成功');
       } catch (e) {
         Notify.error('删除失败');

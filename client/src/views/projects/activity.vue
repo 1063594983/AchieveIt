@@ -132,7 +132,8 @@ export default class Activitys extends Vue {
 
   async refresh() {
     const result = await agent.project.getJoinProjects(userStore.currentUser.member_id);
-    this.projects = result.project_list.map((x) => { 
+    // 筛选进行中的项目
+    this.projects = result.project_list.filter(x=>x.status=='进行中').map((x) => { 
       return { value: x.project_id.toString() };
     });
     const activitys = await agent.activity.getAll();

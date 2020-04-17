@@ -50,40 +50,21 @@ router.get('/getProjectFunctionList/:project_id', (req, res: Response<GetProject
 // post /function/getProjectFunctionExcel/:project_id
 
 // 获取项目功能列表
-// router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
-//   const project_id = req.params.project_id;
-//   const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
-//   if (fs.existsSync(filePath)) {
-//     res.json({
-//       status: config.status.SUCCESS,
-//       msg: 'success'
-//     })
-//   } else {
-//     res.json({
-//       status: config.status.ERROR,
-//       msg: '未上传功能列表'
-//     })
-//   }
-  // conn.query($sql.feature.getFeatureExcel, [project_id], (err, result) => {
-  //   if (err) {
-  //     mysqlErrorHandler(res, err);
-  //   } else {
-  //     if (result.length == 0) {
-        
-  //     } else {
-  //       const fileName = result[0];
-  //       const filePath = path.resolve(`./upload/feature/${result[0].excel_id}`);
-  //       if (fs.exists(filePath)) {
-
-  //       }
-  //       // const fileData = excelTool.readExcel(filePath);
-  //       // console.log(fileData)
-  //       // res.download(filePath);
-        
-  //     }
-  //   }
-  // });
-// });
+router.post('/getProjectFunctionExcel/:project_id', (req, res) => {
+  const project_id = req.params.project_id;
+  const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
+  if (fs.existsSync(filePath)) {
+    res.json({
+      status: config.status.SUCCESS,
+      msg: 'success'
+    })
+  } else {
+    res.json({
+      status: config.status.ERROR,
+      msg: '未上传功能列表'
+    })
+  }
+});
 
 // post /function/addFunctionToProject/:project_id
 // 增加功能
@@ -104,10 +85,26 @@ router.post('/addFunction', (req, res: Response<ResultCommon>) => {
 
 router.post('/importFunctionExcelToProject/:project_id', upload.single('function'), (req: any, res: Response<ResultCommon>) => {
   const project_id = req.params.project_id;
+  const filePath = path.resolve(`./upload/feature/${project_id}.xls`);
+  const file = excelTool.readExcel(filePath);
+  let flag = true;
+  for (let d of file) {
+    if (d['data'].length != 1) {
+      flag = false;
+      break;
+    }
+  }
+  console.log(file)
   if (!req.file) {
     res.json({
       status: config.status.ERROR,
       msg: '上传文件不能为空'
+    })
+  }
+  if (flag == false) {
+    res.json({
+      status: config.status.ERROR,
+      msg: '功能列表文件格式错误'
     })
   }
   const fileName = req.file.filename;

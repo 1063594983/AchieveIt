@@ -11,6 +11,7 @@
     ></work-time-create-dialog>
     <el-table border :data="computedRecords" class="mt2">
       <el-table-column prop="project_id" label="项目ID"> </el-table-column>
+      <el-table-column prop="member_id" label="员工ID" width="100" v-if="userStore.member.job == '项目上级'"></el-table-column>
       <el-table-column prop="start_time" label="开始时间" width="180"> </el-table-column>
       <el-table-column prop="end_time" label="结束时间" width="180"> </el-table-column>
       <el-table-column prop="feature_name" label="项目功能"> </el-table-column>

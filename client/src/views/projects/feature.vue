@@ -27,7 +27,7 @@
           <div class="flex items-center">
             <div v-show="userStore.member.job == '项目经理' && project.status == '已立项'">
               <el-button @click="uploadVisible = true;selectedProject=project.project_id">上传功能excel表</el-button>
-              </div>
+            </div>
             <el-button @click="downloadExcel(project.project_id)">下载功能excel表</el-button>
           </div>
         </div>
@@ -75,18 +75,26 @@ export default class Feature extends Vue {
       // 获得所有项目
       const result = await agent.project.getAll();
       projects = result.project_list;
-    } else {  //  其他用户
+    } else {
+      //  其他用户
       // 获得用户当前参与的项目
       const joinProjects = await agent.project.getJoinProjects(userStore.currentUser.member_id);
       projects = joinProjects.project_list;
     }
+
+    // for (let pro of projects) {
+    //   agent.project.getStatus(pro.project_id).then((r) => {
+    //     this.isFeatureMap[pro.project_id] = r.is_feature == 1;
+    //   });
+    // }
     for (let pro of projects) {
-        const r = await agent.project.getStatus(pro.project_id);
-        this.isFeatureMap[pro.project_id] = r.is_feature == 1;
-      }
+      const r = await agent.project.getStatus(pro.project_id);
+    this.isFeatureMap[pro.project_id] = r.is_feature == 1;
+    }
+    
     // 去除申请立项的项目
-    this.projects = projects.filter(pro => {
-      return pro.status != '申请立项'
+    this.projects = projects.filter((pro) => {
+      return pro.status != '申请立项';
     });
   }
   mounted() {
@@ -101,11 +109,16 @@ export default class Feature extends Vue {
     formData.append('function', this.file);
     this.uploadVisible = false;
     const result = await agent.feature.uploadFeatureExcel(this.selectedProject, formData);
-    // 修改项目状态为已上传功能列表
-    await agent.project.setStatus(this.selectedProject, {
-      is_feature: 1,
-    });
-    this.refresh();
+    if (result.status == 'ok') {
+      // 修改项目状态为已上传功能列表
+      await agent.project.setStatus(this.selectedProject, {
+        is_feature: 1,
+      });
+      Notify.error('成功', '功能列表上传成功');
+      this.refresh();
+    } else {
+      Notify.error('失败', result.msg);
+    }
   }
   changeFile(e) {
     this.file = e.target.files[0];
