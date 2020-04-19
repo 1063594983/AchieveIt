@@ -114,7 +114,7 @@ export default class Feature extends Vue {
       await agent.project.setStatus(this.selectedProject, {
         is_feature: 1,
       });
-      Notify.error('成功', '功能列表上传成功');
+      Notify.success('成功', '功能列表上传成功');
       this.refresh();
     } else {
       Notify.error('失败', result.msg);

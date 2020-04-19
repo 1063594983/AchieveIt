@@ -5,8 +5,9 @@
       <el-button @click="openCreateDialog">登记新的设备</el-button>
     </div>
     <el-table :data="devices">
-      <el-table-column label="ID" prop="device_id" width="100px" />
+      <el-table-column label="ID" prop="device_id" />
       <el-table-column label="名称" prop="device_name" />
+      <el-table-column label="项目关联" prop="project_id" />
       <el-table-column label="可用性">
         <template slot-scope="scope">
           <el-tag
@@ -131,11 +132,15 @@ export default class Devices extends Vue {
       const result = await Confirm.warning('确认', `是否要删除设备(ID=${id})？`);
       if (!result) return;
       try {
-        const result = await agent.device.delete(id, {});
+        // const result = await agent.device.delete(id, {});
         // this.devices.deviceList = this.devices.deviceList.filter((i) => i.device_id !== Number(id));
+        
+        await agent.device.delete(id, {});
+        this.devices = this.devices.filter((i) => i.device_id !== id);
         this.load();
         Notify.success('删除成功');
       } catch (e) {
+        console.error(e)
         Notify.error('删除失败');
       }
     }

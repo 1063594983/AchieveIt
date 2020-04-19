@@ -2,7 +2,7 @@
   <div>
     <div v-if="userStore.member.job == '项目经理'">
       <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
-      <!-- <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button> -->
+      <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
     </div>
     <!-- 项目列表 -->
     <project-card
@@ -215,7 +215,7 @@ export default class Projects extends Vue {
     try {
       result = await agent.project.insert({ ...form, status: 0 });
       Notify.success('创建项目《' + form.project_name + '》成功');
-
+      this.refresh();
       return true;
     } catch (e) {
       Notify.error('创建项目《' + form.project_name + '》失败', result?.msg);

@@ -25,24 +25,13 @@
       </el-form-item>
       <el-form-item label="业务领域">
         <el-input placeholder="业务领域" v-model="newBusinessTag"></el-input>
-        <el-tag v-for="tag in businessTags" :key="tag">{{ tag }}</el-tag>
-        <el-button
-          type="primary"
-          round
-          size="mini"
-          @click="addBusiness">+</el-button>
-
-        <!-- <el-tree-select
-          :styles="{ width: '300px' }"
-          v-model="form.business"
-          :selectParams="{ placeholder: 'f', multiple: true }"
-          :treeParams="{ ...treeParams, data: businessType }"
-        /><el-button>添加</el-button>-->
+        <el-tag class="mr1" v-for="tag in businessTags" :key="tag">{{ tag }}</el-tag>
+        <el-button type="text" size="mini" @click="addBusiness">添加</el-button>
       </el-form-item>
       <el-form-item label="技术框架">
         <el-input placeholder="技术框架" v-model="newTechTag"></el-input>
-        <el-tag v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
-        <el-button type="primary" size="mini" round @click="addTech">+</el-button>
+        <el-tag class="mr1" v-for="tag in technologyTags" :key="tag">{{ tag }}</el-tag>
+        <el-button type="text" size="mini" @click="addTech">添加</el-button>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -83,18 +72,6 @@ export default class ProjectCreateDialog extends Vue {
   newTechTag = '';
   members = [];
   memberListVisible = false;
-  // businessType = BusinessType.map((i) => ({ label: i, value: i }));
-  // developingStack = DevelopingStack.map((i) => ({ label: i, value: i }));
-  treeParams = {
-    clickParent: false,
-    filterable: false,
-    props: {
-      children: 'children',
-      label: 'label',
-      value: 'value',
-      disabled: 'disabled',
-    },
-  };
 
   form = formInit();
   async mounted() {

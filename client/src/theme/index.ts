@@ -1,24 +1,28 @@
 import Vue from 'vue';
+import { commonStore } from '@/store';
 
 // 右下角弹窗
 const Notify = {
   success(title: string, message?: string) {
+    if (commonStore.notifyPosition === 'hide') return;
     Vue.prototype.$notify.success({
-      position: 'bottom-right',
+      position: commonStore.notifyPosition,
       title,
       message,
     });
   },
   info(title: string, message?: string) {
+    if (commonStore.notifyPosition === 'hide') return;
     Vue.prototype.$notify.info({
-      position: 'bottom-right',
+      position: commonStore.notifyPosition,
       title,
       message,
     });
   },
   error(title: string, message?: string) {
+    if (commonStore.notifyPosition === 'hide') return;
     Vue.prototype.$notify.error({
-      position: 'bottom-right',
+      position: commonStore.notifyPosition,
       title,
       message,
     });
