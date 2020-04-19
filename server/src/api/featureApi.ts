@@ -112,35 +112,7 @@ router.post('/importFunctionExcelToProject/:project_id', upload.single('function
     status: config.status.SUCCESS,
     msg: '上传成功'
   })
-  // conn.query($sql.feature.insertFeatureExcel, [project_id, fileName], err => {
-  //   commomInsertHandler(res, err);
-  // })
-  
 })
-
-// router.post('/importFunctionExcelToProject/:project_id', upload.single('function'), (req, res: Response<ResultCommon>) => {
-//   const project_id = req.params.project_id;
-//   const function_excel = req.body.function_excel;
-//   for (const item of function_excel) {
-//     const parent = item.parent;
-//     conn.query("insert into \`function\` (project_id, function_id, function_name, layer) values (?, ?, ?, ?)", [project_id, `${project_id}_${parent.function_name}`, parent.function_name, 1], (err) => {
-//       if (err) {
-//         console.log(`[myssql] ${err}`)
-//       } else {
-//         const children = item.children;
-//         for (const child of children) {
-//           conn.query("insert into \`function\` (project_id, function_id, function_name, layer, parent) values (?, ?, ?, ?, ?)", [project_id, 
-//             `${project_id}_${parent.function_name}_${child.function_name}`, child.function_name, 2, `${project_id}_${parent.function_name}`], (err2) => {
-//             if (err) {
-//               console.log(`[myssql] ${err2}`)
-//             }
-//           })
-//         }
-//       }
-//     })
-//   }
-//   successHandler(res);
-// })
 
 // /function/setFunctionRelation
 // 设置功能上下级关系
