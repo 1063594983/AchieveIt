@@ -4,14 +4,7 @@
       <h1>风险管理</h1>
       <div>
         <el-button @click="uploadVisible=true" class="mr2">上传风险记录</el-button>
-        <el-select v-model="selectedProjectId" filterable>
-          <el-option
-                  v-for="i of projects"
-                  :key="i.project_id"
-                  :value="i.project_id"
-                  :label="`${i.project_name}(${i.project_id})`"
-          ></el-option>
-        </el-select>
+        <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
       </div>
     </div>
     <!-- 上传risk窗口 -->
@@ -131,6 +124,7 @@ const riskStatus = ['未处理', '正在跟进', '已解决'];
   components: { RiskCreateDialog, RiskEditDialog },
 })
 export default class Risks extends Vue {
+  alwaysRisk: Risk[] = [];
   riskList: Risk[] = [];
   projects: Project[] = [];
   selectedProjectId = null;
@@ -145,6 +139,7 @@ export default class Risks extends Vue {
   riskStatus = riskStatus;
   selectedMembers = [];
   projectMembers = [];
+  key_word = '';
 
   async followRisk(risk_id) {
     await agent.risk.update(risk_id, {
@@ -216,13 +211,30 @@ export default class Risks extends Vue {
     }
     this.refresh();
   }
+
+    searchProject() {
+    if (this.key_word == '') {
+      this.refresh();
+      return;
+    }
+    this.riskList = this.alwaysRisk;
+    let result = [];
+    let len = this.riskList.length;
+    for (let i=0; i<len; i++) {
+      if (this.riskList[i].project_id.indexOf(this.key_word) != -1) {
+        result.push(this.riskList[i])
+      }
+    }
+    this.riskList = result;
+  }
+
   /*
 刷新页面
  */
   async refresh() {
     this.isLoading = true;
     const riskOfMember = await agent.risk.ofMember(userStore.currentUser.member_id);
-    this.riskList = riskOfMember.risk_list;
+    this.alwaysRisk = this.riskList = riskOfMember.risk_list;
     this.isLoading = false;
   }
 

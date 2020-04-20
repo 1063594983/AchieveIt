@@ -5,11 +5,9 @@
       <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
     </div>
     <el-row>
-      <el-col :span="12">
-        <el-input v-model="key_word"></el-input>
+      <el-col :span="6">
+        <el-input  v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
       </el-col>
-      <el-button type="primary" icon="el-icon-search" @click.native.prevent="searchProject">搜索</el-button>
-      <el-button type="primary" @click.native.prevent="reset">重置</el-button>
     </el-row>
     <!-- 项目列表 -->
     <project-card

@@ -10,6 +10,7 @@
       placeholder="请输入项目ID"
       @select="handleSelect"
     ></el-autocomplete>
+    <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
     </div>
     <div v-if="projects.length == 0">
       当前无参与项目
@@ -129,6 +130,7 @@ export default class Activitys extends Vue {
     activity_name: string[];
     activity_content: string;
   } = initForm();
+  key_word = '';
 
   async refresh() {
     const result = await agent.project.getJoinProjects(userStore.currentUser.member_id);
@@ -177,6 +179,21 @@ export default class Activitys extends Vue {
     this.filterActivitys = this.activitys.filter((a) => {
       return a.project_id == e.value;
     })
+  }
+   searchProject() {
+    if (this.key_word == '') {
+      this.refresh();
+      return;
+    }
+    this.filterActivitys = this.activitys;
+    let result = [];
+    let len = this.filterActivitys.length;
+    for (let i=0; i<len; i++) {
+      if (this.filterActivitys[i].project_id.indexOf(this.key_word) != -1) {
+        result.push(this.filterActivitys[i])
+      }
+    }
+    this.filterActivitys = result;
   }
 }
 </script>

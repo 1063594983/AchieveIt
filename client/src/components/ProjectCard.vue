@@ -50,7 +50,7 @@
         <el-button type="text" class="py1" icon="el-icon-arrow-down">更新状态</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="guidang">
-            <div v-show="project.status == '结束'">申请归档</div>
+            <div v-show="project.status == '结束'">进行归档</div>
           </el-dropdown-item>
           <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
         </el-dropdown-menu>
@@ -60,7 +60,8 @@
         trigger="click"
         v-else-if="userStore.member.job != '项目经理'"
       >
-        <el-button type="text" class="py1" icon="el-icon-arrow-down">更多操作</el-button>
+        <el-button type="text" class="py1" icon="el-icon-arrow-down" 
+        v-if="userStore.member.job == 'QA Manager'|| userStore.member.job == 'EPG Leader'||userStore.member.job == '项目经理' && project.status=='进行中' ">更多操作</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="edit">
             <div v-if="userStore.member.job == 'QA Manager'">分配QA</div>

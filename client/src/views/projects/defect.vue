@@ -3,13 +3,8 @@
     <h1>缺陷管理</h1>
     <div class="flex items-center justify-between">
       <el-button icon="el-icon-document-add" @click="defectFormVisible = true">添加缺陷</el-button>
-      <el-autocomplete
-        class="inline-input"
-        v-model="selectedProject"
-        :fetch-suggestions="querySearch"
-        placeholder="请输入项目ID"
-        @selectChange="handleSelect"
-      ></el-autocomplete>
+      <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
+        
     </div>
     <div v-if="defects.length != 0">
       <el-card shadow="hover" class="mt2" v-for="defect in filterDefects" :key="defect.defect_id">
@@ -75,6 +70,7 @@ export default class Defects extends Vue {
     project_id: '',
     defect_content: ''
   };
+  key_word = '';
   async refresh() {
     // 获得和当前用户相关的所有缺陷
     const result = await agent.defect.getAllOfMember(userStore.currentUser.member_id);
@@ -137,6 +133,23 @@ export default class Defects extends Vue {
     this.refresh();
     this.defectFormVisible = false;
   }
+
+    searchProject() {
+    if (this.key_word == '') {
+      this.refresh();
+      return;
+    }
+    this.filterDefects = this.defects;
+    let result = [];
+    let len = this.filterDefects.length;
+    for (let i=0; i<len; i++) {
+      if (this.filterDefects[i].project_id.indexOf(this.key_word) != -1) {
+        result.push(this.filterDefects[i])
+      }
+    }
+    this.filterDefects = result;
+  }
+
 }
 </script>
 
