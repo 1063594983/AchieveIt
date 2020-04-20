@@ -32,7 +32,7 @@
           ></el-cascader>
       </el-form-item>
       <el-form-item label="日期">
-        <el-date-picker placeholder="输入日期" v-model="form.date"></el-date-picker>
+        <el-date-picker placeholder="输入日期" v-model="form.date" :picker-options="pickerOptions"></el-date-picker>
       </el-form-item>
       <el-form-item label="开始时间">
         <el-time-picker placeholder="输入开始时间" v-model="form.start_time"></el-time-picker>
@@ -133,6 +133,11 @@ export default class ProjectCreateDialog extends Vue {
   }
 
   form = initForm();
+  pickerOptions = {
+      disabledDate(time) {
+          return time.getTime() > Date.now();
+      }
+  }
 
   async createWorkTime() {
     
