@@ -135,12 +135,11 @@ export default class ProjectCreateDialog extends Vue {
   form = initForm();
   pickerOptions = {
       disabledDate(time) {
-          return time.getTime() > Date.now();
+          return time.getTime() > Date.now() || time.getTime() < Date.now() - 3*24*60*60*1000;
       }
   }
 
   async createWorkTime() {
-    
     if(new Date().valueOf() - new Date(this.form.date).valueOf() > 3*24*60*60*1000) {
           Notify.error('已超过三天不能添加')
       } else {
