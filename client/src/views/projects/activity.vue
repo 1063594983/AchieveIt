@@ -3,7 +3,7 @@
     <h1>活动中心</h1>
     <div class="flex items-center justify-between">
       <el-button icon="el-icon-document-add" @click="activityFormVisible = true">添加活动</el-button>
-    <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
+    <el-input style="width: 200px" prefix-icon="el-icon-search" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
     </div>
     <div v-if="projects.length == 0">
       当前无参与项目

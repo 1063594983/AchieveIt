@@ -5,11 +5,11 @@
         <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
         <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
       </div>
-      <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
+      <el-input style="width: 400px" prefix-icon="el-icon-search" v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
     </div>
     <el-row v-if="userStore.member.job != '项目经理'">
       <el-col :span="6">
-        <el-input v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
+        <el-input style="width: 400px" prefix-icon="el-icon-search" v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
       </el-col>
     </el-row>
     <!-- 项目列表 -->

@@ -4,7 +4,7 @@
       <h1>风险管理</h1>
       <div>
         <el-button @click="uploadVisible=true" class="mr2">上传风险记录</el-button>
-        <el-input style="width: 200px" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
+        <el-input style="width: 200px" prefix-icon="el-icon-search" v-model="key_word" placeholder="请输入项目ID" @input="searchProject"></el-input>
       </div>
     </div>
     <!-- 上传risk窗口 -->

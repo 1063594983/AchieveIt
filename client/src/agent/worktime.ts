@@ -16,16 +16,14 @@ const workTimeCRUD = createCRUD<
   WorkTimePutBody,
   WorkTimePostBody,
   GetWorkTimeResult
->('workTime/');
+>('workTime');
 const workTimeAPI = {
   ...workTimeCRUD,
   insert: (memberId: string, body: WorkTimePostBody) => axiosPost('workTime', memberId, wrapToken(body)),
   ofMember: (memberId: string) =>
     axiosGet<GetMemberWorkTimeListResult>('workTime', `getMemberWorkTimeList/${memberId}`, wrapToken({})),
-  check: (work_time_id) =>
-    axiosPut<any>('workTime', `checkWorkTime/${work_time_id}`, wrapToken({})),
-  getAll: () =>
-    axiosGet('workTime', 'getAll')
+  check: (work_time_id) => axiosPut<any>('workTime', `checkWorkTime/${work_time_id}`, wrapToken({})),
+  getAll: () => axiosGet('workTime', 'getAll'),
 };
 
 export default workTimeAPI;
