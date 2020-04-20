@@ -31,6 +31,9 @@
             placeholder="请选择活动"
           ></el-cascader>
       </el-form-item>
+      <el-form-item label="日期">
+        <el-date-picker placeholder="输入日期" v-model="form.date" :picker-options="pickerOptions"></el-date-picker>
+      </el-form-item>
       <el-form-item label="开始时间">
         <el-time-picker placeholder="输入开始时间" v-model="form.start_time"></el-time-picker>
       </el-form-item>
@@ -51,6 +54,7 @@ import { Feature, Project, WorkTimePostBody } from 'achieve-it-contract';
 import { Subtract } from 'utility-types';
 import agent, { authBody } from '@/agent';
 import { userStore } from '@/store';
+import { Notify } from '../theme';
 
 
 
@@ -61,9 +65,10 @@ function initForm() {
     activity_content: null,
     end_time: '',
     feature_name: null,
-    member_id: +userStore.currentUser.member_id,
+    member_id: + userStore.currentUser.member_id,
     project_id: '',
-    start_time: ''
+    start_time: '',
+    date: ''
   };
 }
 
@@ -128,14 +133,24 @@ export default class ProjectCreateDialog extends Vue {
   }
 
   form = initForm();
+  pickerOptions = {
+      disabledDate(time) {
+          return time.getTime() > Date.now() || time.getTime() < Date.now() - 3*24*60*60*1000;
+      }
+  }
 
   async createWorkTime() {
-    this.form.activity_content = this.form.activity_content[0];
-    this.form.feature_name = `${this.form.feature_name[0]}-${this.form.feature_name[1]}`;
-    const result = await this.onCreate(this.form);
-    if (result) {
-      this.onClose();
-    }
+    if(new Date().valueOf() - new Date(this.form.date).valueOf() > 3*24*60*60*1000) {
+          Notify.error('已超过三天不能添加')
+      } else {
+        this.form.activity_content = this.form.activity_content[0];
+        this.form.feature_name = `${this.form.feature_name[0]}-${this.form.feature_name[1]}`;
+          const result = await this.onCreate(this.form);
+          if (result) {
+            this.onClose();
+          }
+      }
+   
   }
 }
 </script>

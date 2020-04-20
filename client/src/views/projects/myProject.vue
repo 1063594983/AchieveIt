@@ -62,7 +62,8 @@ export default class MyProject extends Vue {
     //   获得当前用户参与的项目
       const myProjects = await agent.project.getJoinProjects(userStore.currentUser.member_id);
       // 筛选进行中的项目
-      this.myProjects = myProjects.project_list.filter(pro => pro.status=='进行中');
+      this.myProjects = myProjects.project_list
+      //this.myProjects = myProjects.project_list.filter(pro => pro.status=='进行中');
   }
   mounted() {
       this.refresh();
