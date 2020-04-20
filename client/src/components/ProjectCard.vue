@@ -61,11 +61,11 @@
         v-else-if="userStore.member.job != '项目经理'"
       >
         <el-button type="text" class="py1" icon="el-icon-arrow-down" 
-        v-if="userStore.member.job == 'QA Manager'|| userStore.member.job == 'EPG Leader'||userStore.member.job == '项目经理' && project.status=='进行中' ">更多操作</el-button>
+        >更多操作</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="edit">
             <div v-if="userStore.member.job == 'QA Manager'">分配QA</div>
-            <div v-else-if="userStore.member.job == 'EPG Leader'">分配EPG</div>
+            <div v-else-if="userStore.member.job == 'EPG Leader'">分配EPG</div> 
             <div v-else-if="userStore.member.job == '项目经理' && project.status=='进行中'">申请结项</div>
           </el-dropdown-item>
           <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
@@ -93,7 +93,7 @@
       </el-dropdown>
       <el-dialog :visible.sync="guidangVisible" title="确定归档资料">
         <el-form>
-          <el-form-item label="归档checklist">
+          <el-form-item label="">
             <el-checkbox-group v-model="selectedList">
               <el-checkbox v-for="item in checkList" :key="item" :label="item" :value="item"></el-checkbox>
             </el-checkbox-group>
@@ -103,7 +103,9 @@
         <el-button @click="guidangVisible = false">取消</el-button>
       </el-dialog>
     </div>
+
   </el-card>
+
 </template>
 
 <script lang="ts">

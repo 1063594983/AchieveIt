@@ -25,7 +25,7 @@
 
       <div class="flex justify-between items-center mt2">
         <div class="flex items-center">
-          <el-button @click="setChangeVisible(config)">修改</el-button>
+          <el-button @click="setChangeVisible(config)" >修改</el-button>
         </div>
       </div>
     </el-card>
