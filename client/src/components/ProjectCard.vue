@@ -40,8 +40,26 @@
         <li class="tip" v-if="!feature">待项目经理上传功能列表</li>
       </ul>
     </div>
+
     <div class="flex justify-between items-center mt2">
-      <el-dropdown @command="handleCommand" trigger="click" v-if="userStore.member.job != '项目经理'">
+      <el-dropdown
+        @command="handleCommand2"
+        trigger="click"
+        v-if="userStore.member.job == '组织级配置管理员' && project.status == '结束'"
+      >
+        <el-button type="text" class="py1" icon="el-icon-arrow-down">更新状态</el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="guidang">
+            <div v-show="project.status == '结束'">申请归档</div>
+          </el-dropdown-item>
+          <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown
+        @command="handleCommand"
+        trigger="click"
+        v-else-if="userStore.member.job != '项目经理'"
+      >
         <el-button type="text" class="py1" icon="el-icon-arrow-down">更多操作</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="edit">
@@ -52,7 +70,12 @@
           <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown @command="handleCommand2" trigger="click" v-else-if="['进行中', '已交付', '结束'].includes(project.status)">
+
+      <el-dropdown
+        @command="handleCommand2"
+        trigger="click"
+        v-else-if="['进行中', '已交付'].includes(project.status)"
+      >
         <el-button type="text" class="py1" icon="el-icon-arrow-down">更新状态</el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="jiaofu" v-show="project.status=='进行中'">
@@ -61,12 +84,23 @@
           <el-dropdown-item command="jieshu" v-show="project.status=='已交付'">
             <div>申请结束</div>
           </el-dropdown-item>
-          <el-dropdown-item command="guidang" v-show="project.status=='结束'">
+          <!-- <el-dropdown-item command="guidang" v-show="project.status=='结束'">
             <div>申请归档</div>
-          </el-dropdown-item>
+          </el-dropdown-item>-->
           <!-- <el-dropdown-item style="color: #f56c6c;" command="delete" icon="el-icon-delete">删除</el-dropdown-item> -->
         </el-dropdown-menu>
       </el-dropdown>
+      <el-dialog :visible.sync="guidangVisible" title="确定归档资料">
+        <el-form>
+          <el-form-item label="归档checklist">
+            <el-checkbox-group v-model="selectedList">
+              <el-checkbox v-for="item in checkList" :key="item" :label="item" :value="item"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-form>
+        <el-button @click="guidang">确定</el-button>
+        <el-button @click="guidangVisible = false">取消</el-button>
+      </el-dialog>
     </div>
   </el-card>
 </template>
@@ -96,6 +130,28 @@ export default class ProjectCard extends Vue {
   feature = false;
   people = false;
   userStore = userStore;
+  selectedList = [];
+  checkList = [
+    '项目基础数据表',
+    '项目提案书',
+    '项目报价书',
+    '项目估算表（功能点）',
+    '项目计划书',
+    '项 目过程裁剪表',
+    '项目成本管理表',
+    '项目需求变更管理表',
+    '项目风险管理表',
+    '客户验收问题表',
+    '客户验收报告',
+    '项目总结',
+    '最佳经验和教训',
+    '开发工具',
+    '开发模板（设计模板',
+    '测试模板）',
+    '各阶段检查单',
+    'QA 总结',
+  ];
+  guidangVisible = false;
 
   async refresh() {
     if (this.project.status == '已立项') {
@@ -103,17 +159,27 @@ export default class ProjectCard extends Vue {
       this.config = status.is_config == 1;
       this.feature = status.is_feature == 1;
       this.EPG = status.is_epg == 1;
-      this.QA = (status.is_qa == 1);
+      this.QA = status.is_qa == 1;
       this.people = status.is_people == 1;
       if (this.config && this.EPG && this.QA && this.feature && this.people && this.project.status == '已立项') {
         await agent.project.update(this.project.project_id, {
           status: 3,
         });
         this.project.status = '进行中';
-    }
+      }
     }
   }
-
+  guidang() {
+    agent.project
+      .update(this.project.project_id, {
+        status: 6,
+      })
+      .then((res) => {
+        // this.refresh();
+        this.update();
+        this.guidangVisible = false;
+      });
+  }
   async mounted() {
     this.refresh();
   }
@@ -127,49 +193,55 @@ export default class ProjectCard extends Vue {
     if (command === 'edit') {
       this.openEdit(this.project);
     } else {
-      Confirm.warning('提示', '此操作将永久删除该项目, 是否继续?')
-        .then((agreement) => {
-          if (agreement) this.removeProject();
-        })
+      Confirm.warning('提示', '此操作将永久删除该项目, 是否继续?').then((agreement) => {
+        if (agreement) this.removeProject();
+      });
     }
   }
   handleCommand2(command) {
-    if (command == 'jiaofu') {  //  交付
-      Confirm.warning('确定', "确定交付吗").then((agreement)=>{
+    if (command == 'jiaofu') {
+      //  交付
+      Confirm.warning('确定', '确定交付吗').then((agreement) => {
         // 交付
         if (!agreement) return;
-        agent.project.update(this.project.project_id, {
-          status: 4
-        }).then(res=>{
-          // this.refresh();
-          this.update();
-        });
-
-      })
-
-    } else if (command == 'jieshu') {  //结束
-      Confirm.warning('确定', "确定结束项目吗").then((agreement)=>{
+        agent.project
+          .update(this.project.project_id, {
+            status: 4,
+          })
+          .then((res) => {
+            // this.refresh();
+            this.update();
+          });
+      });
+    } else if (command == 'jieshu') {
+      //结束
+      Confirm.warning('确定', '确定结束项目吗').then((agreement) => {
         // 结束
         if (!agreement) return;
-        agent.project.update(this.project.project_id, {
-          status: 5
-        }).then(res=>{
-          // this.refresh();
-          this.update();
-        });
-      })
-    } else {  //  归档
-      Confirm.warning('确定', "确定申请归档吗").then((agreement)=>{
-        // 归档
-        if (!agreement) return;
-        agent.project.update(this.project.project_id, {
-          status: 6
-        }).then(res=>{
-          // this.refresh();
-          this.update();
-        });
-      })
-
+        agent.project
+          .update(this.project.project_id, {
+            status: 5,
+          })
+          .then((res) => {
+            // this.refresh();
+            this.update();
+          });
+      });
+    } else {
+      //  归档
+      this.guidangVisible = true;
+      // Confirm.warning('确定', '确定申请归档吗').then((agreement) => {
+      //   // 归档
+      //   if (!agreement) return;
+      //   agent.project
+      //     .update(this.project.project_id, {
+      //       status: 6,
+      //     })
+      //     .then((res) => {
+      //       // this.refresh();
+      //       this.update();
+      //     });
+      // });
     }
   }
 }
