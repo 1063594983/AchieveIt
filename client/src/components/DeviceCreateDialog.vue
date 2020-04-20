@@ -5,11 +5,11 @@
         <el-input v-model="form.device_name" placeholder="输入设备名称"></el-input>
       </el-form-item>
       <el-form-item label="设备状态">
-        <el-select v-model="form.device_status">
+        <el-select v-model="form.device_status" disabled>
           <el-option
             v-for="item in [0, 1]"
             :key="item"
-            :label="item === 0 ? '不可用' : '可用'"
+            :label="item === 0 ? '可用' : '不可用'"
             :value="item"
           ></el-option
         ></el-select>
