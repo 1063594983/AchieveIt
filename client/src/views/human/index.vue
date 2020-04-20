@@ -84,13 +84,15 @@ export default {
       this.dialogVisible = false;
     },
     async newRecord(record) {
-      try {
-        await agent.workTime.insert(userStore.currentUser.member_id, record);
-        // this.records = [record, ...this.records];
-        return true;
-      } catch (e) {
-        return false;
-      }
+        try {
+          await agent.workTime.insert(userStore.currentUser.member_id, record);
+          // this.records = [record, ...this.records];
+          this.refresh();
+          return true;
+        } catch (e) {
+          return false;
+        }
+      
     },
     // 审核通过workTime
     checkWorkTime(work_time_id) {
