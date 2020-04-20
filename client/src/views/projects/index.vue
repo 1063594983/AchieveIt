@@ -6,7 +6,7 @@
     </div>
     <el-row>
       <el-col :span="6">
-        <el-input  v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
+        <el-input v-model="key_word" placeholder="请输入项目名" @input="searchProject"></el-input>
       </el-col>
     </el-row>
     <!-- 项目列表 -->
