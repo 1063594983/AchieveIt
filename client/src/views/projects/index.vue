@@ -10,7 +10,7 @@
       </el-col>
         <el-button type="primary" icon="el-icon-search" @click.native.prevent="searchProject">搜索</el-button>
         <el-button type="primary" @click.native.prevent="reset">重置</el-button>
-      </el-row>
+    </el-row>
     <!-- 项目列表 -->
     <project-card
       :project="item"
