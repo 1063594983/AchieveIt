@@ -155,49 +155,49 @@ router.post('/', (req, res: Response<ResultCommon>) => {
               })
               switch (e.job) {
                 case 1:
-                  // email.sendEmail({
-                  //   to: e.email,
-                  //   subject,
-                  //   html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3001/project/acceptProject/${project_details.project_id}">批准立项</a>
-                  //   &nbsp;&nbsp;<a href="http://localhost:3001/project/refuseProject/${project_details.project_id}">不批准立项</a>`
-                  // }, (err, info) => {
-                  //   if (err) {
-                  //     console.log('send to 项目上级 failed')
-                  //   }
-                  // })
+                   email.sendEmail({
+                     to: e.email,
+                     subject,
+                     html: `${JSON.stringify(project_details)}<br/><a href="http://localhost:3001/project/acceptProject/${project_details.project_id}">批准立项</a>
+                     &nbsp;&nbsp;<a href="http://localhost:3001/project/refuseProject/${project_details.project_id}">不批准立项</a>`
+                   }, (err, info) => {
+                     if (err) {
+                       console.log('send to 项目上级 failed')
+                     }
+                   })
                   break;
                 case 2:
-                  // email.sendEmail({
-                  //   to: e.email,
-                  //   subject,
-                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目建立基本的配置库`
-                  // }, (err, info) => {
-                  //   if (err) {
-                  //     console.log('send to 配置管理员 failed')
-                  //   }
-                  // })
+                   email.sendEmail({
+                     to: '10165101259@stu.ecnu.edu.cn',
+                     subject,
+                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目建立基本的配置库`
+                   }, (err, info) => {
+                     if (err) {
+                       console.log('send to 配置管理员 failed')
+                     }
+                  })
                   break;
-                case 3:
-                  // email.sendEmail({
-                  //   to: e.email,
-                  //   subject,
-                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配EPG`
-                  // }, (err, info) => {
-                  //   if (err) {
-                  //     console.log('send to EPG Leader failed')
-                  //   }
-                  // })
+                  case 3:
+                   email.sendEmail({
+                     to: '10165101259@stu.ecnu.edu.cn',
+                     subject,
+                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配EPG`
+                   }, (err, info) => {
+                     if (err) {
+                       console.log('send to EPG Leader failed')
+                     }
+                   })
                   break;
                 case 4:
-                  // email.sendEmail({
-                  //   to: e.email,
-                  //   subject,
-                  //   html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配QA`
-                  // }, (err, info) => {
-                  //   if (err) {
-                  //     console.log('send to QA Manager failed')
-                  //   }
-                  // })
+                   email.sendEmail({
+                     to: '10165101259@stu.ecnu.edu.cn',
+                     subject,
+                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配QA`
+                   }, (err, info) => {
+                     if (err) {
+                       console.log('send to QA Manager failed')
+                     }
+                   })
                   break;
               }
               // email.sendEmail({

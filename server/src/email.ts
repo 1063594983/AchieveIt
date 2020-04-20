@@ -19,12 +19,12 @@ const transporter = nodeMailer.createTransport({
 });
 
 const email = {
-  // sendEmail: async (option: EmailOption, callback: Function) => {
-  //   transporter.sendMail({...option, from: "xuanlinzou@126.com"}, (err, info) => {
-  //     callback(err, info);
-  //   })
-  // }
-  sendEmail: async (option: EmailOption, callback: Function) => {}
+   sendEmail: async (option: EmailOption, callback: Function) => {
+     transporter.sendMail({...option, from: "xuanlinzou@126.com"}, (err, info) => {
+       callback(err, info);
+     })
+   }
+  //sendEmail: async (option: EmailOption, callback: Function) => {}
 }
 
 const emailUtil = {
