@@ -46,7 +46,7 @@ const menu: RouteConfig[] = [
         meta: {
           icon: 'set-up',
           title: '项目管理',
-          auth: '项目经理, EPG Leader, QA Manager',
+          // auth: '项目经理, EPG Leader, QA Manager',
         },
       },
       {

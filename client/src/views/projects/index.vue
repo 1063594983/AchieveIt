@@ -4,6 +4,13 @@
       <el-button icon="el-icon-document-add" @click="dialogFormVisible = true">创建项目</el-button>
       <el-button icon="el-icon-box" @click="draftBoxVisible = true">打开草稿箱</el-button>
     </div>
+    <el-row>
+      <el-col :span="12">
+        <el-input v-model="key_word"></el-input>
+      </el-col>
+      <el-button type="primary" icon="el-icon-search" @click.native.prevent="searchProject">搜索</el-button>
+      <el-button type="primary" @click.native.prevent="reset">重置</el-button>
+    </el-row>
     <!-- 项目列表 -->
     <project-card
       :project="item"
@@ -117,6 +124,7 @@ export default class Projects extends Vue {
   isFinished = false;
   fileFormVisible = false;
   file = null;
+  key_word = '';
   async refresh() {
     const result = await agent.project.getAll();
     if (userStore.member.job == 'EPG Leader' || userStore.member.job == 'QA Manager') {
@@ -227,6 +235,26 @@ export default class Projects extends Vue {
   onAddDraft(form: ProjectDraft) {
     projectStore.addProjectDraft(form);
     Notify.info('保存《' + form.project_name + '》到草稿箱');
+  }
+
+  searchProject() {
+    if (this.key_word == '') {
+      this.refresh();
+      return;
+    }
+    let result = [];
+    let len = this.projects.length;
+    for (let i=0; i<len; i++) {
+      if (this.projects[i].project_name.indexOf(this.key_word) != -1) {
+        result.push(this.projects[i])
+      }
+    }
+    this.projects = result;
+  }
+
+  reset() {
+    this.key_word = '';
+    this.refresh();
   }
 }
 </script>
