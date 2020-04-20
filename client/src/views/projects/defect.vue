@@ -8,7 +8,7 @@
         v-model="selectedProject"
         :fetch-suggestions="querySearch"
         placeholder="请输入项目ID"
-        @select="handleSelect"
+        @selectChange="handleSelect"
       ></el-autocomplete>
     </div>
     <div v-if="defects.length != 0">
@@ -110,9 +110,10 @@ export default class Defects extends Vue {
     this.refresh();
   }
   handleSelect(item) {
+    if(item == '') this.filterDefects = this.defects;
     this.selectedProject = item.value;
     this.filterDefects = this.defects.filter((defect) => {
-      return defect.project_id == this.selectedProject;
+      return defect.project_id == this.selectedProject.substring(this.selectedProject.indexOf('(') + 1, this.selectedProject.indexOf(')'));
     });
   }
   FormInit() {

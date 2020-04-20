@@ -9647,6 +9647,11 @@ lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@~2.3.0:
+  version "2.3.0"
+  resolved "https://registry.npm.taobao.org/lodash/download/lodash-2.3.0.tgz#dfbdac99cf87a59a022c474730570d8716c267dd"
+  integrity sha1-372smc+HpZoCLEdHMFcNhxbCZ90=
+
 log-symbols@3.0.0, log-symbols@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-3.0.0.tgz#f3a08516a5dea893336a7dee14d18a1cfdab77c4"
@@ -13404,6 +13409,13 @@ stealthy-require@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/stealthy-require/download/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
+
+stepify@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.npm.taobao.org/stepify/download/stepify-0.1.5.tgz#941b6c33034a5a682ccc7093bcdb76e85cbeec18"
+  integrity sha1-lBtsMwNKWmgszHCTvNt26Fy+7Bg=
+  dependencies:
+    lodash "~2.3.0"
 
 stream-browserify@^2.0.1:
   version "2.0.2"
