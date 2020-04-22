@@ -47,6 +47,7 @@ import { Subtract } from 'utility-types';
 import agent, { authBody } from '@/agent';
 import { userStore } from '@/store';
 import { Notify } from '../theme';
+import dayjs from "dayjs";
 
 // type WorkTimeDraft = Subtract<WorkTimePostBody, authBody>;
 
@@ -64,7 +65,11 @@ export default class WorkTimeUpdateDialog extends Vue {
 
   @Watch('currentRecord')
   onRecordSelected() {
-    this.form = { ...this.currentRecord };
+    this.form = {
+      ...this.currentRecord,
+      activity_content: this.currentRecord.activity_content.split("-"),
+      feature_name: this.currentRecord.feature_name.split("-"),
+    };
   }
 
   @Watch('form.project_id')

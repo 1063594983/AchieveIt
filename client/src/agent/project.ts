@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const projectAPI = {
   ...createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>('project'),
-  getAll: () => axiosGet<any>('project', 'getAllProjects'),
+  getAll: () => axiosGet<ProjectList>('project', 'getAllProjects'),
   refuse: (projectId: string) => axiosGet('project', `refuseProject/${projectId}`),
   accept: (projectId: string) => axiosGet('project', `acceptProject/${projectId}`),
   getJoinProjects: async (member_id: any) => {
@@ -24,15 +24,15 @@ const projectAPI = {
   },
   setStatus: async (project_id, details) => {
     const result = await axios.put(`${baseURL}/project/changeStatus/${project_id}`, {
-      ...details
-    })
+      ...details,
+    });
     return result;
   },
   update: async (project_id, details) => {
     const result = await axios.put(`${baseURL}/project/${project_id}`, {
-      ...details
+      ...details,
     });
     return result.data;
-  }
+  },
 };
 export default projectAPI;

@@ -45,6 +45,7 @@
             scope.row.status == 0 ? '审批中' : '已完成'
           }}</el-tag>
           <el-button
+            :disabled="scope.row.status === 1"
             type="text"
             class="ml3"
             @click="
@@ -118,7 +119,7 @@ export default {
     },
     async updateRecord(record) {
       try {
-        await agent.workTime.update(userStore.currentUser.member_id, record);
+        await agent.workTime.update(record.work_time_id, record);
         // this.records = [record, ...this.records];
         this.refresh();
         return true;
