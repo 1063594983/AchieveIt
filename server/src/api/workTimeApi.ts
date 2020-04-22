@@ -52,6 +52,18 @@ router.post("/:member_id", (req, res: Response<ResultCommon>) => {
     })
 })
 
+
+// put /workTime/:work_time_id
+
+router.put("/:work_time_id", (req, res) => {
+    const work_time_id = req.params.work_time_id;
+    const details = req.body;
+    conn.query('update work_time set feature_name = ?, activity_content = ?, project_id = ?, start_time = ?, end_time = ? where work_time_id = ?', 
+        [details.feature_name, details.activity_content, details.project_id, details.start_time, details.end_time, work_time_id], err => {
+        commomUpdateHandler(res, err);
+    })
+})
+
 // put /workTime/checkWorkTime/:work_time_id
 router.put("/:checkWorkTime/:work_time_id", (req, res) => {
     const work_time_id = req.params.work_time_id;
