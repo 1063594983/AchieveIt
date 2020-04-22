@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const projectAPI = {
   ...createCRUD<ProjectGetBody, ProjectDeleteBody, ProjectPutBBody, ProjectPostBody, GetProjectResult>('project'),
-  getAll: () => axiosGet<ProjectList>('project', 'getAllProjects'),
+  getAll: () => axiosGet<any>('project', 'getAllProjects'),
   refuse: (projectId: string) => axiosGet('project', `refuseProject/${projectId}`),
   accept: (projectId: string) => axiosGet('project', `acceptProject/${projectId}`),
   getJoinProjects: async (member_id: any) => {

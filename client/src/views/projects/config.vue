@@ -86,7 +86,7 @@ import { userStore } from '@/store';
 @Component
 export default class Configs extends Vue {
   configs: Config[] = [];
-  projects: { value: string }[] = [];
+  projects = [];
   existed_projects: string[] = [];
   configFormVisible = false;
   changeFormVisible = false;
@@ -118,7 +118,7 @@ export default class Configs extends Vue {
   async querySearch(queryString, cb) {
     // const projects = this.projects;
     let projects = await agent.project.getAll();
-    projects = projects.project_list.filter(x=>x.status=='已立项').map(x=>{
+    projects = projects.filter(x=>x.status=='已立项').project_list.map(x=>{
       return {
         value: x.project_id.toString()
       }
