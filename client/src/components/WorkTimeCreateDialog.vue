@@ -55,6 +55,7 @@ import { Subtract } from 'utility-types';
 import agent, { authBody } from '@/agent';
 import { userStore } from '@/store';
 import { Notify } from '../theme';
+import dayjs from 'dayjs';
 
 
 
@@ -140,16 +141,20 @@ export default class WorkTimeCreateDialog extends Vue {
   }
 
   async createWorkTime() {
-    if(new Date().valueOf() - new Date(this.form.date).valueOf() > 3*24*60*60*1000) {
-          Notify.error('已超过三天不能添加')
-      } else {
+        let newDate = new Date(this.form.date).valueOf();
+        let start_time = new Date(this.form.start_time);
+        let end_time = new Date(this.form.end_time);
+        let newST = newDate + start_time.getHours()*60*60*1000 + start_time.getMinutes()*60*1000 + start_time.getSeconds()*1000;
+        let newET = newDate + end_time.getHours()*60*60*1000 + end_time.getMinutes()*60*1000 + end_time.getSeconds()*1000;
+        this.form.start_time = dayjs(newST).format('YYYY-MM-DD' + 'T' + 'HH:mm:ss');
+        this.form.end_time = dayjs(newET).format('YYYY-MM-DD' + 'T' + 'HH:mm:ss');
+
         this.form.activity_content = this.form.activity_content[0];
         this.form.feature_name = `${this.form.feature_name[0]}-${this.form.feature_name[1]}`;
           const result = await this.onCreate(this.form);
           if (result) {
             this.onClose();
           }
-      }
 
   }
 }
