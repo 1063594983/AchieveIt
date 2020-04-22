@@ -145,14 +145,16 @@ router.post('/', (req, res: Response<ResultCommon>) => {
           if (err) {
             mysqlErrorHandler(res, err);
           } else {
+            console.log(result);
+            conn.query('insert into project_status (project_id) values (?)', [project_details.project_id], err => {
+              if (err) {
+                console.log(err);
+              }
+            })
             const emailList = result;
             for (const e of emailList) {
               const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`;
-              conn.query('insert into project_status (project_id) values (?)', [project_details.project_id], err => {
-                if (err) {
-                  console.log(err);
-                }
-              })
+             
               switch (e.job) {
                 case 1:
                    email.sendEmail({
@@ -166,39 +168,39 @@ router.post('/', (req, res: Response<ResultCommon>) => {
                      }
                    })
                   break;
-                case 2:
-                   email.sendEmail({
-                     to: '10165101259@stu.ecnu.edu.cn',
-                     subject,
-                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目建立基本的配置库`
-                   }, (err, info) => {
-                     if (err) {
-                       console.log('send to 配置管理员 failed')
-                     }
-                  })
-                  break;
-                  case 3:
-                   email.sendEmail({
-                     to: '10165101259@stu.ecnu.edu.cn',
-                     subject,
-                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配EPG`
-                   }, (err, info) => {
-                     if (err) {
-                       console.log('send to EPG Leader failed')
-                     }
-                   })
-                  break;
-                case 4:
-                   email.sendEmail({
-                     to: '10165101259@stu.ecnu.edu.cn',
-                     subject,
-                     html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配QA`
-                   }, (err, info) => {
-                     if (err) {
-                       console.log('send to QA Manager failed')
-                     }
-                   })
-                  break;
+                // case 2:
+                //    email.sendEmail({
+                //      to: '10165101259@stu.ecnu.edu.cn',
+                //      subject,
+                //      html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目建立基本的配置库`
+                //    }, (err, info) => {
+                //      if (err) {
+                //        console.log('send to 配置管理员 failed')
+                //      }
+                //   })
+                //   break;
+                //   case 3:
+                //    email.sendEmail({
+                //      to: '10165101259@stu.ecnu.edu.cn',
+                //      subject,
+                //      html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配EPG`
+                //    }, (err, info) => {
+                //      if (err) {
+                //        console.log('send to EPG Leader failed')
+                //      }
+                //    })
+                //   break;
+                // case 4:
+                //    email.sendEmail({
+                //      to: '10165101259@stu.ecnu.edu.cn',
+                //      subject,
+                //      html: `${JSON.stringify(project_details)}<br/>项目已立项，待批准后请为项目分配QA`
+                //    }, (err, info) => {
+                //      if (err) {
+                //        console.log('send to QA Manager failed')
+                //      }
+                //    })
+                //   break;
               }
               // email.sendEmail({
               //   to: e.email,
