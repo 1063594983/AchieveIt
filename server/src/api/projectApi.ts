@@ -145,7 +145,6 @@ router.post('/', (req, res: Response<ResultCommon>) => {
           if (err) {
             mysqlErrorHandler(res, err);
           } else {
-            console.log(result);
             conn.query('insert into project_status (project_id) values (?)', [project_details.project_id], err => {
               if (err) {
                 console.log(err);
@@ -154,7 +153,6 @@ router.post('/', (req, res: Response<ResultCommon>) => {
             const emailList = result;
             for (const e of emailList) {
               const subject = `项目立项 to: ${config.numberMap.memberJob[e.job]}`;
-             
               switch (e.job) {
                 case 1:
                    email.sendEmail({
@@ -166,6 +164,7 @@ router.post('/', (req, res: Response<ResultCommon>) => {
                      if (err) {
                        console.log('send to 项目上级 failed')
                      }
+                     console.log(info)
                    })
                   break;
                 // case 2:
