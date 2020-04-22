@@ -99,8 +99,8 @@ export default class Configs extends Vue {
 
     const result2 = await agent.project.getAll();
     this.configs = result.data.config_list;
-    console.log(this.projects)
-    this.projects = result2.project_list.filter(x=>x.status=='申请立项').map((x) => {
+    console.log(this.projects) 
+    this.projects = result2.project_list.map((x) => {
       return { value: x.project_id.toString() };
     });
     this.existed_projects = this.configs.map((x) => {
@@ -116,7 +116,13 @@ export default class Configs extends Vue {
     };
   }
   async querySearch(queryString, cb) {
-    const projects = this.projects;
+    // const projects = this.projects;
+    let projects = await agent.project.getAll();
+    projects = projects.project_list.filter(x=>x.status=='已立项').map(x=>{
+      return {
+        value: x.project_id.toString()
+      }
+    })
     const results = queryString ? projects.filter(this.createFilter(queryString)) : projects;
     // 调用 callback 返回建议列表的数据
     cb(results);
