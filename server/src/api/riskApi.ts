@@ -93,7 +93,7 @@ router.post('/uploadRisk/:project_id', risk.single('risk'), (req: any, res) => {
   const project_id = req.params.project_id;
   const filePath = path.resolve(`./upload/risk/${project_id}.xls`);
   const file = excelTool.readExcel(filePath);
-  console.log(file)
+  // console.log(file)
   const result = [];
   for (let risk of file) {
     const tmpRisk = {

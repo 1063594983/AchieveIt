@@ -154,6 +154,7 @@ export default class WorkTimeCreateDialog extends Vue {
           const result = await this.onCreate(this.form);
           if (result) {
             this.onClose();
+            this.form = initForm();
           }
 
   }
