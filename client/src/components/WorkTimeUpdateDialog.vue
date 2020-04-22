@@ -119,7 +119,7 @@ export default class WorkTimeUpdateDialog extends Vue {
     if (new Date().valueOf() - new Date(this.form.date).valueOf() > 3 * 24 * 60 * 60 * 1000) {
       Notify.error('已超过三天不能添加');
     } else {
-      this.form.activity_content = this.form.activity_content[0];
+      // this.form.activity_content = this.form.activity_content[0];
       this.form.feature_name = `${this.form.feature_name[0]}-${this.form.feature_name[1]}`;
       const result = await this.onUpdate(this.form);
       if (result) {

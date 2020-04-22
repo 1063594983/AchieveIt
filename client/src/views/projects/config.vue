@@ -99,7 +99,8 @@ export default class Configs extends Vue {
 
     const result2 = await agent.project.getAll();
     this.configs = result.data.config_list;
-    this.projects = result2.project_list.map((x) => {
+    console.log(this.projects)
+    this.projects = result2.project_list.filter(x=>x.status=='申请立项').map((x) => {
       return { value: x.project_id.toString() };
     });
     this.existed_projects = this.configs.map((x) => {
